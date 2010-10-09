@@ -1,0 +1,26 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+GET     /                                	    CloudPaster.index(from:'0')
+GET     /from/{<[0-9]+>from}		         	CloudPaster.index
+GET     /my                                	    CloudPaster.my(from:'0')
+GET     /my/from/{<[0-9]+>from}				    CloudPaster.my
+GET     /start                  				CloudPaster.prepaste
+GET     /view/{key}                  			CloudPaster.view
+GET     /delete/{key}                 			CloudPaster.delete
+GET 	/success								CloudPaster.success
+GET   	/intro                 					CloudPaster.intro
+POST    /paste                 					CloudPaster.paste
+GET   	/search                 				CloudPaster.search
+
+GET     /logout                  				Auth.logout
+GET     /login                 					Auth.login
+GET     /login/google                 			Auth.googlelogin
+GET     /login/yahoo                 			Auth.yahoologin
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

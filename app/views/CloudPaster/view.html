@@ -1,0 +1,18 @@
+#{extends 'main.html'/}
+<div class="grid8 first list-paster even-border">
+		<div class="paster-header even"><div class="paster-icon"></div><a href="@{CloudPaster.view(paster.key)}">${paster.key}</a>
+		<span class="small">${paster.createDate.format('yyyy-MM-dd hh:ss')}</span>
+		</div>
+		<div class="paster-content">
+		#{if paster.contentAsHtml}${paster.contentAsHtml.raw()}#{/if}#{else}${paster.content}#{/else}
+		</div>
+</div>
+<div class="clear"></div>
+<p/>
+<div class="grid8 first">
+	<a href="@{CloudPaster.my(0)}" class="large">返回我的贴纸</a>
+	<a href="@{CloudPaster.index(0)}">返回首页</a>
+	<a href="@{CloudPaster.delete(paster.key)}" class="small">删除了吧</a>
+</div>
+
+

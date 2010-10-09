@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>${title}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/style.css'}">
+        <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+        <script src="/public/javascripts/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>        
+    </head>
+    <body>
+<div class="decorate-line"></div>    
+<div id="header">
+	<div class="container">
+		<div class="grid3 first">
+			<a href="@{CloudPaster.index(0)}"><div class="logo"></div></a>
+		</div>
+		<div class="grid9">
+			<div class="grid9 first info">
+				已有${models.User.count()}人在使用云贴纸，希望下一个就是你噢
+			</div>
+			<div class="grid4 first search-form">
+			<table>
+			#{form @CloudPaster.search(),method:'GET',class:'searchform'}
+			<tr><td>
+				<input type="hidden" name="from" value="0"/>
+				<input name="keywords" value="${keywords}" type="text">
+			</td><td>
+				<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
+			</td></tr>
+			#{/form}
+			</table>
+			
+			</div>
+			<div class="grid5 header-menu">
+		        <ul class="menuul fright">
+		          <li><a href="@{CloudPaster.index(0)}"><span>首页</span></a></li>
+		          #{if session['user.key']}
+		          	<li><a href="@{CloudPaster.my(0)}"><span>我的贴纸</span></a></li>
+			        <li><a href="@{CloudPaster.prepaste()}"><span>开始贴纸</span></a></li>
+			        <li><a href="@{Auth.logout()}"><span>退出</span></a></li>
+				  #{/if}
+				  #{else}
+			          <li><a href="@{Auth.login()}"><span>用OpenID登录</span></a></li>
+				  #{/else}
+		        </ul>
+	      	</div>
+		</div>
+	</div>
+</div>
+<div class="clear"><p/></div>
+<div class="container">
+    #{doLayout/}
+</div> 
+<div class="clear"></div>
+<div id="footer">
+	<div class="container">
+	    <div class="grid10 first">
+	    	鸣谢：
+	      <ul class="menuul">
+	      	<li><a href="http://www.playframework.org">playframework</a></li>
+	      	<li><a href="http://www.blueprint.org">blueprint</a></li>
+	      	<li><a href="http://lucene.apache.org">apache lucene</a></li>
+	      	<li><a href="http://openiconlibrary.sourceforge.net/">openiconlibrary</a></li>
+	      	<li><a href="http://www.eclipse.org/">eclipse</a></li>
+	      	<li><a href="http://redcloth.org/hobix.com/textile/">textile</a></li>
+	      </ul>
+	    </div>
+		<div class="grid2" id="footer-logo"><img alt="logo" src="@{'public/images/logo.png'}"></div>
+	</div>
+</div>
+    </body>
+</html>
+    

@@ -1,0 +1,15 @@
+#{extends 'main.html'/}
+
+<div class="clear"><p/></div>        
+<div class="paster_form">
+	<p><a href="@{CloudPaster.view(paster.key)}">${paster.key}</a>已经成功粘贴。</p>
+	<div class="clear"></div>
+	<p>查看地址	<input type="text" value="http://www.cloudpaster.com@{CloudPaster.view(paster.key)}" style="width:320px" readonly/>
+	</p>
+	<div class="clear"></div>
+	<a href="@{CloudPaster.my(0)}" class="large">返回我的贴纸</a>
+	<a href="@{CloudPaster.prepaste()}" class="large">再贴一张</a>
+	<a href="@{CloudPaster.index(0)}">返回首页</a>
+	<a href="@{CloudPaster.delete(paster.key)}" class="small">贴错了，删除它</a>
+</div>
+

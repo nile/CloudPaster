@@ -1,0 +1,180 @@
+.decorate-line {
+	height:1px;
+	background:#98bfdf;
+	overflow:hidden;
+}
+.clear{
+	clear:both;
+}
+.container {
+	width: 978px;
+	margin: 0 auto;
+}
+.grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8, .grid9, .grid10, .grid11 {
+	float: left;
+	margin-left: 30px;
+}
+.grid1 {
+	width: 54px;
+}
+.grid2 {
+	width: 138px;
+}
+.grid3 {
+	width: 222px;
+}
+.grid4 {
+	width: 306px;
+}
+.grid5 {
+	width: 390px;
+}
+.grid6 {
+	width: 474px;
+}
+.grid7 {
+	width: 558px;
+}
+.grid8 {
+	width: 642px;
+}
+.grid9 {
+	width: 726px;
+}
+.grid10 {
+	width: 810px;
+}
+.grid11 {
+	width: 894px;
+}
+.first {
+	margin-left: 0;
+	clear: left;
+}
+
+body{
+	margin:0px;
+}
+
+
+#header{
+	height:89px;
+	background:url(../images/header-bg.png);
+}
+
+.header-menu {
+	text-align:right;
+	font-size:14px;
+	line-height:22px;
+}
+
+.menuul  {
+	list-style:none outside none;
+	height:22px;
+	margin:14px 0px;
+}
+.menuul li {
+	float:left;
+	padding:0 5px;
+	vertical-align: bottom;
+}
+
+.info{
+	margin-top:13px;
+	height:20px;
+}
+
+/** search form*/
+.search-form{
+	margin-top:10px;
+}
+.search-form input{
+	border-color:#CCCCCC #999999 #999999 #CCCCCC;
+	border-width:1px;
+	height:22px;
+}
+.search-form button, button{
+	border-color:#CCCCCC #999999 #999999 #CCCCCC;
+	border-width:1px;
+	height:26px;
+	width:40px;
+}
+.search-form td{
+	padding:0px;
+}
+
+
+.logo{
+	background:url(../images/logo.png) no-repeat;
+	width:160px;
+	margin-top:26px;
+	height:40px;
+}
+
+#footer{
+	background:url(../images/footer-bg.png) repeat-x scroll center top transparent;
+	margin:20px auto 0;
+	height:60px;
+	padding:20px 0px;
+	color:#2f2f2f;
+}
+
+.fright{
+	float:right;
+}
+
+img{
+	border:0px;
+}
+
+.paster_form{
+
+}
+.paster_form textarea{
+	height:180px;
+	width:640px;
+}
+.paster_form button{
+	width:120px;
+}
+
+.even{
+	background: #ddddd0;
+}
+.odd{
+	background: #669933;
+}
+.list-paster{
+	padding:0px;
+	margin-top:10px;
+}
+.even-border{
+	border:1px solid #ddddd0;
+}
+.odd-border{
+	border:1px solid #669933;
+}
+.paster-icon{
+	background:url(../images/paster.png) no-repeat;
+	width:22px;
+	height:16px;
+	float:left;
+	margin:9px 2px 0;
+}
+.paster-header{
+	height:28px;
+	line-height:32px;
+}
+.paster-content{
+	padding:5px;
+}
+
+.small{
+	font-size:80%;
+}
+.large{
+	font-size:120%;
+}
+.paginations{
+	margin-top:20px;
+}
