@@ -26,7 +26,7 @@ public class Auth extends Controller{
 				.returnTo(Play.configuration.getProperty("auth.returnto", "Auth.login"))
 				.forRealm(Play.configuration.getProperty("auth.returnto", "Auth.login")).verify()) {
 			flash.error("Oops. Cannot contact google");
-			CloudPaster.index(0);
+			login();
 		}
 	}
 	public static void login() {

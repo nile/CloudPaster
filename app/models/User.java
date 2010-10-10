@@ -15,11 +15,9 @@ public class User extends MongoModel{
 		return User.find("byKey", key).first();
 	}
 	public static User createOrGet(String email) {
-		System.out.println(email);
 		User user = User.find("byEmail",email).first();
 		if(user!=null)
 			return user;
-		System.out.println(user);
 		String randomstr = CryptoUtil.randomstr(120);
 		while (getByKey(randomstr) != null) {
 			randomstr = CryptoUtil.randomstr(120);

@@ -26,13 +26,14 @@ import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 public class WikiUtil {
 	public static String parse(String text) throws UnsupportedEncodingException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(new OutputStreamWriter(out));
+		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(new OutputStreamWriter(out,"UTF-8"));
+		builder.setEncoding("UTF-8");
 		builder.setEmitAsDocument(false);
 		MarkupParser parser = new MarkupParser();
 		parser.setMarkupLanguage(textileLanguage);
 		parser.setBuilder(builder);
 		parser.parse(text);
-		return out.toString("GBK");
+		return out.toString("UTF-8");
 	}
 	
 	private static MarkupLanguage textileLanguage = new TextileLanguage() {
