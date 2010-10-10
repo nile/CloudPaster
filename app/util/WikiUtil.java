@@ -57,7 +57,7 @@ public class WikiUtil {
 //			phraseModifierSyntax.add(new SimpleTextilePhraseModifier("%", SpanType.SPAN, Mode.NESTING)); //$NON-NLS-1$
 			phraseModifierSyntax.add(new SimpleTextilePhraseModifier("-", SpanType.DELETED, Mode.NESTING)); //$NON-NLS-1$
 			phraseModifierSyntax.add(new LinkTextilePhraseModifier("/view/%s")); //$NON-NLS-1$
-//			phraseModifierSyntax.add(new ImageTextilePhraseModifier());
+			phraseModifierSyntax.add(new ImageTextilePhraseModifier());
 			phraseModifierSyntax.add(new HyperlinkPhraseModifier()); // hyperlinks are actually a phrase modifier see bug 283093
 			phraseModifierSyntax.endGroup(")(?=\\W|$)", 0); //$NON-NLS-1$
 		}
