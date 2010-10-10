@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import play.modules.mongo.MongoEntity;
 import play.modules.mongo.MongoModel;
 import util.CryptoUtil;
@@ -7,9 +9,11 @@ import util.CryptoUtil;
 public class User extends MongoModel{
 	public String email;
 	public String key;
+	public Date	createDate;
 	public User(String email,String key) {
 		this.email = email;
 		this.key = key;
+		this.createDate = new Date();
 	}
 	public static User getByKey(String key) {
 		return User.find("byKey", key).first();
