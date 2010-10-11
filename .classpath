@@ -59,5 +59,8 @@
 	<classpathentry kind="lib" path="D:/opt/play-1.0.2.1/framework/lib/lucene-analyzers-2.3.1.jar"/>
 	<classpathentry kind="lib" path="D:/opt/play-1.0.2.1/framework/lib/lucene-core-2.3.1.jar"/>
 	<classpathentry kind="lib" path="modules/mongosearch/lib/mongosearch.jar"/>
+	<classpathentry kind="lib" path="lib/jml-1.0b4.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore.jar"/>
+	<classpathentry kind="lib" path="lib/cindy.jar"/>
 	<classpathentry kind="output" path="eclipse/classes"/>
 </classpath>

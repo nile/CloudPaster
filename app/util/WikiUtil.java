@@ -2,6 +2,7 @@ package util;
 
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.BitSet;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -24,7 +25,9 @@ import org.eclipse.mylyn.wikitext.core.parser.markup.phrase.HtmlStartTagPhraseMo
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 
 public class WikiUtil {
+	private static ThreadLocal<BitSet> feature = new ThreadLocal<BitSet>(); 
 	public static String parse(String text) throws UnsupportedEncodingException {
+		feature.set(new BitSet());
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(new OutputStreamWriter(out,"UTF-8"));
 		builder.setEncoding("UTF-8");
@@ -33,6 +36,7 @@ public class WikiUtil {
 		parser.setMarkupLanguage(textileLanguage);
 		parser.setBuilder(builder);
 		parser.parse(text);
+		BitSet bitSet = feature.get();
 		return out.toString("UTF-8");
 	}
 	
