@@ -25,7 +25,7 @@ public class RobotMessager {
 	private static RobotMessager instance;
 	private MsnMessenger messenger;
 
-	public static void init(String email, String password) {
+	public synchronized static void init(String email, String password) {
 		if (instance == null) {
 			instance = new RobotMessager();
 			instance.messenger = MsnMessengerFactory.createMsnMessenger(email, password);
