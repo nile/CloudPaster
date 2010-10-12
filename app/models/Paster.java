@@ -18,14 +18,20 @@ import util.WikiUtil;
 @MongoEntity("m_paster")
 @Indexed
 public class Paster extends MongoModel {
+	public final static String SRC_WEB = "WEB";
+	public final static String SRC_MSN = "MSN";
 	@Field(tokenize=true,stored=false)
 	public String content;
 	public String contentAsHtml;
 	public String creator;
 	public String key;
 	public Date createDate;
+	public String src = SRC_WEB;
 	
-	public static Paster  createAndSave(String content,String email) {
+	public static Paster createAndSave(String content,String email) {
+		return createAndSave(content, email, null);
+	}
+	public static Paster createAndSave(String content,String email,String src) {
 		Paster paster = new Paster();
 		paster.content = content;
 		paster.creator = email;
@@ -40,6 +46,9 @@ public class Paster extends MongoModel {
 			randomstr = CryptoUtil.randomstr(24);
 		}
 		paster.key = randomstr;
+		if(src!=null) {
+			paster.src = src;
+		}
 		paster.save();
 		MongoSearch.index(paster);
 		return paster;

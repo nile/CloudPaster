@@ -1,14 +1,18 @@
 package util;
 
+import java.util.HashMap;
+
 import models.Paster;
 import net.sf.jml.Email;
 import net.sf.jml.MsnContact;
 import net.sf.jml.MsnContactPending;
+import net.sf.jml.MsnFileTransfer;
 import net.sf.jml.MsnGroup;
 import net.sf.jml.MsnList;
 import net.sf.jml.MsnMessenger;
 import net.sf.jml.MsnSwitchboard;
 import net.sf.jml.event.MsnContactListListener;
+import net.sf.jml.event.MsnFileTransferListener;
 import net.sf.jml.event.MsnMessageListener;
 import net.sf.jml.event.MsnMessengerListener;
 import net.sf.jml.impl.MsnMessengerFactory;
@@ -19,6 +23,7 @@ import net.sf.jml.message.MsnSystemMessage;
 import net.sf.jml.message.MsnUnknownMessage;
 import net.sf.jml.message.p2p.MsnP2PMessage;
 import play.Logger;
+import play.mvc.Router;
 
 public class RobotMessager {
 	//sso login.live.com
@@ -48,49 +53,69 @@ public class RobotMessager {
 	}
 
 	private void initListener() {
+		
+		instance.messenger.addFileTransferListener(new MsnFileTransferListener() {
+			
+			public void fileTransferStarted(MsnFileTransfer arg0) {
+				//TODO 		
+			}
+			
+			public void fileTransferRequestReceived(MsnFileTransfer arg0) {
+				Logger.info("fileTransferRequestReceived", arg0.getFile());
+				arg0.start();
+				arg0.cancel();
+			}
+			
+			public void fileTransferProcess(MsnFileTransfer arg0) {
+				// TODO Auto-generated method stub
+			}
+			
+			public void fileTransferFinished(MsnFileTransfer arg0) {
+				Logger.info("fileTransferFinished", arg0.getFile());
+			}
+		});
 		instance.messenger.addMessageListener(new MsnMessageListener() {
 
 			
 			public void unknownMessageReceived(MsnSwitchboard arg0, MsnUnknownMessage arg1, MsnContact arg2) {
-				// TODO Auto-generated method stub
-
+				//x-ms-ink
 			}
 
 			
 			public void systemMessageReceived(MsnMessenger arg0, MsnSystemMessage arg1) {
 				// TODO Auto-generated method stub
-
 			}
 
 			
 			public void p2pMessageReceived(MsnSwitchboard arg0, MsnP2PMessage arg1, MsnContact arg2) {
 				// TODO Auto-generated method stub
-
 			}
 
 			
 			public void offlineMessageReceived(String arg0, String arg1, String arg2, MsnContact arg3) {
 				// TODO Auto-generated method stub
-
 			}
 
 			public void instantMessageReceived(MsnSwitchboard arg0, MsnInstantMessage arg1, MsnContact arg2) {
 				String emailAddress = arg2.getEmail().getEmailAddress();
 				String content = arg1.getContent();
 				Logger.debug("接受消息 %s \n %s", emailAddress,content);
-				Paster.createAndSave(content,emailAddress);
+				Paster paster = Paster.createAndSave(content,emailAddress,Paster.SRC_MSN);
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				params.put("key",paster.key);
+				messenger.sendText(arg2.getEmail(), String.format("贴纸成功，点击查看 http://www.cloudpaster.com%s", Router.reverse("CloudPaster.view",params)));
 			}
 
 			
 			public void datacastMessageReceived(MsnSwitchboard arg0, MsnDatacastMessage arg1, MsnContact arg2) {
 				// TODO Auto-generated method stub
 
+				
 			}
 
 			
 			public void controlMessageReceived(MsnSwitchboard arg0, MsnControlMessage arg1, MsnContact arg2) {
 				// TODO Auto-generated method stub
-
 			}
 		});
 		instance.messenger.addContactListListener(new MsnContactListListener() {
@@ -189,7 +214,6 @@ public class RobotMessager {
 		});
 		instance.messenger.addMessengerListener(new MsnMessengerListener() {
 
-			
 			public void logout(MsnMessenger arg0) {
 				// TODO Auto-generated method stub
 
