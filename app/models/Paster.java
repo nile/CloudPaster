@@ -24,6 +24,7 @@ public class Paster extends MongoModel {
 	public String creator;
 	public String key;
 	public Date createDate;
+	public int rating;
 	
 	public static Paster  createAndSave(String content,String email) {
 		Paster paster = new Paster();
@@ -40,6 +41,7 @@ public class Paster extends MongoModel {
 			randomstr = CryptoUtil.randomstr(24);
 		}
 		paster.key = randomstr;
+		paster.rating = 0;
 		paster.save();
 		MongoSearch.index(paster);
 		return paster;
