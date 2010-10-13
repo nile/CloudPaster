@@ -18,15 +18,13 @@ import util.WikiUtil;
 @MongoEntity("m_paster")
 @Indexed
 public class Paster extends MongoModel {
-	public final static String SRC_WEB = "WEB";
-	public final static String SRC_MSN = "MSN";
 	@Field(tokenize=true,stored=false)
 	public String content;
 	public String contentAsHtml;
 	public String creator;
 	public String key;
 	public Date createDate;
-	public String src = SRC_WEB;
+	public String src = ModelConstants.PASTER_SRC_WEB;
 	public int rating;
 	
 	public static Paster createAndSave(String content,String email) {
