@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import models.Log;
 import models.Paster;
 import models.User;
 import models.Paster.QueryResult;
@@ -12,9 +13,11 @@ import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.data.validation.Required;
 import play.data.validation.Validation;
+import play.modules.mongo.MongoDB;
 import play.mvc.After;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Http.Header;
 
 public class CloudPaster extends Controller {
 	private static final long MINS_15 = 15*60*1000L;
@@ -57,15 +60,10 @@ public class CloudPaster extends Controller {
 	}
 
 	public static void my(int from) {
-		String userkey = session.get(KEY_USER);
-		if (userkey != null) {
-			User user = User.getByKey(userkey);
-			List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
-			long count = Paster.countByCreator(user.email);
-			render(pasters, count, from);
-		} else {
-			index(0);
-		}
+		User user = getLoginUser();
+		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
+		long count = Paster.countByCreator(user.email);
+		render(pasters, count, from);
 	}
 
 	public static void view(String key) {
@@ -86,25 +84,23 @@ public class CloudPaster extends Controller {
 	}
 	
 	public static void delete(String key) {
-		String userkey = session.get(KEY_USER);
-		if(userkey !=null) {
-			User user = User.getByKey(userkey);
-			Paster obj = Paster.getByKey(key);
-			if (obj != null && obj.creator.equals(user.email)) {
-				obj.remove();
-			}
+		User user = getLoginUser();
+		Paster obj = Paster.getByKey(key);
+		if (obj != null && obj.creator.equals(user.email)) {
+			obj.remove();
 		}
+		Log.delete(user.key, obj.key);
 		my(0);
 	}
 
 	public static void paste(@Required(message = "content is required.") String content) {
 		if (!Validation.hasErrors()) {
-			String userkey = session.get(KEY_USER);
-			User user = User.getByKey(userkey);
+			User user = getLoginUser();
 			Paster paster = Paster.createAndSave(content, user.email);
 			if(Boolean.valueOf(Play.configuration.getProperty("notifier.enabled","false"))) {
 				Notifier.paste(user.email, paster);
 			}
+			Log.paste(user.key, paster.key);
 			success(paster.key);
 		} else {
 			params.flash();
@@ -116,5 +112,27 @@ public class CloudPaster extends Controller {
 	public static void success(String key) {
 		Paster paster = Paster.getByKey(key);
 		render(paster);
+	}
+	public static void ratingup(String key) {
+		User user = getLoginUser();
+		Paster paster = Paster.getByKey(key);
+		paster.rating += 1;
+		paster.save();
+		Log.ratingup(user.key, paster.key);
+	}
+	public static void ratingdown(String key) {
+		User user = getLoginUser();
+		Paster paster = Paster.getByKey(key);
+		paster.rating -=1;
+		paster.save();
+		Log.ratingdown(user.key, paster.key);
+	}
+	
+	static User getLoginUser() {
+		String userkey = session.get(KEY_USER);
+		if(userkey == null)
+			return null;
+		User user = User.getByKey(userkey);
+		return user;
 	}
 }

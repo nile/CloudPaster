@@ -27,6 +27,7 @@ public class Paster extends MongoModel {
 	public String key;
 	public Date createDate;
 	public String src = SRC_WEB;
+	public int rating;
 	
 	public static Paster createAndSave(String content,String email) {
 		return createAndSave(content, email, null);
@@ -49,6 +50,7 @@ public class Paster extends MongoModel {
 		if(src!=null) {
 			paster.src = src;
 		}
+		paster.rating = 0;
 		paster.save();
 		MongoSearch.index(paster);
 		return paster;
