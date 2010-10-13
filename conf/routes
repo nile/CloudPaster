@@ -12,7 +12,6 @@ GET     /my/from/{<[0-9]+>from}				    CloudPaster.my
 GET     /start                  				CloudPaster.prepaste
 GET     /view/{key}                  			CloudPaster.view
 GET     /delete/{key}                 			CloudPaster.delete
-GET 	/success/{key}							CloudPaster.success
 GET   	/intro                 					CloudPaster.intro
 POST    /paste                 					CloudPaster.paste
 GET   	/search                 				CloudPaster.search

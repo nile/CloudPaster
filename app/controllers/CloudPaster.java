@@ -58,7 +58,7 @@ public class CloudPaster extends Controller {
 	public static void prepaste() {
 		render();
 	}
-
+	
 	public static void my(int from) {
 		User user = getLoginUser();
 		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
@@ -101,17 +101,19 @@ public class CloudPaster extends Controller {
 				Notifier.paste(user.email, paster);
 			}
 			Log.paste(user.key, paster.key);
-			success(paster.key);
+			success();
 		} else {
-			params.flash();
-			Validation.keep();
-			prepaste();
+			fail("001", "内容字段不能为空");
 		}
 	}
 
-	public static void success(String key) {
-		Paster paster = Paster.getByKey(key);
-		render(paster);
+	static void fail(String code,String message) {
+		request.format="xml";
+		render("@fail",code,message);
+	}
+	static void success() {
+		request.format="xml";
+		render("@success");
 	}
 	public static void ratingup(String key) {
 		User user = getLoginUser();

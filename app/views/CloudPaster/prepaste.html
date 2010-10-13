@@ -1,4 +1,4 @@
-#{extends 'main.html'/}
+#{extends 'plain.html'/}
 
 <div class="grid8 first">
 	#{include 'CloudPaster/_form.html'/}
@@ -17,3 +17,15 @@ p=. centered 	居中对齐
 	</pre>
 <a href="http://redcloth.org/hobix.com/textile/">更多参考</a>
 </div>
+
+<script type="text/javascript">
+$('btpaste').addEvent("click",function(event){
+	event.stop();
+	var myRequest = new Request({method: 'post', 
+		url: '@{CloudPaster.paste()}',
+		onComplete: pastSuccess
+		});
+	myRequest.send("content="+$('paster-content').get('value'));
+});
+
+</script>
