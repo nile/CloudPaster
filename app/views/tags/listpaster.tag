@@ -8,7 +8,8 @@
 				<a href="@{CloudPaster.view(o.key)}">${o.key}</a>
 				<span class="small">${o.createDate.format('yyyy-MM-dd HH:ss')}</span>
 			</div>
-			<div class="grid2 right"><a href="@{CloudPaster.ratingdown(o.key)}">DOWN</a> <a href="@{CloudPaster.ratingup(o.key)}">UP</a>${o.rating}</div>
+			<div class="grid2 right"><a href="javascript:void(0);" onclick="javascript:ratingdown('${o.key}')">DOWN</a>
+			<a href="javascript:void(0);" onclick="javascript:ratingup('${o.key}')">UP</a><span id="${o.key}-rating">${o.rating}</span></div>
 				#{if _private}
 				
 				#{/if}
@@ -21,3 +22,24 @@
 
 	#{/if}
 #{/list}
+
+<script type="text/javascript">
+	function ratingup(key){
+		rating('@{CloudPaster.ratingup()}',key);
+	}
+	function ratingdown(key){
+		rating('@{CloudPaster.ratingdown()}',key);
+	}
+	function rating(url,key){
+		var rating = new Request({method: 'post',
+			url: url,
+			onSuccess: function(ret){
+				json=JSON.decode(ret);
+				if(json.stat=='ok'){
+					$(key+'-rating').set('html',json.paster.rating);
+				};
+			}
+			});
+		rating.send("key="+key);
+	}
+</script>

@@ -178,3 +178,6 @@ img{
 .paginations{
 	margin-top:20px;
 }
+.error{
+	border:1px solid red;
+}

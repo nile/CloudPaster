@@ -1,0 +1,5 @@
+{stat:"fail",
+	err:{code:"${code}" ,
+		msg:"${message}"
+	}
+}

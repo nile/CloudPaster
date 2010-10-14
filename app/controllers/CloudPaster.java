@@ -4,8 +4,8 @@ import java.util.List;
 
 import models.Log;
 import models.Paster;
-import models.User;
 import models.Paster.QueryResult;
+import models.User;
 import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,11 +13,9 @@ import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.data.validation.Required;
 import play.data.validation.Validation;
-import play.modules.mongo.MongoDB;
 import play.mvc.After;
 import play.mvc.Before;
 import play.mvc.Controller;
-import play.mvc.Http.Header;
 
 public class CloudPaster extends Controller {
 	private static final long MINS_15 = 15*60*1000L;
@@ -101,19 +99,19 @@ public class CloudPaster extends Controller {
 				Notifier.paste(user.email, paster);
 			}
 			Log.paste(user.key, paster.key);
-			success();
+			success(paster);
 		} else {
-			fail("001", "内容字段不能为空");
+			fail("ERR-001", "内容字段不能为空");
 		}
 	}
 
 	static void fail(String code,String message) {
-		request.format="xml";
+		request.format="json";
 		render("@fail",code,message);
 	}
-	static void success() {
-		request.format="xml";
-		render("@success");
+	static void success(Paster paster) {
+		request.format="json";
+		render("@success",paster);
 	}
 	public static void ratingup(String key) {
 		User user = getLoginUser();
@@ -121,6 +119,7 @@ public class CloudPaster extends Controller {
 		paster.rating += 1;
 		paster.save();
 		Log.ratingup(user.key, paster.key);
+		success(paster);
 	}
 	public static void ratingdown(String key) {
 		User user = getLoginUser();
@@ -128,6 +127,7 @@ public class CloudPaster extends Controller {
 		paster.rating -=1;
 		paster.save();
 		Log.ratingdown(user.key, paster.key);
+		success(paster);
 	}
 	
 	static User getLoginUser() {

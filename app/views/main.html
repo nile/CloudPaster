@@ -96,11 +96,15 @@ window.addEvent('domready', function() {
 		}
 	});
 });
-pastSuccess = function(text,xml) {			
-			if(xml.documentElement.get("stat")=='fail'){
-				alert(xml.documentElement.firstElementChild.get('msg'));
-			}
-		}
+pastSuccess = function(text) {
+	var json = JSON.decode(text);
+	var stat = json.stat;
+	if(stat=='fail' && 'ERR-001'==json.err.code){
+		$('paster-content').addClass("error");
+	}else if(stat == 'ok') {
+		SqueezeBox.close();
+	}
+}
 </script>
     </body>
 </html>
