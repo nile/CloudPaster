@@ -25,7 +25,7 @@ public class CloudPaster extends Controller {
 	}
 	@After
 	static void after() {
-		session.put("timestamp", System.currentTimeMillis());
+		session.put(Auth.KEY_TIMESTAMP, System.currentTimeMillis());
 	}
 	
 	@Before(unless={"login","googlelogin","yahoologin","index","view","search","intro"})
@@ -34,7 +34,7 @@ public class CloudPaster extends Controller {
 	        Auth.login();
 	    }
 	    if(session.contains("timestamp")) {
-	    	long last = Long.parseLong(session.get("timestamp"));
+	    	long last = Long.parseLong(session.get(Auth.KEY_TIMESTAMP));
 	    	if(System.currentTimeMillis() - last > MINS_15 ) {
 	    		Auth.login();
 	    	}
@@ -50,6 +50,16 @@ public class CloudPaster extends Controller {
 			intro();
 		}
 	}
+	
+	public static void load(int from) {
+		if(session.contains(KEY_USER)) {
+			List<Paster> pasters = Paster.findAll(from, 10);
+			long count = Paster.count();
+			request.format="json";
+			render(pasters, count, from);
+		}
+	}
+	
 	public static void intro() {
 		render();
 	}

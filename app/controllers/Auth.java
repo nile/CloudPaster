@@ -5,10 +5,10 @@ import play.Play;
 import play.libs.OpenID;
 import play.libs.OpenID.UserInfo;
 import play.mvc.Controller;
-import play.mvc.Http.Request;
 
 public class Auth extends Controller{
-	private static final String KEY_EMAIL = "email";
+	public static final String KEY_TIMESTAMP = "timestamp";
+	public static final String KEY_EMAIL = "email";
 	public static void logout() {
 		session.clear();
 		CloudPaster.index(0);
@@ -40,7 +40,7 @@ public class Auth extends Controller{
               String email = userinfo.extensions.get(KEY_EMAIL);
               User user = User.createOrGet(email);
               session.put(CloudPaster.KEY_USER, user.key);
-              session.put("timestamp", System.currentTimeMillis());
+              session.put(KEY_TIMESTAMP, System.currentTimeMillis());
               CloudPaster.my(0);
 	        }
 		}

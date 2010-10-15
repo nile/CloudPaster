@@ -1,0 +1,15 @@
+{stat:"ok",
+pasters:[
+#{list items:pasters,as:'paster'}
+	#{if paster}
+		{key:"${paster.key}",
+				content:"${paster.content}",
+				contentAsHtml:"${paster.contentAsHtml}",
+				rating:${paster.rating},
+				createDate:'${paster.createDate}'
+		}
+		#{ifnot paster_isLast},#{/ifnot}
+	#{/if}
+#{/list}	
+]
+}

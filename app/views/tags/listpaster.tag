@@ -26,22 +26,5 @@
 #{/list}
 
 <script type="text/javascript">
-	function ratingup(key){
-		rating('@{CloudPaster.ratingup()}',key);
-	}
-	function ratingdown(key){
-		rating('@{CloudPaster.ratingdown()}',key);
-	}
-	function rating(url,key){
-		var rating = new Request({method: 'post',
-			url: url,
-			onSuccess: function(ret){
-				json=JSON.decode(ret);
-				if(json.stat=='ok'){
-					$(key+'-rating').set('html',json.paster.rating);
-				};
-			}
-			});
-		rating.send("key="+key);
-	}
+
 </script>

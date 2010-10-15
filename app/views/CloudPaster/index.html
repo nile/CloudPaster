@@ -1,9 +1,11 @@
 #{extends 'main.html'/}
 
-#{listpaster objects:pasters/}
+*{listpaster objects:pasters/}*
 
 
 <div class="clear"></div>
+<div class="grid8 first ">
+	<button type="button" onclick="javascript:loadmore()">more ...</button>
+</div>
 
-
-#{paginations index:true/}
+*{paginations index:true/}*

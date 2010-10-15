@@ -13,6 +13,7 @@ GET     /start                  				CloudPaster.prepaste
 GET     /view/{key}                  			CloudPaster.view
 GET     /delete/{key}                 			CloudPaster.delete
 GET   	/intro                 					CloudPaster.intro
+GET   	/load/from/{<[0-9]+>from}				CloudPaster.load
 POST    /paste                 					CloudPaster.paste
 POST    /ratingup/{key}              					CloudPaster.ratingup
 POST    /ratingdown/{key}            					CloudPaster.ratingdown
