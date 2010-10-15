@@ -40,6 +40,7 @@ public class Auth extends Controller{
               String email = userinfo.extensions.get(KEY_EMAIL);
               User user = User.createOrGet(email);
               session.put(CloudPaster.KEY_USER, user.key);
+              session.put("timestamp", System.currentTimeMillis());
               CloudPaster.my(0);
 	        }
 		}

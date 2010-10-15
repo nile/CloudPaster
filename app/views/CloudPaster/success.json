@@ -2,6 +2,7 @@
 paster:{key:"${paster.key}",
 		content:"${paster.content}",
 		contentAsHtml:"${paster.contentAsHtml}",
-		rating:${paster.rating}
+		rating:${paster.rating},
+		createDate:'${paster.createDate}'
 	}
 }

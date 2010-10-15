@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>云贴纸--便笺工具</title>
+        <title>云贴纸--简单的个人便签工具</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
         
@@ -15,14 +15,14 @@
 <div class="decorate-line"></div>    
 <div id="header">
 	<div class="container">
-		<div class="grid3 first">
+		<div class="grid2 first">
 			<a href="@{CloudPaster.index(0)}"><div class="logo"></div></a>
 		</div>
-		<div class="grid9">
-			<div class="grid9 first info">
-				已有${models.User.count()}人在使用云贴纸，希望下一个就是你噢
+		<div class="grid10">
+			<div class="grid10 first info">
+				简单的个人便签工具 <span class="small">已有${models.User.count()}人在使用云贴纸，希望下一个就是你噢</span>
 			</div>
-			<div class="grid4 first search-form">
+			<div class="grid5 first search-form">
 			<table>
 			#{form @CloudPaster.search(),method:'GET',class:'searchform'}
 			<tr><td>
@@ -52,7 +52,7 @@
 	</div>
 </div>
 <div class="clear"><p/></div>
-<div class="container">
+<div class="container" id="pasters-list">
     #{doLayout/}
 </div> 
 <div class="clear"></div>
@@ -102,10 +102,74 @@ pastSuccess = function(text) {
 	if(stat=='fail' && 'ERR-001'==json.err.code){
 		$('paster-content').addClass("error");
 	}else if(stat == 'ok') {
+		var pasters_list = $('pasters-list');
+		var first_paster = pasters_list.getFirst('div');
+		var clz = first_paster.hasClass('odd-border') ? 'even':'odd';
+		var paster = $('paster-template').clone();
+		paster.set('id','');
+		paster.addClass(clz+'-border');
+		var header = paster.getFirst('.paster-header');
+		header.addClass(clz);
+		var link = header.getElement('a');
+		link.set('href','@{CloudPaster.view}'+json.paster.key)
+		link.set('html',json.paster.key);
+		var createDate = header.getElement('span');
+		createDate.set('html',json.paster.createDate);
+		header.getElement('.vote-up').set('onclick','javascript:ratingup("'+json.paster.key+'")');
+		header.getElement('.rating-value').set('id',json.paster.key+'-rating');
+		header.getElement('.vote-down').set('onclick','javascript:ratingdown("'+json.paster.key+'")');
+		paster.getElement('.paster-content').set('html',json.paster.contentAsHtml);
+
+/*
+		var paster = new Element('div', {
+			'class': 'grid8 first list-paster '+clz+'-border'
+		});
+		var headhtml = '<div class="grid6 first">'
+					+'<div class="paster-icon"></div><a href="/view/' +json.paster.key+ '">'
+					+json.paster.key
+					+'</a><span class="small">' +json.paster.createDate+ '</span></div>'
+					+'<div class="grid2 right">'
+					+'<a href="javascript:void(0);" onclick="javascript:ratingup("'+json.paster.key+'")">UP</a>'
+					+'<span id="' +json.paster.key+ '-rating">0</span>'
+					+'<a href="javascript:void(0);" onclick="javascript:ratingdown("'+json.paster.key+'")">DOWN</a>'
+				+'</div>';
+
+		var paster_header = new Element('div', {
+			'class': 'paster-header '+clz,
+			html: headhtml
+		});	
+		var paster_content = new Element('div', {
+			'class': 'paster-content',
+			html: json.paster.contentAsHtml
+		});
+		paster_content.inject(paster,'top');
+		paster_header.inject(paster,'top');
+*/
+		paster.inject(pasters_list,'top');
 		SqueezeBox.close();
 	}
 }
 </script>
+
+<div style="display:none">
+	<div id="paster-template" class="grid8 first list-paster ">
+		<div class="paster-header">
+			<div class="grid6 first">
+				<div class="paster-icon"></div>
+				<a></a>
+				<span class="small"></span>
+			</div>
+			<div class="grid2 right">
+				<a class="vote-up" href="javascript:void(0);" onclick="">UP</a>
+				<span class="rating-value">0</span>
+				<a class="vote-down" href="javascript:void(0);" onclick="">DOWN</a>
+			</div>
+
+		</div>
+		<div class="paster-content">
+		</div>
+	</div>
+</div>
     </body>
 </html>
     

@@ -33,8 +33,8 @@ public class CloudPaster extends Controller {
 	    if(!session.contains(KEY_USER)) {
 	        Auth.login();
 	    }
-	    if(!session.contains("timestamp")) {
-	    	int last = Integer.parseInt(session.get("timestamp"));
+	    if(session.contains("timestamp")) {
+	    	long last = Long.parseLong(session.get("timestamp"));
 	    	if(System.currentTimeMillis() - last > MINS_15 ) {
 	    		Auth.login();
 	    	}
