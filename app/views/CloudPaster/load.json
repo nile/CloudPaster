@@ -1,12 +1,16 @@
 {stat:"ok",
+nextloadurl:'@{CloudPaster.load(from+pasters.size())}',
 pasters:[
 #{list items:pasters,as:'paster'}
 	#{if paster}
 		{key:"${paster.key}",
-				content:"${paster.content}",
-				contentAsHtml:"${paster.contentAsHtml}",
+				content:"${paster.content.escapeJavaScript()}",
+				contentAsHtml:"${paster.contentAsHtml.escapeJavaScript()}",
 				rating:${paster.rating},
-				createDate:'${paster.createDate}'
+				createDate:"${paster.createDate.format('yy-MM-dd HH')}",
+				viewurl:'@{CloudPaster.view(paster.key)}',
+				ratingupurl:'@{CloudPaster.ratingup(paster.key)}',
+				ratingdownurl:'@{CloudPaster.ratingdown(paster.key)}'
 		}
 		#{ifnot paster_isLast},#{/ifnot}
 	#{/if}

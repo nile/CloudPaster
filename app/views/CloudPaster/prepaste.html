@@ -20,12 +20,8 @@ p=. centered 	居中对齐
 
 <script type="text/javascript">
 $('btpaste').addEvent("click",function(event){
-	event.stop();
-	var myRequest = new Request({method: 'post', 
-		url: '@{CloudPaster.paste()}',
-		onComplete: pastSuccess
-		});
-	myRequest.send("content="+$('paster-content').get('value'));
+	event.stop();	
+	cloudPaster.paste($('paster-content').get('value'));
 });
 
 </script>

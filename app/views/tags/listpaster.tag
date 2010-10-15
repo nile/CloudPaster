@@ -6,9 +6,9 @@
 		<div class="grid6 first">
 			<div class="paster-icon"></div>
 			<a href="@{CloudPaster.view(o.key)}">${o.key}</a>
-			<span class="small">${o.createDate.format('yyyy-MM-dd HH:ss')}</span>
+			<span class="small">${o.createDate.format('yy-MM-dd HH:ss')}</span>
 		</div>
-		<div class="grid2 right">
+		<div class="grid2 right" style="display:none">
 		#{ifnot _private}
 		#{/ifnot}
 			<a href="javascript:void(0);" onclick="javascript:ratingup('${o.key}')">UP</a>

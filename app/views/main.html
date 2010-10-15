@@ -8,15 +8,16 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/style.css'}">
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/squeezebox/SqueezeBox.css'}">
-        <script src="/public/javascripts/mootools-1.2.5-core.js" type="text/javascript" charset="utf-8"></script>        
-        <script src="/public/javascripts/SqueezeBox.js" type="text/javascript" charset="utf-8"></script>        
+        <script src="/public/javascripts/mootools-1.2.5-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/public/javascripts/SqueezeBox.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/public/javascripts/CloudPaster.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body>
 <div class="decorate-line"></div>    
 <div id="header">
 	<div class="container">
 		<div class="grid2 first">
-			<a href="@{CloudPaster.index(0)}"><div class="logo"></div></a>
+			<a href="@{CloudPaster.index()}"><div class="logo"></div></a>
 		</div>
 		<div class="grid10">
 			<div class="grid10 first info">
@@ -37,9 +38,9 @@
 			</div>
 			<div class="grid5 header-menu">
 		        <ul class="menuul fright">
-		          <li><a href="@{CloudPaster.index(0)}"><span>首页</span></a></li>
+		          <li><a href="@{CloudPaster.index()}"><span>首页</span></a></li>
 		          #{if session['user.key']}
-		          	<li><a href="@{CloudPaster.my(0)}"><span>我的贴纸</span></a></li>
+		          	<li><a href="@{CloudPaster.my()}"><span>我的贴纸</span></a></li>
 			        <li><a rel="boxed" href="@{CloudPaster.prepaste()}"><span>开始贴纸</span></a></li>
 			        <li><a href="@{Auth.logout()}"><span>退出</span></a></li>
 				  #{/if}
@@ -52,7 +53,7 @@
 	</div>
 </div>
 <div class="clear"><p/></div>
-<div class="container" id="pasters-list">
+<div class="container">
     #{doLayout/}
 </div> 
 <div class="clear"></div>
@@ -95,85 +96,9 @@ window.addEvent('domready', function() {
 			method: 'get'			
 		}
 	});
-	loadmore(0);
+	//alert(cloudPaster);
+	cloudPaster.loadmore();
 });
-pastSuccess = function(text) {
-	var json = JSON.decode(text);
-	var stat = json.stat;
-	if(stat=='fail' && 'ERR-001'==json.err.code){
-		$('paster-content').addClass("error");
-	}else if(stat == 'ok') {
-		var obj = json.paster;		
-		SqueezeBox.close();
-	}
-}
-appendLast = function(obj){
-	var pasters_list = $('pasters-list');		
-	var first_paster = pasters_list.getLast('div');
-	var clz = (first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
-	var paster = createPaster(obj,clz);	
-	paster.inject(pasters_list,'bottom');	
-}
-injectFirst=function(obj){
-	var pasters_list = $('pasters-list');		
-	var first_paster = pasters_list.getFirst('div');
-	var clz = (first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
-	var paster = createPaster(obj,clz);
-	paster.inject(pasters_list,'top');
-}
-
-createPaster = function(obj,clz){
-	var paster = $('paster-template').clone();
-	paster.set('id','');
-	paster.addClass(clz+'-border');
-	var header = paster.getFirst('.paster-header');
-	header.addClass(clz);
-	var link = header.getElement('a');
-
-	link.set('href','@{CloudPaster.view}'+obj.key)
-	link.set('html',obj.key);
-	var createDate = header.getElement('span');		
-	createDate.set('html',obj.createDate);
-	header.getElement('.vote-up').set('onclick','javascript:ratingup("'+obj.key+'")');
-	header.getElement('.rating-value').set('id',obj.key+'-rating');
-	header.getElement('.vote-down').set('onclick','javascript:ratingdown("'+obj.key+'")');
-	paster.getElement('.paster-content').set('html',obj.contentAsHtml);
-	return paster;
-}
-
-loadmore = function(from){
-	var rating = new Request({method: 'get',
-		url: '@{CloudPaster.load()}',
-		onSuccess: function(ret){
-			json=JSON.decode(ret);
-			if(json.stat=='ok'){
-				for (i=0; i<json.pasters.length; i++){					
-					appendLast(json.pasters[i]);
-				}
-			};
-		}
-		});
-	rating.send("from="+from);
-}
-
-function ratingup(key){
-	rating('@{CloudPaster.ratingup()}',key);
-}
-function ratingdown(key){
-	rating('@{CloudPaster.ratingdown()}',key);
-}
-function rating(url,key){
-	var rating = new Request({method: 'post',
-		url: url,
-		onSuccess: function(ret){
-			json=JSON.decode(ret);
-			if(json.stat=='ok'){
-				$(key+'-rating').set('html',json.paster.rating);
-			};
-		}
-		});
-	rating.send("key="+key);
-}
 
 </script>
 
@@ -185,7 +110,7 @@ function rating(url,key){
 				<a></a>
 				<span class="small"></span>
 			</div>
-			<div class="grid2 right">
+			<div class="grid2 right" style="display:none">
 				<a class="vote-up" href="javascript:void(0);" onclick="">UP</a>
 				<span class="rating-value">0</span>
 				<a class="vote-down" href="javascript:void(0);" onclick="">DOWN</a>

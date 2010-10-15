@@ -11,7 +11,7 @@ public class Auth extends Controller{
 	public static final String KEY_EMAIL = "email";
 	public static void logout() {
 		session.clear();
-		CloudPaster.index(0);
+		CloudPaster.index();
 	}
 	public static void yahoologin() {
 		if (!OpenID.id("https://me.yahoo.com").required(KEY_EMAIL, "http://axschema.org/contact/email")
@@ -41,7 +41,7 @@ public class Auth extends Controller{
               User user = User.createOrGet(email);
               session.put(CloudPaster.KEY_USER, user.key);
               session.put(KEY_TIMESTAMP, System.currentTimeMillis());
-              CloudPaster.my(0);
+              CloudPaster.my();
 	        }
 		}
 		render();

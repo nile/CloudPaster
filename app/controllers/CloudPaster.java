@@ -41,25 +41,28 @@ public class CloudPaster extends Controller {
 	    }
 	}
 	
-	public static void index(int from) {
-		if(session.contains(KEY_USER)) {
-			List<Paster> pasters = Paster.findAll(from, 10);
-			long count = Paster.count();
-			render(pasters, count, from);
+	public static void index() {
+		if(session.contains(KEY_USER)) {			
+			render();
 		} else {
 			intro();
 		}
 	}
 	
 	public static void load(int from) {
-		if(session.contains(KEY_USER)) {
-			List<Paster> pasters = Paster.findAll(from, 10);
-			long count = Paster.count();
-			request.format="json";
-			render(pasters, count, from);
-		}
+		List<Paster> pasters = Paster.findAll(from, 10);
+		long count = Paster.count();
+		request.format="json";
+		render(pasters, count, from);
+		render();
 	}
-	
+	public static void loadmy(int from) {
+		User user = getLoginUser();
+		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
+		long count = Paster.countByCreator(user.email);
+		request.format="json";
+		render("@load",pasters, count, from);
+	}
 	public static void intro() {
 		render();
 	}
@@ -67,11 +70,8 @@ public class CloudPaster extends Controller {
 		render();
 	}
 	
-	public static void my(int from) {
-		User user = getLoginUser();
-		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
-		long count = Paster.countByCreator(user.email);
-		render(pasters, count, from);
+	public static void my() {
+		render();
 	}
 
 	public static void view(String key) {
@@ -98,7 +98,7 @@ public class CloudPaster extends Controller {
 			obj.remove();
 		}
 		Log.delete(user.key, obj.key);
-		my(0);
+		my();
 	}
 
 	public static void paste(@Required(message = "content is required.") String content) {

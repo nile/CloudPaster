@@ -177,6 +177,7 @@ img{
 }
 .paginations{
 	margin-top:20px;
+	text-align:center;
 }
 .error{
 	border:1px solid red;

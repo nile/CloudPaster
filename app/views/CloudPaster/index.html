@@ -1,11 +1,16 @@
 #{extends 'main.html'/}
 
-*{listpaster objects:pasters/}*
-
-
+<script text="text/javascript">
+var cloudPaster = new CloudPaster({loadurl:'@{CloudPaster.load(0)}',
+pasteurl:'@{CloudPaster.paste()}'});
+window.addEvent('domready', function() {	
+	cloudPaster.loadmore();
+});
+</script>
+<div id="pasters-list">
+</div>
 <div class="clear"></div>
-<div class="grid8 first ">
-	<button type="button" onclick="javascript:loadmore()">more ...</button>
+<div class="paginations grid8 first">
+	<button class="searchbutton" style="width:200px" type="button" onclick="javascript:cloudPaster.loadmore()">显示更多...</button>
 </div>
 
-*{paginations index:true/}*
