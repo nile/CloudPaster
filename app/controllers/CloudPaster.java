@@ -123,6 +123,20 @@ public class CloudPaster extends Controller {
 		request.format="json";
 		render("@success",paster);
 	}
+	public static void useful(String key) {
+		User user = getLoginUser();
+		Paster paster = Paster.getByKey(key);
+		paster.useful();
+		Log.useful(user.key, paster.key);
+		success(paster);
+	}
+	public static void useless(String key) {
+		User user = getLoginUser();
+		Paster paster = Paster.getByKey(key);
+		paster.useless();
+		Log.useless(user.key, paster.key);
+		success(paster);
+	}
 	public static void ratingup(String key) {
 		User user = getLoginUser();
 		Paster paster = Paster.getByKey(key);

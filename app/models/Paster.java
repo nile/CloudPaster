@@ -26,6 +26,8 @@ public class Paster extends MongoModel {
 	public Date createDate;
 	public String src = ModelConstants.PASTER_SRC_WEB;
 	public int rating;
+	public int useful;
+	public int useless;
 	
 	public static Paster createAndSave(String content,String email) {
 		return createAndSave(content, email, null);
@@ -73,7 +75,14 @@ public class Paster extends MongoModel {
 		MongoSearch.unIndex(this);
 		delete();
 	}
-	
+	public void useful() {
+		useful+=1;
+		save();
+	}
+	public void useless() {
+		useless+=1;
+		save();
+	}
 	public static class QueryResult{
 		public long count;
 		public List<Paster> results;

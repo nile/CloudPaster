@@ -49,9 +49,12 @@ CloudPaster = new Class({
 		link.set('html',obj.key);
 		var createDate = header.getElement('span');		
 		createDate.set('html',obj.createDate);
-		header.getElement('.vote-up').set('onclick','javascript:ratingup("'+obj.ratingupurl+'")');
-		header.getElement('.rating-value').set('id',obj.key+'-rating');
-		header.getElement('.vote-down').set('onclick','javascript:ratingdown("'+obj.ratingdownurl+'")');
+		//header.getElement('.vote-up').set('onclick','javascript:ratingup("'+obj.ratingupurl+'")');
+		//header.getElement('.rating-value').set('id',obj.key+'-rating');
+		//header.getElement('.vote-down').set('onclick','javascript:ratingdown("'+obj.ratingdownurl+'")');
+		var handler = this;
+		header.getElement('.useful').addEvent('click',function(){handler.markuse(obj.usefulurl);});
+		header.getElement('.useless').addEvent('click',function(){handler.markuse(obj.uselessurl);});
 		paster.getElement('.paster-content').set('html',obj.contentAsHtml);
 		return paster;
 	},
@@ -73,7 +76,13 @@ CloudPaster = new Class({
 			});
 		rating.send("");
 	},
-	
+	markuse: function(url){
+		alert(url);
+		var markuse = new Request({method: 'post',
+			url: url
+		});
+		markuse.send();
+	},
 	rating : function (url){
 		var rating = new Request({method: 'post',
 			url: url,

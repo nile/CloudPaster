@@ -7,7 +7,7 @@ import play.modules.mongo.MongoModel;
 
 @MongoEntity("m_log")
 public class Log extends MongoModel {
-	private static final String LOGIN="login", LOGOUT="logout", RATINGUP="ratingup", RATINGDOWN="ratingdown", PASTE="paste",DELETE="delete";
+	private static final String LOGIN="login", LOGOUT="logout", RATINGUP="ratingup", RATINGDOWN="ratingdown", PASTE="paste",DELETE="delete",USEFUL="useful",USELESS="useless";
 
 	public Date occurtime;
 	public String user;
@@ -22,6 +22,12 @@ public class Log extends MongoModel {
 	}
 	public static void paste(String user,String key) {
 		log(user,PASTE,key);
+	}
+	public static void useful(String user,String key) {
+		log(user,USEFUL,key);
+	}
+	public static void useless(String user,String key) {
+		log(user,USELESS,key);
 	}
 	public static void ratingup(String user,String key) {
 		log(user,RATINGUP,key);
