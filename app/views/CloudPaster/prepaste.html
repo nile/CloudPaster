@@ -4,18 +4,18 @@
 	#{include 'CloudPaster/_form.html'/}
 </div>
 <div class="grid4">
-	编辑帮助：
+编辑帮助：
 	<pre>
 __believe__ 斜体
 *strong*	粗体
 -delete-	删除线
-p<. align left 	左对齐
-p>. align right 右对齐
+p&lt;. align left 	左对齐
+p&gt;. align right 右对齐
 p=. centered 	居中对齐
 !imageurl!		插入图片
 "Text":url		超链接
 	</pre>
-<a href="http://redcloth.org/hobix.com/textile/">更多参考</a>
+	<a href="http://redcloth.org/hobix.com/textile/">更多参考</a>
 </div>
 
 <script type="text/javascript">
@@ -23,5 +23,4 @@ $('btpaste').addEvent("click",function(event){
 	event.stop();	
 	cloudPaster.paste($('paster-content').get('value'));
 });
-
 </script>
