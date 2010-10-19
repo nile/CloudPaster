@@ -182,3 +182,10 @@ img{
 .error{
 	border:1px solid red;
 }
+
+a{
+	color: gray;
+}
+a:hover{
+	color: blue;
+}

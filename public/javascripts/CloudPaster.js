@@ -25,14 +25,14 @@ CloudPaster = new Class({
 	appendLast : function(obj){
 		var pasters_list = $('pasters-list');		
 		var first_paster = pasters_list.getLast('div');
-		var clz = (first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
+		var clz = 'even';//(first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
 		var paster = this.createPaster(obj,clz);	
 		paster.inject(pasters_list,'bottom');	
 	},
 	injectFirst : function(obj){
 		var pasters_list = $('pasters-list');		
 		var first_paster = pasters_list.getFirst('div');
-		var clz = (first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
+		var clz = 'even';//(first_paster && first_paster.hasClass('odd-border')) ? 'even':'odd';
 		var paster = this.createPaster(obj,clz);
 		paster.inject(pasters_list,'top');
 	},
@@ -76,8 +76,7 @@ CloudPaster = new Class({
 			});
 		rating.send("");
 	},
-	markuse: function(url){
-		alert(url);
+	markuse: function(url){		
 		var markuse = new Request({method: 'post',
 			url: url
 		});
