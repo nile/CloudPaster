@@ -63,6 +63,13 @@ public class CloudPaster extends Controller {
 		request.format="json";
 		render("@load",pasters, count, from);
 	}
+	public static void loadMostUseful() {
+		List<Paster> pasters = Paster.findMostUseful(0, 10);
+		int from = 0;
+		long count = 10;
+		request.format="json";
+		render("@load",pasters, count , from );
+	}
 	public static void intro() {
 		render();
 	}

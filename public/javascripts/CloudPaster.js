@@ -2,6 +2,7 @@ CloudPaster = new Class({
 	initialize: function(params){  
           this.loadurl = params.loadurl;
 		  this.pasteurl = params.pasteurl;
+		  this.UsefulUrl=params.UsefulUrl;
     },
 	paste:function(content){
 		var handler = this;
@@ -81,6 +82,7 @@ CloudPaster = new Class({
 			url: url
 		});
 		markuse.send();
+		this.loadUseful();
 	},
 	rating : function (url){
 		var rating = new Request({method: 'post',
@@ -93,5 +95,31 @@ CloudPaster = new Class({
 			}
 			});
 		rating.send("");
+	},
+	
+	loadUseful : function(){
+		//alert(this.UsefulUrl);		
+		var rating = new Request({method: 'get',
+				url: this.UsefulUrl,
+				onSuccess: function(ret){
+					$('useful-list').empty();
+					json=JSON.decode(ret);
+					if(json.stat=='ok'){
+						//alert(json);					
+						for (i=0; i<json.pasters.length; i++){		
+							var obj = json.pasters[i];			
+							var p = $('useful-template').clone();
+							var link = p.getElement('a');
+							link.set('href',obj.viewurl)
+							link.set('html',obj.key);
+							p.getElement('.useful-count').set('html',obj.useful);
+							p.inject($('useful-list'),'bottom');
+							
+						}
+						//handler.loadurl = json.nextloadurl;
+					};
+				}
+				});
+		rating.send();
 	}
 });

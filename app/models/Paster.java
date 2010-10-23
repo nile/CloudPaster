@@ -65,8 +65,15 @@ public class Paster extends MongoModel {
 		return find.fetch(pagesize);
 	}
 	public static List<Paster> findAll(int from ,int pagesize){
-		return Paster.find().from(from).order("by-CreateDate").fetch(10);
+		return findAll(from, pagesize,"by-CreateDate");
 	}
+	public static List<Paster> findMostUseful(int from ,int pagesize){
+		return findAll(from, pagesize,"by-Useful");
+	}
+	public static List<Paster> findAll(int from ,int pagesize,String order){
+		return Paster.find().from(from).order(order).fetch(10);
+	}
+	
 	public static Paster getByKey(String key) {
 		return Paster.find("byKey", key).first();
 	}
