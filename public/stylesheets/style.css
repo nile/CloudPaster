@@ -189,3 +189,12 @@ a{
 a:hover{
 	color: blue;
 }
+.hide{
+	display:none;
+}
+.highlight{
+	color: yellow;
+}
+.space{
+	margin-top:20px;
+}

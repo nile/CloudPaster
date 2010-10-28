@@ -205,7 +205,8 @@ var SqueezeBox = {
 		}
 		if (content) {
 			if (['string', 'array'].contains($type(content))) this.content.set('html', content);
-			else if (!this.content.hasChild(content)) this.content.adopt(content);
+			else if (!this.content.contains(content[0])) 
+				this.content.adopt(content[0]);
 		}
 		this.callChain();
 		if (!this.isOpen) {
@@ -282,7 +283,7 @@ var SqueezeBox = {
 	},
 
 	checkTarget: function(e) {
-		return this.content.hasChild(e.target);
+		return this.content.contains(e.target);
 	},
 
 	reposition: function() {

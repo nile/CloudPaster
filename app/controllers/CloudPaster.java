@@ -18,7 +18,7 @@ import play.mvc.Before;
 import play.mvc.Controller;
 
 public class CloudPaster extends Controller {
-	private static final long MINS_15 = 15*60*1000L;
+	private static final long MINS_30 = 30*60*1000L;
 	static final String KEY_USER = "user.key";
 	@Before
 	static void startTimer() {
@@ -35,7 +35,7 @@ public class CloudPaster extends Controller {
 	    }
 	    if(session.contains("timestamp")) {
 	    	long last = Long.parseLong(session.get(Auth.KEY_TIMESTAMP));
-	    	if(System.currentTimeMillis() - last > MINS_15 ) {
+	    	if(System.currentTimeMillis() - last > MINS_30 ) {
 	    		Auth.login();
 	    	}
 	    }

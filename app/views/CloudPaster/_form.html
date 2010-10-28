@@ -7,7 +7,7 @@
 	#{/ifErrors}
 	${flash.error}
 	${flash.success}
-	#{form @CloudPaster.paste()}
+	#{form @CloudPaster.paste(),enctype:'multipart/form-data'}
 		<textarea id="paster-content" name="content">${flash.content}</textarea>
 		<div class="clear"></div>
 		<button type="button" id="btpaste">粘贴</button>

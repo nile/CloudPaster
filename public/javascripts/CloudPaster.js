@@ -7,10 +7,13 @@ CloudPaster = new Class({
 	paste:function(content){
 		var handler = this;
 		var myRequest = new Request({method: 'post', 
+			urlEncoded:false,
+			encoding:'utf-8',
 			url: this.pasteurl,
 			onComplete: function(ret){handler.pastSuccess(ret)}
 		});
-		myRequest.send("content="+content);
+		myRequest.setHeader('Content-type', 'application/json');
+		myRequest.send(JSON.encode({content:content}));
 	},
 	pastSuccess : function(text) {
 		var json = JSON.decode(text);

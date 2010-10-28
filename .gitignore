@@ -3,3 +3,5 @@ tpm/
 data/
 eclipse/
 tmp/
+"public/upload"
+public/upload

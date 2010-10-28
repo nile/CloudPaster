@@ -1,6 +1,5 @@
 package models;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -34,14 +33,13 @@ public class Paster extends MongoModel {
 	}
 	public static Paster createAndSave(String content,String email,String src) {
 		Paster paster = new Paster();
+		System.out.println(content);
+		content = WikiUtil.cleanUpAndConvertImages(content, email);
+		System.out.println(content);
 		paster.content = content;
 		paster.creator = email;
 		paster.createDate = new Date();
-		try {
-			paster.contentAsHtml = WikiUtil.parse(content);
-		} catch (UnsupportedEncodingException e) {
-			paster.contentAsHtml = content;
-		}
+		paster.contentAsHtml = content;
 		String randomstr = CryptoUtil.randomstr(24);
 		while(getByKey(randomstr)!=null) {
 			randomstr = CryptoUtil.randomstr(24);
