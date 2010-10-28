@@ -1,8 +1,10 @@
 import play.Play;
+import play.data.parsing.DataParser;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.modules.mongo.MongoDB;
 import util.RobotMessager;
+import util.SimpleJsonParser;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -11,6 +13,7 @@ import com.mongodb.DBCollection;
 public class Bootstrap extends Job {
 
 	public void doJob() {
+		DataParser.parsers.put("application/json", new SimpleJsonParser());
 		 com.mongodb.DB db = MongoDB.db();
          DBCollection coll = db.getCollection("m_paster");
          coll.ensureIndex(new BasicDBObject("creator", 1));

@@ -63,5 +63,6 @@
 	<classpathentry kind="lib" path="modules/mongodb-1.2/lib/jackson-mapper-asl-1.5.1.jar"/>
 	<classpathentry kind="lib" path="modules/mongodb-1.2/lib/mongo-1.4.jar"/>
 	<classpathentry kind="lib" path="modules/mongodb-1.2/lib/play-mongo.jar"/>
+	<classpathentry kind="lib" path="lib/json_simple.jar"/>
 	<classpathentry kind="output" path="eclipse/classes"/>
 </classpath>
