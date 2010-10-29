@@ -7,6 +7,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import play.Logger;
+import play.Play;
 import play.modules.mongo.MongoEntity;
 import play.modules.mongo.MongoModel;
 import play.modules.mongosearch.Field;
@@ -58,7 +59,7 @@ public class BinaryFile extends MongoModel {
 		}
 		paster.key = randomstr;
 		
-		String pathname = ModelConstants.UPLOAD_DIR + randomstr.charAt(0);
+		String pathname = Play.configuration.getProperty(ModelConstants.KEY_UPLOAD_DIR,ModelConstants.DEFAULT_UPLOAD_DIR) + randomstr.charAt(0);
 		if (file != null) {
 			try {
 				FileUtils.moveToDirectory(file, new File(pathname), true);

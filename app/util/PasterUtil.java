@@ -1,16 +1,11 @@
 package util;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import models.BinaryFile;
 
@@ -38,26 +33,24 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import play.Logger;
-import play.ns.com.jhlabs.image.ShearFilter;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-public class WikiUtil {
-
+public class PasterUtil {
 	public static String cleanUpAndConvertImages(String orgin, String email) {
-		Document parse = Jsoup.parse(orgin);
-		Elements imgs = parse.getElementsByTag("img");
+		Document doc = Jsoup.parse(orgin);
+		Elements imgs = doc.getElementsByTag("img");
 		Iterator<Element> iterator = imgs.iterator();
 		while (iterator.hasNext()) {
 			Element img = iterator.next();
 			String src = img.attr("src");
-			processImg(img, src, email);
+			processImg(doc,img, src, email);
 		}
-		String res = Jsoup.clean(parse.body().html(), Whitelist.basic().addTags("img").addAttributes("img", "align", "alt", "height", "src", "title", "width"));
+		String res = Jsoup.clean(doc.body().html(), Whitelist.basic().addTags("img").addAttributes("img", "align", "alt", "height", "src", "title", "width"));
 		return res;
 	}
 
-	private static void processImg(Element img, String src, String email) {
+	private static void processImg(Document doc, Element img, String src, String email) {
 		if (src.startsWith("data:image/")) {
 			BinaryFile file = BinaryFile.create(null, email);
 			if (file == null) {
@@ -92,9 +85,7 @@ public class WikiUtil {
 			file.save();
 		}
 	}
-	private static void resizeImage() {
-
-	}
+	
 	public static String parse(String text) throws UnsupportedEncodingException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(new OutputStreamWriter(out, "UTF-8"));

@@ -13,7 +13,7 @@ import play.modules.mongosearch.Indexed;
 import play.modules.mongosearch.MongoSearch;
 import play.modules.mongosearch.MongoSearch.Query;
 import util.CryptoUtil;
-import util.WikiUtil;
+import util.PasterUtil;
 @MongoEntity("m_paster")
 @Indexed
 public class Paster extends MongoModel {
@@ -33,7 +33,7 @@ public class Paster extends MongoModel {
 	}
 	public static Paster createAndSave(String content,String email,String src) {
 		Paster paster = new Paster();
-		content = WikiUtil.cleanUpAndConvertImages(content, email);
+		content = PasterUtil.cleanUpAndConvertImages(content, email);
 		paster.content = content;
 		paster.creator = email;
 		paster.createDate = new Date();
