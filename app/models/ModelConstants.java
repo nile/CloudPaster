@@ -15,4 +15,5 @@ public interface ModelConstants {
 	 * 缩略图前缀
 	 */
 	public static final String KEY_THUMBNAIL_PREX = "thumbnail.prefix";
+	public static final String DEFAULT_THUMBNAIL_PREX = "thumb_";
 }

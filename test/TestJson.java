@@ -11,7 +11,6 @@ public class TestJson {
 public static void main(String[] args) throws IOException {
 	
 	String str = FileUtils.readFileToString(new File("json.txt"));
-//	System.out.println(str);
 	 Object obj=JSONValue.parse(new StringReader(str));
 System.out.println(obj.getClass());
 JSONObject jo = (JSONObject) obj;

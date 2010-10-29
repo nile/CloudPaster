@@ -8,13 +8,15 @@ import javax.imageio.ImageIO;
 import play.Logger;
 
 import com.mortennobel.imagescaling.DimensionConstrain;
+import com.mortennobel.imagescaling.ResampleFilter;
+import com.mortennobel.imagescaling.ResampleFilters;
 import com.mortennobel.imagescaling.ResampleOp;
 
 public class ImageUtil {
 	public static boolean scale(File src, File dest) {
 		try {
 			BufferedImage apples = ImageIO.read(src);
-			ResampleOp resampleOp = new ResampleOp(DimensionConstrain.createMaxDimension(600, 500));
+			ResampleOp resampleOp = new ResampleOp(DimensionConstrain.createMaxDimension(600, 500,true));
 			BufferedImage rescaled = resampleOp.filter(apples, null);
 			ImageIO.write(rescaled, "png", dest);
 			return true;
