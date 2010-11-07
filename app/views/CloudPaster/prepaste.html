@@ -18,12 +18,13 @@
 </div>
 
 <script type="text/javascript">
-$('btpaste').addEvent("click",function(event){
-	event.stop();
-	cloudPaster.paste($('paster-content').get('value'));
-});
+
 
 window.addEvent('domready', function() {
+	$('btpaste').addEvent("click",function(event){
+		event.stop();
+		cloudPaster.paste($('paster-content').get('value'));
+	});
 	var myMooEditable = new MooEditable('paster-content', {
 		handleSubmit: false,
 		onRender: function(){
