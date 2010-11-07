@@ -1,8 +1,4 @@
 #{extends 'plain.html'/}
-
-
-
-
 <div class="grid8 first">
 	#{include 'CloudPaster/_form.html'/}
 </div>
@@ -16,23 +12,3 @@
 <div class="small">例：按下键盘<a href="http://zh.wikipedia.org/zh/Print_Screen" target="blank">print screen</a>键，ctr-v就能完成粘贴。</div>
 
 </div>
-
-<script type="text/javascript">
-
-
-window.addEvent('domready', function() {
-	alert('ready');
-	var myMooEditable = new MooEditable('paster-content', {
-		handleSubmit: false,
-		onRender: function(){
-			$('btpaste').addEvent("click",function(event){
-				event.stop();
-				cloudPaster.paste($('paster-content').get('value'));
-			});
-		}
-	});
-	myMooEditable.attach();
-
-});
-
-</script>

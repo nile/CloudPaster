@@ -50,7 +50,7 @@
 		          <li><a href="@{CloudPaster.index()}"><span>首页</span></a></li>
 		          #{if session['user.key']}
 		          	<li><a href="@{CloudPaster.my()}"><span>我的贴纸</span></a></li>
-			        <li><a rel="boxed" href="@{CloudPaster.prepaste()}"><span>开始贴纸</span></a></li>
+			        <li><a rel="boxed" href="javascript:void(0);"><span>开始贴纸</span></a></li>
 			        <li><a href="@{Auth.logout()}"><span>退出</span></a></li>
 				  #{/if}
 				  #{else}
@@ -63,6 +63,7 @@
 </div>
 <div class="clear"><p/></div>
 <div class="container">
+	<div id="_editor"></div>
     #{doLayout/}
 </div> 
 <div class="clear"></div>
@@ -97,6 +98,7 @@
 </script>
 <script type="text/javascript">
 window.addEvent('domready', function() {
+	/*
 	SqueezeBox.assign($$('a[rel=boxed]'), {
 		size: {x: 978, y: 250},
 		shadow: false,
@@ -105,8 +107,39 @@ window.addEvent('domready', function() {
 			method: 'get'			
 		}
 	});
-});
+	*/
 
+	$$('a[rel=boxed]').addEvent('click', function(event) {
+          event.stop();
+          var req = new Request({
+              method: 'get',
+              evalScripts: true,
+              url: '@{CloudPaster.prepaste()}',
+              //onRequest: function() { alert('The request has been made, please wait until it has finished.'); },
+              //onComplete: function(response) { alert('The response is the following : ' + response); }
+              onRequest: function() { },
+              onComplete: function(response) { 
+              	$('_editor').set('html', response); 
+              	var myMooEditable = new MooEditable('paster-content', {
+					handleSubmit: false,
+					cleanup: false,
+					onRender: function(){
+					}
+				});
+				$('btpaste').addEvent("click",function(event){
+					event.stop();
+					alert(myMooEditable.getContent());
+					cloudPaster.paste(myMooEditable.getContent());
+				});
+				$('btcancel').addEvent('click',function(event){
+					$('_editor').erase('html');
+				});
+				myMooEditable.attach();
+              
+              }
+          }).send();	
+	});
+});
 </script>
 
 <div style="display:none">

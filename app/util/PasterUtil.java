@@ -40,6 +40,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class PasterUtil {
 	public static String cleanUpAndConvertImages(String orgin, String email) {
+		System.out.println(orgin);
 		Document doc = Jsoup.parse(orgin);
 		Elements imgs = doc.getElementsByTag("img");
 		Iterator<Element> iterator = imgs.iterator();
@@ -56,6 +57,7 @@ public class PasterUtil {
 						.addAttributes("a", "href","target")
 						.addAttributes("img", "align", "alt", "height", "src",
 								"title", "width"));
+		System.out.println(res);
 		return res;
 	}
 

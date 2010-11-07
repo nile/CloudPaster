@@ -13,6 +13,7 @@ CloudPaster = new Class({
 			onComplete: function(ret){handler.pastSuccess(ret)}
 		});
 		myRequest.setHeader('Content-type', 'application/json');
+		//alert(JSON.encode({content:content}));
 		myRequest.send(JSON.encode({content:content}));
 	},
 	pastSuccess : function(text) {
@@ -23,7 +24,8 @@ CloudPaster = new Class({
 		}else if(stat == 'ok') {			
 			var obj = json.paster;	
 			this.injectFirst(obj);
-			SqueezeBox.close();
+			//SqueezeBox.close();
+			$('_editor').erase('html');
 		}
 	},
 	appendLast : function(obj){
