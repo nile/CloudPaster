@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import play.Logger;
 
 import com.mortennobel.imagescaling.DimensionConstrain;
-import com.mortennobel.imagescaling.ResampleFilter;
-import com.mortennobel.imagescaling.ResampleFilters;
 import com.mortennobel.imagescaling.ResampleOp;
 
 public class ImageUtil {
