@@ -1,7 +1,7 @@
 %{def paster=_arg}%
 {key:"${paster.key}",
-	content:"${paster.content.escapeJavaScript()}",
-	contentAsHtml:"${paster.contentAsHtml.escapeJavaScript()}",
+	content:"${paster.content?.escapeJavaScript()}",
+	contentAsHtml:"${paster.contentAsHtml?.escapeJavaScript()}",
 	rating:${paster.rating},
 	useful:${paster.useful},
 	usefulurl:'@{CloudPaster.useful(paster.key)}',
