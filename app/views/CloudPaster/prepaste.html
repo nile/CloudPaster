@@ -21,17 +21,18 @@
 
 
 window.addEvent('domready', function() {
-	$('btpaste').addEvent("click",function(event){
-		event.stop();
-		cloudPaster.paste($('paster-content').get('value'));
-	});
+	alert('ready');
 	var myMooEditable = new MooEditable('paster-content', {
 		handleSubmit: false,
 		onRender: function(){
-			//alert('Done rendering.');
+			$('btpaste').addEvent("click",function(event){
+				event.stop();
+				cloudPaster.paste($('paster-content').get('value'));
+			});
 		}
 	});
 	myMooEditable.attach();
+
 });
 
 </script>
