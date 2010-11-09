@@ -1,4 +1,6 @@
 package notifiers;
+import org.apache.commons.mail.EmailAttachment;
+
 import models.Paster;
 import play.Play;
 import play.mvc.Mailer;
@@ -9,7 +11,9 @@ public class Notifier extends Mailer {
       setSubject("Welcome %s", email);
       addRecipient(email);
       setFrom("Me <me@me.com>");
-      addAttachment(Play.getFile("rules.pdf"));
+      EmailAttachment emailAttachment = new EmailAttachment();
+      emailAttachment.setPath("rule.pdf");
+	addAttachment(emailAttachment);
       send(email);
    }
  

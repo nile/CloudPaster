@@ -11,6 +11,7 @@ import notifiers.Notifier;
 import org.apache.commons.lang.StringUtils;
 
 import play.Play;
+import play.cache.CacheFor;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.mvc.After;
@@ -48,7 +49,7 @@ public class CloudPaster extends Controller {
 			intro();
 		}
 	}
-	
+	@CacheFor("15s")
 	public static void load(int from) {
 		List<Paster> pasters = Paster.findAll(from, 10);
 		long count = Paster.count();
@@ -63,6 +64,7 @@ public class CloudPaster extends Controller {
 		request.format="json";
 		render("@load",pasters, count, from);
 	}
+	@CacheFor("15s")
 	public static void loadMostUseful() {
 		List<Paster> pasters = Paster.findMostUseful(0, 10);
 		int from = 0;
