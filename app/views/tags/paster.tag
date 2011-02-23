@@ -1,14 +1,14 @@
 %{def paster=_arg}%
-{key:"${paster.key}",
+{key:"${paster.skey}",
+	title:"${paster.title?.escapeJavaScript()}",
 	content:"${paster.content?.escapeJavaScript()}",
-	contentAsHtml:"${paster.contentAsHtml?.escapeJavaScript()}",
 	rating:${paster.rating},
 	useful:${paster.useful},
-	usefulurl:'@{CloudPaster.useful(paster.key)}',
+	usefulurl:'@{CloudPaster.useful(paster.skey)}',
 	useless:${paster.useless},
-	uselessurl:'@{CloudPaster.useless(paster.key)}',
+	uselessurl:'@{CloudPaster.useless(paster.skey)}',
 	createDate:'${paster.createDate.format('yy-MM-dd HH:mm')}',
-	viewurl:'@{CloudPaster.view(paster.key)}',
-	ratingupurl:'@{CloudPaster.ratingup(paster.key)}',
-	ratingdownurl:'@{CloudPaster.ratingdown(paster.key)}'
+	viewurl:'@{CloudPaster.view(paster.skey)}',
+	ratingupurl:'@{CloudPaster.ratingup(paster.skey)}',
+	ratingdownurl:'@{CloudPaster.ratingdown(paster.skey)}'
 }

@@ -4,7 +4,7 @@ CloudPaster = new Class({
 		  this.pasteurl = params.pasteurl;
 		  this.UsefulUrl=params.UsefulUrl;
     },
-	paste:function(content){
+	paste:function(title,content,tagstext){
 		var handler = this;
 		var myRequest = new Request({method: 'post', 
 			urlEncoded:false,
@@ -13,8 +13,8 @@ CloudPaster = new Class({
 			onComplete: function(ret){handler.pastSuccess(ret)}
 		});
 		myRequest.setHeader('Content-type', 'application/json');
-		//alert(JSON.encode({content:content}));
-		myRequest.send(JSON.encode({content:content}));
+		//alert(JSON.encode({title:title,content:content}));
+		myRequest.send(JSON.encode({title:title,content:content,tagstext:tagstext}));
 	},
 	pastSuccess : function(text) {
 		var json = JSON.decode(text);
@@ -54,14 +54,14 @@ CloudPaster = new Class({
 		link.set('href',obj.viewurl)
 		link.set('html',obj.key);
 		var createDate = header.getElement('span');		
-		createDate.set('html',obj.createDate);
+		createDate.set('html',obj.title);
 		//header.getElement('.vote-up').set('onclick','javascript:ratingup("'+obj.ratingupurl+'")');
 		//header.getElement('.rating-value').set('id',obj.key+'-rating');
 		//header.getElement('.vote-down').set('onclick','javascript:ratingdown("'+obj.ratingdownurl+'")');
 		var handler = this;
 		header.getElement('.useful').addEvent('click',function(){handler.markuse(obj.usefulurl);});
 		header.getElement('.useless').addEvent('click',function(){handler.markuse(obj.uselessurl);});
-		paster.getElement('.paster-content').set('html',obj.contentAsHtml);
+		paster.getElement('.paster-content').set('html',obj.content);
 		return paster;
 	},
 	

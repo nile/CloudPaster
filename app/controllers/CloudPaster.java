@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import models.Log;
 import models.Paster;
 import models.Paster.QueryResult;
 import models.User;
@@ -41,7 +40,42 @@ public class CloudPaster extends Controller {
 	    	}
 	    }
 	}
-	
+	/**
+	 * 最近活跃
+	 */
+	static public  void activity() {
+		render();
+	}
+	/**
+	 * 问题
+	 */
+	static public  void questions() {
+		render();
+	}
+	/**
+	 * 等待回答
+	 */
+	static public  void unanswered() {
+		render();
+	}
+	/**
+	 * 标签和分类
+	 */
+	static public void tags() {
+		render();
+	}
+	/**
+	 * 用户
+	 */
+	static public void users() {
+		render();
+	}
+	/**
+	 * 提问
+	 */
+	static public void ask() {
+		render();
+	}
 	public static void index() {
 		if(session.contains(KEY_USER)) {			
 			render();
@@ -49,13 +83,12 @@ public class CloudPaster extends Controller {
 			intro();
 		}
 	}
-	@CacheFor("15s")
+	//@CacheFor("15s")
 	public static void load(int from) {
 		List<Paster> pasters = Paster.findAll(from, 10);
 		long count = Paster.count();
 		request.format="json";
 		render(pasters, count, from);
-		render();
 	}
 	public static void loadmy(int from) {
 		User user = getLoginUser();
@@ -106,18 +139,18 @@ public class CloudPaster extends Controller {
 		if (obj != null && obj.creator.equals(user.email)) {
 			obj.remove();
 		}
-		Log.delete(user.key, obj.key);
 		my();
 	}
 
-	public static void paste(@Required(message = "content is required.") String content) {
+	public static void paste(@Required(message="title required") String title,
+			@Required(message = "content is required.") String content,
+			String tagstext) {
 		if (!Validation.hasErrors()) {
 			User user = getLoginUser();
-			Paster paster = Paster.createAndSave(content, user.email);
+			Paster paster = Paster.createAndSave(title,content, user.email,tagstext);
 			if(Boolean.valueOf(Play.configuration.getProperty("notifier.enabled","false"))) {
 				Notifier.paste(user.email, paster);
 			}
-			Log.paste(user.key, paster.key);
 			success(paster);
 		} else {
 			fail("ERR-001", "内容字段不能为空");
@@ -136,14 +169,12 @@ public class CloudPaster extends Controller {
 		User user = getLoginUser();
 		Paster paster = Paster.getByKey(key);
 		paster.useful();
-		Log.useful(user.key, paster.key);
 		success(paster);
 	}
 	public static void useless(String key) {
 		User user = getLoginUser();
 		Paster paster = Paster.getByKey(key);
 		paster.useless();
-		Log.useless(user.key, paster.key);
 		success(paster);
 	}
 	public static void ratingup(String key) {
@@ -151,7 +182,6 @@ public class CloudPaster extends Controller {
 		Paster paster = Paster.getByKey(key);
 		paster.rating += 1;
 		paster.save();
-		Log.ratingup(user.key, paster.key);
 		success(paster);
 	}
 	public static void ratingdown(String key) {
@@ -159,7 +189,6 @@ public class CloudPaster extends Controller {
 		Paster paster = Paster.getByKey(key);
 		paster.rating -=1;
 		paster.save();
-		Log.ratingdown(user.key, paster.key);
 		success(paster);
 	}
 	

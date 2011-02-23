@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>cloudpaster</name>
+	<name>/root</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -13,6 +13,13 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.playframework.playclipse.playNature</nature>
 	</natures>
-	
+	<linkedResources>
+		<link>
+			<name>playframework-1.1.1</name>
+			<type>2</type>
+			<location>X:/play-1.1.1</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -1,10 +1,10 @@
 #{extends 'main.html'/}
 <div class="grid8 first list-paster even-border">
-		<div class="paster-header even"><div class="paster-icon"></div><a href="@{CloudPaster.view(paster.key)}">${paster.key}</a>
+		<div class="paster-header even"><div class="paster-icon"></div><a href="@{CloudPaster.view(paster.skey)}">${paster.skey}</a>
 		<span class="small">${paster.createDate.format('yyyy-MM-dd hh:ss')}</span>
 		</div>
 		<div class="paster-content">
-		#{if paster.contentAsHtml}${paster.contentAsHtml.raw()}#{/if}#{else}${paster.content}#{/else}
+		${paster.content.raw()}
 		</div>
 </div>
 <div class="clear"></div>
@@ -12,7 +12,7 @@
 <div class="grid8 first">
 	<a href="@{CloudPaster.my()}" class="large">返回我的贴纸</a>
 	<a href="@{CloudPaster.index()}">返回首页</a>
-	<a href="@{CloudPaster.delete(paster.key)}" class="small">删除了吧</a>
+	<a href="@{CloudPaster.delete(paster.skey)}" class="small">删除了吧</a>
 </div>
 
 

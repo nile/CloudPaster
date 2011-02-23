@@ -4,26 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import org.apache.commons.io.FileUtils;
 
 import play.Logger;
 import play.Play;
-import play.modules.mongo.MongoEntity;
-import play.modules.mongo.MongoModel;
-import play.modules.mongosearch.Field;
-import play.modules.mongosearch.Indexed;
-import play.modules.mongosearch.MongoSearch;
+import play.db.jpa.Model;
 import util.CryptoUtil;
-
-@MongoEntity("m_binary")
-@Indexed
-public class BinaryFile extends MongoModel {
-	@Field(tokenize = true, stored = false)
+@Entity
+public class BinaryFile extends Model {
 	public String name;
-	@Field(tokenize = true, stored = false)
 	public String path;
 	public String creator;
-	public String key;
+	public String skey;
 	public Date createDate;
 	public String src = ModelConstants.PASTER_SRC_WEB;
 
@@ -37,7 +31,7 @@ public class BinaryFile extends MongoModel {
 	/**
 	 * 
 	 * @param file
-	 *            file 为null时候，会返回一个新的文件路径，程序中需要写入内容，假如写入失败，则删除记录。
+	 *            file 涓簄ull鏃跺�锛屼細杩斿洖涓�釜鏂扮殑鏂囦欢璺緞锛岀▼搴忎腑闇�鍐欏叆鍐呭锛屽亣濡傚啓鍏ュけ璐ワ紝鍒欏垹闄よ褰曘�
 	 * @param name
 	 * @param email
 	 * @param src
@@ -57,7 +51,7 @@ public class BinaryFile extends MongoModel {
 		while (getByKey(randomstr) != null) {
 			randomstr = CryptoUtil.randomstr(24);
 		}
-		paster.key = randomstr;
+		paster.skey = randomstr;
 		
 		String pathname = Play.configuration.getProperty(ModelConstants.KEY_UPLOAD_DIR,ModelConstants.DEFAULT_UPLOAD_DIR) + randomstr.charAt(0);
 		if (file != null) {
@@ -94,6 +88,5 @@ public class BinaryFile extends MongoModel {
 	}
 	public void store(){
 		this.save();
-		MongoSearch.index(this);
 	}
 }
