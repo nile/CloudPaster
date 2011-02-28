@@ -4,7 +4,9 @@ import java.util.List;
 
 import models.Paster;
 import models.Paster.QueryResult;
+import models.Paster.Type;
 import models.User;
+import net.sf.oval.constraint.NotEmpty;
 import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
@@ -44,13 +46,16 @@ public class CloudPaster extends Controller {
 	 * 最近活跃
 	 */
 	static public  void activity() {
-		render();
+		List<Paster> pasters = Paster.find("type=? order by updateDate desc" ,Type.Q).fetch(10);
+		render(pasters);
 	}
 	/**
 	 * 问题
 	 */
-	static public  void questions() {
-		render();
+	static public  void questions(int from) {
+		long count = Paster.count();
+		List<Paster> pasters = Paster.find("type = ? order by createDate desc", Type.Q).from(from).fetch(10);
+		render(pasters,from,count);
 	}
 	/**
 	 * 等待回答
@@ -64,17 +69,80 @@ public class CloudPaster extends Controller {
 	static public void tags() {
 		render();
 	}
+	static public void tag(String name) {
+		render();
+	}
 	/**
 	 * 用户
 	 */
 	static public void users() {
 		render();
 	}
+	static public void hide(String key) {
+		Paster paster = Paster.getByKey(key);
+		paster.hide();
+		if(paster.type == Type.A || paster.type == Type.C) {
+			while(paster.parent!=null) {
+				paster = paster.parent;
+			}
+		}
+		view(paster.skey);
+	}
+	static public void comment(String key,String answerKey,String content) {
+		Paster paster = Paster.getByKey(key);
+		if(StringUtils.isNotEmpty(params.get("docommentadd"))) {
+			Paster.comment(StringUtils.isNotEmpty(answerKey)?answerKey:key, content, getLoginUser());
+			view(key);
+		}
+		if(StringUtils.isNotBlank(params.get("docancel"))) {
+			view(key);
+		}
+		String state = "comment";
+		if(StringUtils.isNotEmpty(answerKey)) {
+			state = "answer-comment";
+		}
+		render("@view",paster,state,answerKey);
+	}
+	static public void answer(String key,String content) {
+		Paster paster = Paster.getByKey(key);
+		if(StringUtils.isNotEmpty(params.get("doansweradd"))) {
+			Paster.answer(key, content, getLoginUser());
+			view(key);
+		}
+		if(StringUtils.isNotBlank(params.get("docancel"))) {
+			view(key);
+		}
+		String state = "answer";
+		render("@view",paster,state);
+	}
 	/**
 	 * 提问
 	 */
-	static public void ask() {
-		render();
+	static public void ask(@NotEmpty String title,
+			@NotEmpty String content,String tagstext) {
+		if(StringUtils.isNotEmpty(params.get("doprequery"))) {
+			params.flash();
+			QueryResult search = Paster.search(title, 0, 5);
+			List<Paster> recommendPosts = search.results;
+			if(search.count>0) {
+				render(recommendPosts);
+			}else {
+				boolean newask = true;
+				render(newask);
+			}
+		}
+		if(StringUtils.isNotEmpty(params.get("newask"))) {
+			params.flash();
+			Boolean newask = true;
+			render(newask);
+		}
+		if(StringUtils.isNotEmpty(params.get("doaddask"))) {
+			params.flash();
+			Paster paster = Paster.create(title,content, getLoginUser(),tagstext);
+			view(paster.skey);
+		}
+		boolean start = true;
+		render(start);
 	}
 	public static void index() {
 		if(session.contains(KEY_USER)) {			
@@ -117,7 +185,7 @@ public class CloudPaster extends Controller {
 	}
 
 	public static void view(String key) {
-		Paster paster = Paster.getByKey(key); 
+		Paster paster = Paster.getByKey(key);
 		render(paster);
 	}
 	
@@ -147,7 +215,7 @@ public class CloudPaster extends Controller {
 			String tagstext) {
 		if (!Validation.hasErrors()) {
 			User user = getLoginUser();
-			Paster paster = Paster.createAndSave(title,content, user.email,tagstext);
+			Paster paster = Paster.create(title,content, user,tagstext);
 			if(Boolean.valueOf(Play.configuration.getProperty("notifier.enabled","false"))) {
 				Notifier.paste(user.email, paster);
 			}

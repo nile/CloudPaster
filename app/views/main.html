@@ -52,6 +52,7 @@
 		          <li><a href="@{CloudPaster.tags()}"><span>分类</span></a></li>
 		          <li><a href="@{CloudPaster.users()}"><span>用户</span></a></li>
 		          <li><a href="@{CloudPaster.ask()}"><span>我要提问</span></a></li>
+		          *{
 		          <li><a href="@{CloudPaster.index()}"><span>首页</span></a></li>
 		          #{if session['user.key']}
 		          	<li><a href="@{CloudPaster.my()}"><span>我的贴纸</span></a></li>
@@ -61,6 +62,7 @@
 				  #{else}
 			          <li><a href="@{Auth.login()}"><span>用OpenID登录</span></a></li>
 				  #{/else}
+				  }*
 		        </ul>
 	      	</div>
 		</div>

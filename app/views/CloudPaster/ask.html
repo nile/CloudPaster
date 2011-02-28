@@ -1,1 +1,40 @@
 #{extends 'main.html'/}
+        
+<div class="paster_form">
+	#{ifErrors}
+	 #{errors}
+	       <li>${error}</li>
+	   #{/errors}
+	#{/ifErrors}
+	${flash.error}
+	${flash.success}
+	#{form @CloudPaster.ask(),enctype:'multipart/form-data'}
+		<div >请先用一句话描述你的问题:</div>
+		<input id="paster-title" name="title" value="${flash.title}" />        
+        #{if start}
+            <div class="clear"></div>
+            <input type="submit" name="doprequery" value="继续下一步"/>
+        #{/if}
+        #{if newask}
+            #{editor id:"paster-content",name:"content",value:flash.content/}
+            <input id="paster-tags" name="tagstext" value="${flash.tagstext}" />
+            <input type="submit" name="doaddask" value="新问题"/>
+            <div class="clear"></div>
+        #{/if}
+        
+        #{if recommendPosts}
+        <div>
+            <h2>在提问前，请先确认你的问题是否已经有人问过:</h2>
+            #{list items:recommendPosts,as:'paster'}
+            ${paster.title}
+            #{/list}
+            <div class="clear"></div>
+            <input type="submit" name="newask" value="我的问题是不同的"/>
+        </div>
+        #{/if}
+
+        
+	#{/form}
+    
+    
+</div>

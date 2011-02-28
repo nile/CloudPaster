@@ -1,1 +1,19 @@
 #{extends 'main.html'/}
+最近活跃
+#{list items:pasters,as:'paster'}
+<div class="grid9 first question">
+    <div class="grid1 first voting-box "></div>
+    <div class="grid7">
+        <div>
+        ${paster?.content?.raw()}
+        </div>
+        <div>
+        #{list items:paster?.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
+        </div>
+        <div class="question-signature">
+        ${paster?.creator} 发表于 ${paster?.createDate?.format('yyyy-MM-dd hh:ss')}
+        #{if paster?.updateDate} <br/> ${paster?.creator} 修改于 ${paster?.createDate.format('yyyy-MM-dd hh:ss')}#{/if}
+        </div>
+    </div>
+</div>
+#{/list}

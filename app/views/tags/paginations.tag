@@ -113,3 +113,38 @@
 	#{/if}
 	</div>
 #{/if}
+
+#{if _questions}
+	<div class="grid8 first  paginations">
+	#{if _caller.count > 10}
+		#{if isfirst}
+			第一页
+		#{/if}
+		#{else}
+			<a href="@{CloudPaster.questions(0)}">第一页</a>
+			<a href="@{CloudPaster.questions(_caller.from-10)}">前一页</a>
+		#{/else}	
+		
+		%{  if(s>1) out << "...";
+			for( int a = s;a < e; a++ ){
+		}%
+			#{if a+1 == cur}
+				${a+1}
+			#{/if}
+			#{else}
+				<a href="@{CloudPaster.questions(a*10)}">${a+1}</a>
+			#{/else}
+		%{
+			}
+			if(e<pagecount) out << "...";
+		}%
+		#{if islast }
+			最后一页
+		#{/if}
+		#{else}
+			<a href="@{CloudPaster.questions(_caller.from+10)}">下一页</a>
+			<a href="@{CloudPaster.questions(lastindx)}">最后一页</a>
+		#{/else}
+	#{/if}
+	</div>
+#{/if}

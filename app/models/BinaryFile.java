@@ -12,7 +12,7 @@ import play.Logger;
 import play.Play;
 import play.db.jpa.Model;
 import util.CryptoUtil;
-@Entity
+
 public class BinaryFile extends Model {
 	public String name;
 	public String path;

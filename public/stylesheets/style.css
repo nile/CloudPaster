@@ -198,3 +198,49 @@ a:hover{
 .space{
 	margin-top:20px;
 }
+
+.question{
+    
+}
+.comment{
+    font-size:12px;
+}
+.answer{
+    
+}
+.comment-list{
+    padding-left:60px;
+}
+.simple-form{
+    background:#D9E3EA;
+    border:1px solid #658296;
+    text-align:center;
+}
+.simple-form form{
+    padding:6px;
+}
+.simple-form textarea{
+    width:580px;
+    clear: both;
+    margin:4px;
+}
+.simple-form input[type=submit]{
+    width:100px;
+    
+}
+.voting-box{
+    background:none repeat scroll 0 0 #B7E3DA;
+    border:1px solid #62847D;
+    height:42px;
+    padding:18px 0;
+    /*margin-right:15px;*/
+}
+.answer-list{
+}
+.question-buttons{
+    font-size:14px;
+    text-align: right;
+}
+.question-signature{
+    font-size:10px;
+}
