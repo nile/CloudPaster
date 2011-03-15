@@ -43,7 +43,7 @@
                 <div class="">
                 <h2>你的回复</h2>
                 #{form @CloudPaster.answer(paster.id)}
-                    #{editor id:'answer-editor',name:'content'/}
+                    #{editor id:'answer-editor',name:'content',type:'wiki'/}
                     <input type="submit" name="doansweradd" value="新回复"></input>	
                     <input type="submit" name="docancel" value="取消"></input>	
                 #{/form}

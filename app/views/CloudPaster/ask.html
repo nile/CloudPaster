@@ -17,7 +17,7 @@
         #{/if}
         #{if newask}
 			<input id="paster-title" name="title" value="${flash.title}" />
-            #{editor id:"paster-content",name:"content",value:flash.content/}
+            #{editor id:"paster-content",name:"content",value:flash.content,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${flash.tagstext}" />
             <input type="submit" name="doaddask" value="新问题"/>
             <div class="clear"></div>
@@ -25,7 +25,7 @@
         #{if edit}
 			<input type="hidden" name="id" value="${paster.id}"/>
 			<input id="paster-title" name="title" value="${paster.title}" />
-            #{editor id:"paster-content",name:"content",value:paster.content/}
+            #{editor id:"paster-content",name:"content",value:paster.content,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
             <input type="submit" name="dosave" value="保存"/>
             <div class="clear"></div>

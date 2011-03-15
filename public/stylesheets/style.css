@@ -226,7 +226,8 @@ a:hover{
     padding:6px;
 }
 .simple-form textarea{
-    width:580px;
+    width:530px;
+    height: 80px;
     clear: both;
     margin:4px;
 }
