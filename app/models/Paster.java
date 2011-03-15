@@ -1,12 +1,13 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +17,6 @@ import play.modules.search.Field;
 import play.modules.search.Indexed;
 import play.modules.search.Query;
 import play.modules.search.Search;
-import util.CryptoUtil;
 import util.PasterUtil;
 import util.TokenUtil;
 @Entity
@@ -24,74 +24,81 @@ import util.TokenUtil;
 public class Paster extends Model {
 	@Field
 	public String content;
-	@ManyToOne
-	public User creator;
-	public String skey;
 	@Field(tokenize=true,sortable=true)
 	public String title;
-	public Type type = Type.Q;
-	public Date createDate;
-	public Date updateDate;
-	public String tagstext;
-	public State state = State.NORMAL;
 	@OneToOne
 	public Paster parent ;
-	@OneToMany
-	public List<Tag> tags = new ArrayList<Tag>();
-	public String src = ModelConstants.PASTER_SRC_WEB;
-	public int rating;
-	public int useful;
-	public int useless;
+	@OneToOne
+	public Paster best;
+	@ManyToOne
+	public User creator;
+	public Date created;
+	public Type type = Type.Q;
+	public String tagstext;
+	@ManyToMany
+	public Set<Tag> tags = new HashSet<Tag>();
 	@OneToOne
 	public User lastUser;
+	public Date updated;
+	public State state = State.NORMAL;
+	public int voteup;
+	public int votedown;
+	public int answerCount;
+	public int commentCount;
+	
 	public static enum Type{
 		Q,A,C
 	}
 	public static enum State{
 		NORMAL,HIDDEN
 	}
-	public static Paster comment(String parentKey,String content,User user) {
-		return createAndSave(null,content, user,null, null,parentKey,Type.C);
+	public static Paster comment(long parentId,String content,User user) {
+		return createAndSave(null,content, user,null, -1,parentId,Type.C);
 	}
-	public static Paster answer(String parentKey,String content,User user) {
-		return createAndSave(null,content, user,null, null,parentKey,Type.A);
+	public static Paster answer(long parentId,String content,User user) {
+		return createAndSave(null,content, user,null, -1,parentId,Type.A);
 	}
 	public static Paster create(String title,String content,User user,String tags) {
-		return createAndSave(title,content, user,tags, null,null,Type.Q);
+		return createAndSave(title,content, user,tags, -1,-1,Type.Q);
 	}
-	public static Paster createAndSave(String title,String content,User user,String tagstext,String src,String parentKey,Type type) {
-		Paster paster = new Paster();
+	public static Paster update(long id ,String title,String content,User user,String tags) {
+		return createAndSave(title,content, user,tags, id,-1,null);
+	}
+	public static Paster createAndSave(String title,String content,User user,String tagstext,long id,long parentId,Type type) {
+		Paster paster = null;
+		if(id > 0) {
+			paster = Paster.findById(id);
+			paster.lastUser = user;
+			paster.updated = new Date();
+		} else {
+			paster = new Paster();
+			paster.created= new Date();
+			paster.type = type;
+			paster.creator = user;
+		}
 		content = PasterUtil.cleanUpAndConvertImages(content, user.email);
 		paster.content = content;
-		paster.creator = user;
-		paster.createDate = new Date();
 		paster.title = title;
 		paster.tagstext = tagstext;
-		paster.type = type;
-		if(StringUtils.isNotEmpty(parentKey)) {
-			Paster tmp_parent = paster.getByKey(parentKey);
+		if(parentId>0) {
+			Paster tmp_parent = paster.findById(parentId);
+			if(type== Type.C)
+				tmp_parent.commentCount++;
+			if(type == Type.A)
+				tmp_parent.answerCount++;
 			paster.parent = tmp_parent;
-			paster.parent.updateDate = new Date();
 			paster.parent.save();
 		}
-		String randomstr = CryptoUtil.randomstr(24);
-		while(getByKey(randomstr)!=null) {
-			randomstr = CryptoUtil.randomstr(24);
-		}
-		paster.skey = randomstr;
-		if(src!=null) {
-			paster.src = src;
-		}
-		paster.rating = 0;
-		paster.save();
 		if(paster.tagstext!=null) {
 			String[] tagNames = tagstext.trim().split("[ ,;]");
 			for (String tag : tagNames) {
-				if(StringUtils.isNotEmpty(tag))
+				if(StringUtils.isNotEmpty(tag)) {
+					System.out.println("========"+tag+"!!");
 					paster.tagWith(tag);
+				}
 			}
-			paster.save();
 		}
+		paster.save();
 		return paster;
 	}
 	public Paster tagWith(String tag) {
@@ -119,19 +126,16 @@ public class Paster extends Model {
 	public static List<Paster> findAll(int from ,int pagesize,String query,String order){
 		return Paster.find(query +" " + order).from(from).fetch(pagesize);
 	}
-	public static Paster getByKey(String key) {
-		return Paster.find("bySkey", key).first();
-	}
 	
 	public void remove() {
 		delete();
 	}
-	public void useful() {
-		useful+=1;
+	public void voteup() {
+		voteup+=1;
 		save();
 	}
-	public void useless() {
-		useless+=1;
+	public void votedown() {
+		votedown+=1;
 		save();
 	}
 	public static class QueryResult{
@@ -152,13 +156,21 @@ public class Paster extends Model {
 		return new QueryResult(fetch,q.count());
 	}
 	public List<Paster> getAnswers() {
-		return Paster.find("state = ? and parent.skey = ? and type=?", State.NORMAL,this.skey,Type.A).fetch();
+		return Paster.find("state = ? and parent.id = ? and type=?", State.NORMAL,this.id,Type.A).fetch();
 	}
 	public List<Paster> getComments() {
-		return Paster.find("state = ? and parent.skey = ? and type=?", State.NORMAL, this.skey,Type.C).fetch();
+		return Paster.find("state = ? and parent.id= ? and type=?", State.NORMAL, this.id,Type.C).fetch();
 	}
 	public void hide() {
 		this.state = State.HIDDEN;
+		if(parent!=null && this.type == Type.A) {
+			parent.answerCount--;
+			parent.save();
+		}
+		if(parent!=null && this.type == Type.C) {
+			parent.commentCount--;
+			parent.save();
+		}
 		save();
 	}
 }

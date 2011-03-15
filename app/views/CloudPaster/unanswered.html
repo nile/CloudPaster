@@ -1,1 +1,6 @@
 #{extends 'main.html'/}
+<h2>等待回答的问题</h2>
+#{list items:pasters,as:'paster'}
+#{q paster/}
+#{/list}
+#{paginations questions:true/}

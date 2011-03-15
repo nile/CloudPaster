@@ -1,0 +1,83 @@
+#{extends 'main.html'/}
+<h2>${user.name}</h2>
+#{form @UserCenter.save()}
+<input type="hidden" name="user.id" value="${user.id}"/>
+<table style="width:600px;">
+    <tr>
+        <td>
+            名字：
+        </td>
+        <td>
+            <input type="text" name="user.name" id="display-name" value="${user.name}" maxlength="30" style="width:260px" tabindex="1">
+            <div class="form-item-info">只是用于显示</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Email：
+        </td>
+        <td>
+            <input type="text" name="user.email" value="${user.email}" maxlength="100" style="width:260px" tabindex="6">
+            <div class="form-item-info">永远保密，仅作网站和合您联系</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            真实名字：
+        </td>
+        <td>
+            <input type="text" name="user.realname" value="${user.realname}" maxlength="100" style="width:260px" tabindex="7">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            网站：
+        </td>
+        <td>
+            <input type="text" name="user.website" value="${user.website}" maxlength="200" style="width:260px" tabindex="8">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            地址：
+        </td>
+        <td>
+            <input type="text" name="user.location" value="${user.location}" maxlength="100" style="width:260px" tabindex="9">
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            生日：
+        </td>
+        <td>
+            <input id="Birthday" value="${user.birthday?.format('yyyy/MM/dd')}" tabindex="10"
+                name="user.birthday" type="text" maxlength="50" style="width: 260px">
+            <span style="color: #888">YYYY/MM/DD</span>
+            <div class="form-item-info">只是用于计算年龄</div>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top; padding-top:18px;">
+            关于我：
+        </td>
+        <td>
+                <textarea id="wmd-input" name="user.about" cols="55" rows="10" tabindex="11">${user.about}</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td class="space">
+            <div class="form-error"></div>
+            <div class="form-submit">
+                <input id="submit-button" type="submit" value="保存" tabindex="12">
+                <input type="button" id="cancel" name="cancel" value="取消" onclick="location.href='@{UserCenter.index()}'" tabindex="13">
+
+            </div>
+        </td>
+    </tr>
+</table>
+#{/form}

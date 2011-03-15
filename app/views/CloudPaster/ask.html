@@ -8,20 +8,28 @@
 	#{/ifErrors}
 	${flash.error}
 	${flash.success}
-	#{form @CloudPaster.ask(),enctype:'multipart/form-data'}
-		<div >请先用一句话描述你的问题:</div>
-		<input id="paster-title" name="title" value="${flash.title}" />        
+	#{form @CloudPaster.ask()}
         #{if start}
-            <div class="clear"></div>
+			<div >请先用一句话描述你的问题:</div>
+			<input id="paster-title" name="title" value="${flash.title}" />
+			<div class="clear"></div>
             <input type="submit" name="doprequery" value="继续下一步"/>
         #{/if}
         #{if newask}
+			<input id="paster-title" name="title" value="${flash.title}" />
             #{editor id:"paster-content",name:"content",value:flash.content/}
             <input id="paster-tags" name="tagstext" value="${flash.tagstext}" />
             <input type="submit" name="doaddask" value="新问题"/>
             <div class="clear"></div>
         #{/if}
-        
+        #{if edit}
+			<input type="hidden" name="id" value="${paster.id}"/>
+			<input id="paster-title" name="title" value="${paster.title}" />
+            #{editor id:"paster-content",name:"content",value:paster.content/}
+            <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
+            <input type="submit" name="dosave" value="保存"/>
+            <div class="clear"></div>
+        #{/if}
         #{if recommendPosts}
         <div>
             <h2>在提问前，请先确认你的问题是否已经有人问过:</h2>

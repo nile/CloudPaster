@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>/root</name>
+	<name>cp</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -19,7 +19,7 @@
 		<link>
 			<name>playframework-1.1.1</name>
 			<type>2</type>
-			<location>X:/play-1.1.1</location>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/play-1.1.1</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

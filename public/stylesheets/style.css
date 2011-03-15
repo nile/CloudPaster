@@ -144,6 +144,7 @@ img{
 .odd{
 	background: #669933;
 }
+
 .list-paster{
 	padding:0px;
 	margin-top:10px;
@@ -199,8 +200,13 @@ a:hover{
 	margin-top:20px;
 }
 
+
 .question{
     
+}
+.question p{
+    padding:2px;
+    margin:0px;
 }
 .comment{
     font-size:12px;
@@ -228,12 +234,17 @@ a:hover{
     width:100px;
     
 }
-.voting-box{
+.voting-box,.reply-box{
     background:none repeat scroll 0 0 #B7E3DA;
     border:1px solid #62847D;
     height:42px;
-    padding:18px 0;
-    /*margin-right:15px;*/
+    padding:8px 0 14px 4px;
+    width: 64px;
+    font-size:14px;
+    text-align:center;
+}
+.reply-box{
+    margin-left:5px;    
 }
 .answer-list{
 }
@@ -243,4 +254,32 @@ a:hover{
 }
 .question-signature{
     font-size:10px;
+}
+.vote-buttons{
+    width:18px;
+    height:42px;
+    float:left;
+    line-height:20px;
+}
+.vote-up,.vote-down{
+    width:17px;
+    height:15px;
+    border:0px;
+    font-size:1px;
+    background:url("vote-buttons.gif") no-repeat scroll 0 0 transparent
+}
+.vote-down{
+    background-position:-17px 0px
+}
+.vote-count,.reply-count{
+    width:60px;
+    font-size:20px;
+    font-weight:bold;
+    line-height:42px;
+    height:42px;
+    text-align:center;
+}
+.reply-count{
+    line-height:32px;
+    height:32px;
 }

@@ -102,9 +102,9 @@ public class RobotMessager {
 				String emailAddress = arg2.getEmail().getEmailAddress();
 				String content = arg1.getContent();
 				Logger.debug("接受消息 %s \n %s", emailAddress,content);
-				Paster paster = Paster.createAndSave("",content,null,"",ModelConstants.PASTER_SRC_MSN,null,Type.Q);
+//				Paster paster = Paster.createAndSave("",content,null,"",ModelConstants.PASTER_SRC_MSN,null,Type.Q);
 				HashMap<String, Object> params = new HashMap<String, Object>();
-				params.put("key",paster.skey);
+//				params.put("key",paster.skey);
 				messenger.sendText(arg2.getEmail(), String.format("贴纸成功，点击查看 http://www.cloudpaster.com%s", Router.reverse("CloudPaster.view",params)));
 			}
 

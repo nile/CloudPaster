@@ -18,50 +18,45 @@ import play.data.validation.Validation;
 import play.mvc.After;
 import play.mvc.Before;
 import play.mvc.Controller;
-
+import play.mvc.With;
+import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
+@With(Deadbolt.class)
 public class CloudPaster extends Controller {
-	private static final long MINS_30 = 30*60*1000L;
-	static final String KEY_USER = "user.key";
+	
 	@Before
 	static void startTimer() {
+		User user = Auth.getLoginUser();
+		renderArgs.put("user", user);
 	}
 	@After
 	static void after() {
 		session.put(Auth.KEY_TIMESTAMP, System.currentTimeMillis());
 	}
 	
-	@Before(unless={"login","googlelogin","yahoologin","index","view","search","intro"})
-	static void checkAuthenticated() {
-	    if(!session.contains(KEY_USER)) {
-	        Auth.login();
-	    }
-	    if(session.contains("timestamp")) {
-	    	long last = Long.parseLong(session.get(Auth.KEY_TIMESTAMP));
-	    	if(System.currentTimeMillis() - last > MINS_30 ) {
-	    		Auth.login();
-	    	}
-	    }
-	}
 	/**
 	 * 最近活跃
 	 */
 	static public  void activity() {
-		List<Paster> pasters = Paster.find("type=? order by updateDate desc" ,Type.Q).fetch(10);
+		List<Paster> pasters = Paster.find("type=? order by created desc,updated desc " ,Type.Q).fetch(10);
 		render(pasters);
 	}
 	/**
 	 * 问题
 	 */
 	static public  void questions(int from) {
-		long count = Paster.count();
-		List<Paster> pasters = Paster.find("type = ? order by createDate desc", Type.Q).from(from).fetch(10);
+		long count = Paster.count("type=?",Type.Q);
+		List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(10);
 		render(pasters,from,count);
 	}
 	/**
 	 * 等待回答
 	 */
-	static public  void unanswered() {
-		render();
+	static public  void unanswered(int from) {
+		long count = Paster.count("type=? and answerCount = 0",Type.Q);
+		List<Paster> pasters = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q).from(from).fetch(10);
+		render(pasters,from,count);
 	}
 	/**
 	 * 标签和分类
@@ -78,39 +73,39 @@ public class CloudPaster extends Controller {
 	static public void users() {
 		render();
 	}
-	static public void hide(String key) {
-		Paster paster = Paster.getByKey(key);
+	static public void hide(long id) {
+		Paster paster = Paster.findById(id);
 		paster.hide();
 		if(paster.type == Type.A || paster.type == Type.C) {
 			while(paster.parent!=null) {
 				paster = paster.parent;
 			}
 		}
-		view(paster.skey);
+		view(paster.id);
 	}
-	static public void comment(String key,String answerKey,String content) {
-		Paster paster = Paster.getByKey(key);
+	static public void comment(long id,long answerId,String content) {
+		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("docommentadd"))) {
-			Paster.comment(StringUtils.isNotEmpty(answerKey)?answerKey:key, content, getLoginUser());
-			view(key);
+			Paster.comment(answerId>0?answerId:id, content, Auth.getLoginUser());
+			view(id);
 		}
 		if(StringUtils.isNotBlank(params.get("docancel"))) {
-			view(key);
+			view(id);
 		}
 		String state = "comment";
-		if(StringUtils.isNotEmpty(answerKey)) {
+		if(answerId>0) {
 			state = "answer-comment";
 		}
-		render("@view",paster,state,answerKey);
+		render("@view",paster,state,answerId);
 	}
-	static public void answer(String key,String content) {
-		Paster paster = Paster.getByKey(key);
+	static public void answer(long id,String content) {
+		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("doansweradd"))) {
-			Paster.answer(key, content, getLoginUser());
-			view(key);
+			Paster.answer(id, content, Auth.getLoginUser());
+			view(id);
 		}
 		if(StringUtils.isNotBlank(params.get("docancel"))) {
-			view(key);
+			view(id);
 		}
 		String state = "answer";
 		render("@view",paster,state);
@@ -118,8 +113,15 @@ public class CloudPaster extends Controller {
 	/**
 	 * 提问
 	 */
-	static public void ask(@NotEmpty String title,
+	@Restrictions(@Restrict("user"))
+	static public void ask(Long id,@NotEmpty String title,
 			@NotEmpty String content,String tagstext) {
+		
+		if(StringUtils.isNotEmpty(params.get("dosave"))&& id>0) {
+			Paster paster = Paster.update(id, title, content, Auth.getLoginUser(), tagstext);
+			view(paster.id);
+		}
+		
 		if(StringUtils.isNotEmpty(params.get("doprequery"))) {
 			params.flash();
 			QueryResult search = Paster.search(title, 0, 5);
@@ -138,18 +140,24 @@ public class CloudPaster extends Controller {
 		}
 		if(StringUtils.isNotEmpty(params.get("doaddask"))) {
 			params.flash();
-			Paster paster = Paster.create(title,content, getLoginUser(),tagstext);
-			view(paster.skey);
+			Paster paster = Paster.create(title,content, Auth.getLoginUser(),tagstext);
+			view(paster.id);
 		}
 		boolean start = true;
 		render(start);
 	}
+	public static void edit(long id){
+		Paster paster = Paster.findById(id);
+		Boolean edit=true;
+		render("@ask",paster,edit);
+	}
 	public static void index() {
-		if(session.contains(KEY_USER)) {			
-			render();
-		} else {
-			intro();
-		}
+		//if(session.contains(KEY_USER)) {			
+		//	render();
+		//} else {
+			//intro();
+		//}
+		activity();
 	}
 	//@CacheFor("15s")
 	public static void load(int from) {
@@ -159,7 +167,7 @@ public class CloudPaster extends Controller {
 		render(pasters, count, from);
 	}
 	public static void loadmy(int from) {
-		User user = getLoginUser();
+		User user = Auth.getLoginUser();
 		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
 		long count = Paster.countByCreator(user.email);
 		request.format="json";
@@ -184,8 +192,8 @@ public class CloudPaster extends Controller {
 		render();
 	}
 
-	public static void view(String key) {
-		Paster paster = Paster.getByKey(key);
+	public static void view(long id) {
+		Paster paster = Paster.findById(id);
 		render(paster);
 	}
 	
@@ -201,9 +209,9 @@ public class CloudPaster extends Controller {
 		}
 	}
 	
-	public static void delete(String key) {
-		User user = getLoginUser();
-		Paster obj = Paster.getByKey(key);
+	public static void delete(long id) {
+		User user = Auth.getLoginUser();
+		Paster obj = Paster.findById(id);
 		if (obj != null && obj.creator.equals(user.email)) {
 			obj.remove();
 		}
@@ -214,7 +222,7 @@ public class CloudPaster extends Controller {
 			@Required(message = "content is required.") String content,
 			String tagstext) {
 		if (!Validation.hasErrors()) {
-			User user = getLoginUser();
+			User user = Auth.getLoginUser();
 			Paster paster = Paster.create(title,content, user,tagstext);
 			if(Boolean.valueOf(Play.configuration.getProperty("notifier.enabled","false"))) {
 				Notifier.paste(user.email, paster);
@@ -227,44 +235,42 @@ public class CloudPaster extends Controller {
 
 	static void fail(String code,String message) {
 		request.format="json";
+		response.contentType="text/json";
 		render("@fail",code,message);
 	}
 	static void success(Paster paster) {
 		request.format="json";
+		response.contentType="text/json";
 		render("@success",paster);
 	}
-	public static void useful(String key) {
-		User user = getLoginUser();
-		Paster paster = Paster.getByKey(key);
-		paster.useful();
+	public static void voteup(long id) {
+		User user = Auth.getLoginUser();
+		Paster paster = Paster.findById(id);
+		Event event = Event.find("action=? and user=? and target=?", Action.Voteup,user,paster).first();
+		if(event!=null) {
+			fail("vote-dumplicate","只能投票一次");
+		}
+		Event newevent = new Event();
+		newevent.action = Action.Voteup;
+		newevent.user = user;
+		newevent.target = paster;
+		newevent.save();
+		paster.voteup();
 		success(paster);
 	}
-	public static void useless(String key) {
-		User user = getLoginUser();
-		Paster paster = Paster.getByKey(key);
-		paster.useless();
+	public static void votedown(long id) {
+		User user = Auth.getLoginUser();
+		Paster paster = Paster.findById(id);
+		Event event = Event.find("action=? and user=? and target=?", Action.Votedown,user,paster).first();
+		if(event!=null) {
+			fail("vote-dumplicate","只能投票一次");
+		}
+		Event newevent = new Event();
+		newevent.action = Action.Voteup;
+		newevent.user = user;
+		newevent.target = paster;
+		newevent.save();
+		paster.votedown();
 		success(paster);
-	}
-	public static void ratingup(String key) {
-		User user = getLoginUser();
-		Paster paster = Paster.getByKey(key);
-		paster.rating += 1;
-		paster.save();
-		success(paster);
-	}
-	public static void ratingdown(String key) {
-		User user = getLoginUser();
-		Paster paster = Paster.getByKey(key);
-		paster.rating -=1;
-		paster.save();
-		success(paster);
-	}
-	
-	static User getLoginUser() {
-		String userkey = session.get(KEY_USER);
-		if(userkey == null)
-			return null;
-		User user = User.getByKey(userkey);
-		return user;
 	}
 }

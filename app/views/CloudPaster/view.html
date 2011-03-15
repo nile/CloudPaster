@@ -10,14 +10,14 @@
         #{list items:paster.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
         </div>
         <div class="question-signature">
-        ${paster.creator} 发表于 ${paster.createDate.format('yyyy-MM-dd hh:ss')}
-        #{if paster.updateDate} <br/> ${paster.creator} 修改于 ${paster.createDate.format('yyyy-MM-dd hh:ss')}#{/if}
+        ${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
+        #{if paster.updated} <br/> ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
         </div>
         <div class="question-buttons">
-        #{a @CloudPaster.answer(paster.skey)}编辑#{/a}
-        #{a @CloudPaster.hide(paster.skey)}隐藏#{/a}
-        #{a @CloudPaster.answer(paster.skey)}回复#{/a}
-        #{a @CloudPaster.comment(paster.skey)}评论#{/a}
+        #{a @CloudPaster.edit(paster.id)}编辑#{/a}
+        #{a @CloudPaster.hide(paster.id)}隐藏#{/a}
+        #{a @CloudPaster.answer(paster.id)}回复#{/a}
+        #{a @CloudPaster.comment(paster.id)}评论#{/a}
         </div>
         <div class="first comment-list">
             #{list items:paster.comments,as:'comment'}
@@ -26,13 +26,13 @@
                 ${comment.content.raw()}
                 </div>
                 <div class="question-signature">
-                ${comment.creator} 发表于 ${comment.createDate.format('yyyy-MM-dd hh:ss')}
-                #{if comment.updateDate} <br/> ${comment.creator} 修改于 ${comment.createDate.format('yyyy-MM-dd hh:ss')}#{/if}
+                ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
+                #{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.updated.format('yyyy-MM-dd hh:ss')}#{/if}
                 </div>
                 <div class="question-buttons">
-                #{a @CloudPaster.answer(comment.skey)}编辑#{/a}
-                #{a @CloudPaster.hide(comment.skey)}隐藏#{/a}
-                #{a @CloudPaster.comment(paster.skey)}评论#{/a}
+                #{a @CloudPaster.answer(comment.id)}编辑#{/a}
+                #{a @CloudPaster.hide(comment.id)}隐藏#{/a}
+                #{a @CloudPaster.comment(paster.id)}评论#{/a}
                 </div>
                 <div class="decorate-line"></div>
             </div >
@@ -42,7 +42,7 @@
             #{if state=='answer'}
                 <div class="">
                 <h2>你的回复</h2>
-                #{form @CloudPaster.answer(paster.skey)}
+                #{form @CloudPaster.answer(paster.id)}
                     #{editor id:'answer-editor',name:'content'/}
                     <input type="submit" name="doansweradd" value="新回复"></input>	
                     <input type="submit" name="docancel" value="取消"></input>	
@@ -52,11 +52,13 @@
             #{if state=='comment'}
                 <div>
                 <h2>你对该问题的评论:</h2>
-                #{form @CloudPaster.comment(paster.skey)}
+				<div class="simple-form">
+                #{form @CloudPaster.comment(paster.id)}
                     #{editor id:'answer-editor',name:'content',mode:'simple'/}
                     <input type="submit" name="docommentadd" value="新评论"></input>	
                     <input type="submit" name="docancel" value="取消"></input>	
                 #{/form}
+				</div>
                 </div>
             #{/if}
         </div>
@@ -64,7 +66,7 @@
 </div>
 
 <div class="clear">
-<h2>${paster.answers.size}个回复</h2>
+<h2>${paster.answerCount}个回复</h2>
 </div>
 <div class="answer-list">
     #{list items:paster.answers,as:'answer'}
@@ -75,14 +77,14 @@
             ${answer.content.raw()}
             </div>
             <div class="question-signature">
-            ${answer.creator} 发表于 ${answer.createDate.format('yyyy-MM-dd hh:ss')}
-            #{if answer.updateDate} <br/> ${answer.creator} 修改于 ${answer.createDate.format('yyyy-MM-dd hh:ss')}#{/if}
+            ${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
+            #{if answer.updated} <br/> ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
             </div>
             <div class="question-buttons">
-            #{a @CloudPaster.answer(paster.skey)}编辑#{/a}
-            #{a @CloudPaster.hide(answer.skey)}隐藏#{/a}
-            #{a @CloudPaster.answer(paster.skey)}提相关问题#{/a}
-            #{a @CloudPaster.comment(paster.skey,answer.skey)}评论#{/a}
+            #{a @CloudPaster.answer(paster.id)}编辑#{/a}
+            #{a @CloudPaster.hide(answer.id)}隐藏#{/a}
+            #{a @CloudPaster.answer(paster.id)}提相关问题#{/a}
+            #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
             </div>
             <div class="comment-list">
             #{list items:answer.comments,as:'comment'}
@@ -91,24 +93,22 @@
                     ${comment.content.raw()}
                     </div>
                     <div class="question-signature">
-                    ${comment.creator} 发表于 ${comment.createDate.format('yyyy-MM-dd hh:ss')}
-                    #{if comment.updateDate} <br/> ${comment.creator} 修改于 ${comment.createDate.format('yyyy-MM-dd hh:ss')}#{/if}
+                    ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
+                    #{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.created.format('yyyy-MM-dd hh:ss')}#{/if}
                     </div>
                     <div class="question-buttons">
-                    #{a @CloudPaster.answer(paster.skey)}编辑#{/a}
+                    #{a @CloudPaster.answer(paster.id)}编辑#{/a}
                     #{a @CloudPaster.answer()}隐藏#{/a}
-                    #{a @CloudPaster.comment(paster.skey,answer.skey)}评论#{/a}
+                    #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
                     </div>
-                    <div class="decorate-line"></div>
                 </div >
             #{/list}
-            </div>
-            #{if state=='answer-comment' && answerKey==answer.skey}
+            </div>			
+            #{if state=='answer-comment' && answerId==answer.id}
                 <div>
                 <h2>你对该回复的评论:</h2>
                 <div class="simple-form">
-                #{form @CloudPaster.comment(paster.skey,answer.skey)}
-                    <input type="hidden" name="key" value="${answer.skey}">
+                #{form @CloudPaster.comment(paster.id,answer.id)}
                     #{editor id:'answer-editor',name:'content',mode:'simple'/}
                     <div>
                     <input type="submit" name="docommentadd" value="新评论"></input>
