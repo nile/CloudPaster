@@ -193,11 +193,12 @@ img{
 }
 
 a{
-	color: gray;
+	color: #07c;
 }
 a:hover{
-	color: blue;
+	color: #07c;
 }
+
 .hide{
 	display:none;
 }
@@ -211,16 +212,30 @@ a:hover{
 
 .question{
     margin-top:5px;
+    font-size:14px;
 }
 .question p{
     padding:2px;
     margin:0px;
 }
+.question-title{
+    color:#07c;
+    font-size:18px;
+    font-weight:bold;
+}
+.question-buttons{
+    font-size:14px;
+    text-align: right;
+}
+.question-signature{
+    font-size:10px;
+}
+
 .comment{
     font-size:12px;
 }
 .answer{
-    
+    font-size:14px;
 }
 .comment-list{
     padding-left:60px;
@@ -257,13 +272,7 @@ a:hover{
 }
 .answer-list{
 }
-.question-buttons{
-    font-size:14px;
-    text-align: right;
-}
-.question-signature{
-    font-size:10px;
-}
+
 .vote-buttons{
     width:18px;
     height:42px;
@@ -291,4 +300,14 @@ a:hover{
 .reply-count{
     line-height:32px;
     height:32px;
+}
+.tags{
+    margin:4px 0 4px 0;
+}
+.tags a{
+    border:1px solid gray;
+    margin-right:5px;
+    background-color: #DDD;
+    padding: 0 3px 0 3px;
+    text-decoration: none;
 }

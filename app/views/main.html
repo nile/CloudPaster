@@ -11,8 +11,8 @@
 		<script src="/public/javascripts/jquery-1.5.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/public/javascripts/CloudPaster.js" type="text/javascript" charset="utf-8"></script>
 		#{get "moreScripts"/}	
-<link rel="stylesheet" href="@{'/public/javascripts/boxy-0.1.4/src/stylesheets/boxy.css'}" type="text/css" />
-<script type="text/javascript" src="@{'/public/javascripts/boxy-0.1.4/src/javascripts/jquery.boxy.js'}"></script>		
+<link rel="stylesheet" href="@{'/public/javascripts/boxy/stylesheets/boxy.css'}" type="text/css" />
+<script type="text/javascript" src="@{'/public/javascripts/boxy/javascripts/jquery.boxy.js'}"></script>		
     </head>
     <body>
 <div class="decorate-line"></div>    
@@ -42,11 +42,11 @@
                   #{if session['user.key']}
                     <li >#{a @UserCenter.index()}${user.name}#{/a}</li>
                   #{/if}
-		          <li><a href="@{CloudPaster.activity()}"><span>最近活跃</span></a></li>
+		          *{<li><a href="@{CloudPaster.activity()}"><span>最近活跃</span></a></li>}*
 		          <li><a href="@{CloudPaster.questions()}"><span>问题</span></a></li>
 		          <li><a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a></li>
 		          <li><a href="@{CloudPaster.tags()}"><span>分类</span></a></li>
-		          <li><a href="@{CloudPaster.users()}"><span>用户</span></a></li>
+		          *{<li><a href="@{CloudPaster.users()}"><span>用户</span></a></li>}*
 		          <li><a href="@{CloudPaster.ask()}"><span>我要提问</span></a></li>
 		          
 		          #{if session['user.key']}

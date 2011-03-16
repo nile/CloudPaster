@@ -6,7 +6,7 @@
         <div>
         ${paster.content.raw()}
         </div>
-        <div>
+        <div class="tags">
         #{list items:paster.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
         </div>
         <div class="question-signature">
@@ -15,7 +15,6 @@
         </div>
         <div class="question-buttons">
         #{a @CloudPaster.edit(paster.id)}编辑#{/a}
-        #{a @CloudPaster.hide(paster.id)}隐藏#{/a}
         #{a @CloudPaster.answer(paster.id)}回复#{/a}
         #{a @CloudPaster.comment(paster.id)}评论#{/a}
         </div>
@@ -31,7 +30,6 @@
                 </div>
                 <div class="question-buttons">
                 #{a @CloudPaster.answer(comment.id)}编辑#{/a}
-                #{a @CloudPaster.hide(comment.id)}隐藏#{/a}
                 #{a @CloudPaster.comment(paster.id)}评论#{/a}
                 </div>
                 <div class="decorate-line"></div>
@@ -65,9 +63,10 @@
     </div>
 </div>
 
-<div class="clear">
+<div class="clear"></div>
+
 <h2>${paster.answerCount}个回复</h2>
-</div>
+
 <div class="answer-list">
     #{list items:paster.answers,as:'answer'}
     <div class="grid9 first answer">
@@ -82,8 +81,6 @@
             </div>
             <div class="question-buttons">
             #{a @CloudPaster.edit(answer.id)}编辑#{/a}
-            #{a @CloudPaster.hide(answer.id)}隐藏#{/a}
-            #{a @CloudPaster.answer(paster.id)}提相关问题#{/a}
             #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
             </div>
             <div class="comment-list">

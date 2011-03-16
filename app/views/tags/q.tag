@@ -19,11 +19,11 @@
         </div>
         回复
     </div>
-    <div class="grid6">
-        <div>
+    <div class="grid6 ">
+        <div class="question-title">
         #{a @CloudPaster.view(paster.id)}${paster?.title?.raw()}#{/a}
         </div>
-        <div>
+        <div class="tags">
         #{list items:paster?.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}&nbsp;&nbsp;#{/list}
         </div>
         <div class="question-signature">

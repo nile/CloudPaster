@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Paster;
+import models.Tag;
 import models.Paster.QueryResult;
 import models.Paster.Type;
 import models.User;
@@ -10,6 +11,7 @@ import net.sf.oval.constraint.NotEmpty;
 
 import org.apache.commons.lang.StringUtils;
 
+import play.db.jpa.JPABase;
 import play.mvc.After;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -57,10 +59,13 @@ public class CloudPaster extends Controller {
 	 * 标签和分类
 	 */
 	static public void tags() {
-		render();
+		List<Tag> tags = Tag.findAll();
+		render(tags);
 	}
-	static public void tag(String name) {
-		render();
+	static public void tag(String name,int from) {
+		long count = Paster.count("select distinct count( p) from Paster p join p.tags as t where t.name = ?", name);
+		List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(0).fetch(10);
+		render("@questions",pasters,from,count);
 	}
 	/**
 	 * 用户
@@ -150,7 +155,8 @@ public class CloudPaster extends Controller {
 		render("@ask",paster,edit);
 	}
 	public static void index() {
-		activity();
+//		activity();
+		questions(0);
 	}
 	public static void view(long id) {
 		Paster paster = Paster.findById(id);
@@ -171,12 +177,12 @@ public class CloudPaster extends Controller {
 	
 	static void fail(String code,String message) {
 		request.format="json";
-		response.contentType="text/json";
+		response.contentType="application/json";
 		render("@fail",code,message);
 	}
 	static void success(Paster paster) {
 		request.format="json";
-		response.contentType="text/json";
+		response.contentType="application/json";
 		render("@success",paster);
 	}
 	public static void voteup(long id) {

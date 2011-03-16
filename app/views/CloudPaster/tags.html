@@ -1,1 +1,4 @@
 #{extends 'main.html'/}
+<div class="tags grid6">
+#{list items:tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a} &nbsp;&nbsp;#{/list}
+</div>
