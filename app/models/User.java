@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import play.db.jpa.Model;
-import util.CryptoUtil;
 @Entity
 public class User extends Model{
 	public String name;
