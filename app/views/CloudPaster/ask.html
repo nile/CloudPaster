@@ -11,7 +11,7 @@
 	#{form @CloudPaster.ask()}
         #{if start}
 			<div >请先用一句话描述你的问题:</div>
-			<input id="paster-title" name="title" value="${flash.title}" />
+			<input type="text" id="paster-title" name="title" value="${flash.title}" />
 			<div class="clear"></div>
             <input type="submit" name="doprequery" value="继续下一步"/>
         #{/if}
@@ -25,7 +25,7 @@
         #{if edit}
 			<input type="hidden" name="id" value="${paster.id}"/>
 			<input id="paster-title" name="title" value="${paster.title}" />
-            #{editor id:"paster-content",name:"content",value:paster.content,type:'wiki'/}
+            #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
             <input type="submit" name="dosave" value="保存"/>
             <div class="clear"></div>

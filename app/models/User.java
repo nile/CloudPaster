@@ -23,6 +23,7 @@ public class User extends Model{
 			return user;
 		user = new User();
 		user.createDate = new Date();
+		user.email = email;
 		user.save();
 		return user;
 	}

@@ -19,11 +19,13 @@ import play.modules.search.Query;
 import play.modules.search.Search;
 import util.PasterUtil;
 import util.TokenUtil;
+import ys.wikiparser.WikiParser;
 @Entity
 @Indexed
 public class Paster extends Model {
 	@Field
 	public String content;
+	public String wiki;
 	@Field(tokenize=true,sortable=true)
 	public String title;
 	@OneToOne
@@ -76,8 +78,10 @@ public class Paster extends Model {
 			paster.type = type;
 			paster.creator = user;
 		}
-		content = PasterUtil.cleanUpAndConvertImages(content, user.email);
-		paster.content = content;
+		paster.wiki = content;
+		paster.content = WikiParser.renderXHTML(paster.wiki);
+		//PasterUtil.cleanUpAndConvertImages(content, user.email);
+		//paster.content = content;
 		paster.title = title;
 		paster.tagstext = tagstext;
 		if(parentId>0) {

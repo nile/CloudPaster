@@ -97,39 +97,7 @@
   })();
 </script>
 <script type="text/javascript">
-/*
-window.addEvent('domready', function() {
-	
-	$$('a[rel=boxed]').addEvent('click', function(event) {
-          event.stop();
-          var req = new Request({
-              method: 'get',
-              evalScripts: true,
-              url: '@{CloudPaster.prepaste()}',
-              onRequest: function() { 
-				$('_editor').set('html', '<img src="@{'public/images/loading.gif'}">'); 
-			  },
-              onComplete: function(response) { 
-              	$('_editor').set('html', response);
-              	var myMooEditable = new MooEditable('paster-content', {
-					handleSubmit: false,
-					cleanup: false,
-					onRender: function(){
-					}
-				});
-				$('btpaste').addEvent("click",function(event){
-					event.stop();
-					cloudPaster.paste($('paster-title').get('value'),myMooEditable.getContent(),$('paster-tags').get('value'));
-				});
-				$('btcancel').addEvent('click',function(event){
-					$('_editor').erase('html');
-				});
-				myMooEditable.attach();				
-              }
-          }).send();	
-	});
-});
-*/
+
 </script>
 
 <div style="display:none">

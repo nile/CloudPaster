@@ -40,7 +40,7 @@
         </div>
         <div>
             #{if state=='answer'}
-                <div class="">
+                <div class="paster_form">
                 <h2>你的回复</h2>
                 #{form @CloudPaster.answer(paster.id)}
                     #{editor id:'answer-editor',name:'content',type:'wiki'/}
@@ -81,7 +81,7 @@
             #{if answer.updated} <br/> ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
             </div>
             <div class="question-buttons">
-            #{a @CloudPaster.answer(paster.id)}编辑#{/a}
+            #{a @CloudPaster.edit(answer.id)}编辑#{/a}
             #{a @CloudPaster.hide(answer.id)}隐藏#{/a}
             #{a @CloudPaster.answer(paster.id)}提相关问题#{/a}
             #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}

@@ -7,14 +7,9 @@ import models.Paster.QueryResult;
 import models.Paster.Type;
 import models.User;
 import net.sf.oval.constraint.NotEmpty;
-import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
 
-import play.Play;
-import play.cache.CacheFor;
-import play.data.validation.Required;
-import play.data.validation.Validation;
 import play.mvc.After;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -149,49 +144,14 @@ public class CloudPaster extends Controller {
 	public static void edit(long id){
 		Paster paster = Paster.findById(id);
 		Boolean edit=true;
+		if(paster.type == Type.A) {
+			render("@view",paster,edit);
+		}
 		render("@ask",paster,edit);
 	}
 	public static void index() {
-		//if(session.contains(KEY_USER)) {			
-		//	render();
-		//} else {
-			//intro();
-		//}
 		activity();
 	}
-	//@CacheFor("15s")
-	public static void load(int from) {
-		List<Paster> pasters = Paster.findAll(from, 10);
-		long count = Paster.count();
-		request.format="json";
-		render(pasters, count, from);
-	}
-	public static void loadmy(int from) {
-		User user = Auth.getLoginUser();
-		List<Paster> pasters = Paster.findByCreator(user.email, from, 10);
-		long count = Paster.countByCreator(user.email);
-		request.format="json";
-		render("@load",pasters, count, from);
-	}
-	@CacheFor("15s")
-	public static void loadMostUseful() {
-		List<Paster> pasters = Paster.findMostUseful(0, 10);
-		int from = 0;
-		long count = 10;
-		request.format="json";
-		render("@load",pasters, count , from );
-	}
-	public static void intro() {
-		render();
-	}
-	public static void prepaste() {
-		render();
-	}
-	
-	public static void my() {
-		render();
-	}
-
 	public static void view(long id) {
 		Paster paster = Paster.findById(id);
 		render(paster);
@@ -209,30 +169,6 @@ public class CloudPaster extends Controller {
 		}
 	}
 	
-	public static void delete(long id) {
-		User user = Auth.getLoginUser();
-		Paster obj = Paster.findById(id);
-		if (obj != null && obj.creator.equals(user.email)) {
-			obj.remove();
-		}
-		my();
-	}
-
-	public static void paste(@Required(message="title required") String title,
-			@Required(message = "content is required.") String content,
-			String tagstext) {
-		if (!Validation.hasErrors()) {
-			User user = Auth.getLoginUser();
-			Paster paster = Paster.create(title,content, user,tagstext);
-			if(Boolean.valueOf(Play.configuration.getProperty("notifier.enabled","false"))) {
-				Notifier.paste(user.email, paster);
-			}
-			success(paster);
-		} else {
-			fail("ERR-001", "内容字段不能为空");
-		}
-	}
-
 	static void fail(String code,String message) {
 		request.format="json";
 		response.contentType="text/json";
