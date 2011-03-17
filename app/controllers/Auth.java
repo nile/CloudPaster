@@ -57,7 +57,7 @@ public class Auth extends Controller{
               if(params._contains("return")) {
             	  redirect(params.get("return"));
               }
-              CloudPaster.activity();
+              CloudPaster.questions(0);
 	        }
 		}
 		render();
