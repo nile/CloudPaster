@@ -1,8 +1,7 @@
 #{extends 'main.html'/}
 <h2>${paster.title}</h2>
-<div class="grid9 first question">
-    <div class="grid1 first voting-box "></div>
-    <div class="grid7">
+<div class="grid9 first question">    
+    <div>
         <div>
         ${paster.content.raw()}
         </div>
@@ -69,9 +68,8 @@
 
 <div class="answer-list">
     #{list items:paster.answers,as:'answer'}
-    <div class="grid9 first answer">
-        <div class="grid1 first voting-box "></div>
-        <div class="grid7">
+    <div class="grid9 first answer">        
+        <div>
             <div>
             ${answer.content.raw()}
             </div>

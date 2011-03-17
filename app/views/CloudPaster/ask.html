@@ -28,6 +28,7 @@
             #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
             <input type="submit" name="dosave" value="保存"/>
+            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
             <div class="clear"></div>
         #{/if}
         #{if recommendPosts}

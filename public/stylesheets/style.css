@@ -13,6 +13,7 @@ pre{
 .container {
 	width: 978px;
 	margin: 0 auto;
+	background:#eee;
 }
 .grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8, .grid9, .grid10, .grid11 {
 	float: left;
@@ -62,12 +63,11 @@ body{
 
 
 #header{
-	height:89px;
-	background:url(../images/header-bg.png);
+	height:22px;
+	/*background:url(../images/header-bg.png);*/
 }
 
 .header-menu {
-	text-align:right;
 	font-size:14px;
 	line-height:22px;
 }
@@ -75,7 +75,7 @@ body{
 .menuul  {
 	list-style:none outside none;
 	height:22px;
-	margin:14px 0px;
+	margin:3px 0;
 }
 .menuul li {
 	float:left;
@@ -95,8 +95,7 @@ body{
 .search-form input,.paster_form input{
 	border-color:#CCCCCC #999999 #999999 #CCCCCC;
 	border-width:1px;
-	height:22px;
-	margin-top:10px;
+	height:18px;
 }
 .paster_form input[type="text"]{
 	width:200px;
@@ -104,7 +103,7 @@ body{
 .search-form button, button{
 	border-color:#CCCCCC #999999 #999999 #CCCCCC;
 	border-width:1px;
-	height:26px;
+	height:22px;
 	width:40px;
 }
 .search-form td{
@@ -113,18 +112,20 @@ body{
 
 
 .logo{
-	background:url(../images/logo.png) no-repeat;
-	width:160px;
-	margin-top:26px;
-	height:40px;
+	/*background:url(../images/logo.png) no-repeat;*/
+	width:22px;
+	margin-top:2px;
+	height:22px;
 }
 
 #footer{
-	background:url(../images/footer-bg.png) repeat-x scroll center top transparent;
+	/*background:url(../images/footer-bg.png) repeat-x scroll center top transparent;
 	margin:20px auto 0;
 	height:60px;
-	padding:20px 0px;
+	padding:20px 0px;*/
 	color:#2f2f2f;
+	margin-top:45px;
+	padding-bottom:20px;
 }
 
 .fright{
@@ -193,10 +194,10 @@ img{
 }
 
 a{
-	color: #07c;
+	color: #111;
 }
 a:hover{
-	color: #07c;
+	color: #111;
 }
 
 .hide{
@@ -213,6 +214,8 @@ a:hover{
 .question{
     margin-top:5px;
     font-size:14px;
+	padding:0 0 5px 5px;
+	border-bottom:1px solid #ddd;
 }
 .question p{
     padding:2px;
@@ -236,6 +239,8 @@ a:hover{
 }
 .answer{
     font-size:14px;
+	padding-bottom:5px;
+	border-bottom:1px solid #ddd;
 }
 .comment-list{
     padding-left:60px;

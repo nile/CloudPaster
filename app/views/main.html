@@ -15,62 +15,52 @@
 <script type="text/javascript" src="@{'/public/javascripts/boxy/javascripts/jquery.boxy.js'}"></script>		
     </head>
     <body>
-<div class="decorate-line"></div>    
+<div class="container">
 <div id="header">
-	<div class="container">
-		<div class="grid2 first">
-			<a href="@{CloudPaster.index()}"><div class="logo"></div></a>
+	<div class="grid10 first">
+		<div class="grid8 header-menu first">
+			<ul class="menuul">
+			  #{if session['user.key']}
+				<li >#{a @UserCenter.index()}${user.name}#{/a}</li>
+			  #{/if}
+			  *{<li><a href="@{CloudPaster.activity()}"><span>最近活跃</span></a></li>}*
+			  <li><a href="@{CloudPaster.questions()}"><span>问题</span></a></li>
+			  <li><a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a></li>
+			  <li><a href="@{CloudPaster.tags()}"><span>分类</span></a></li>
+			  *{<li><a href="@{CloudPaster.users()}"><span>用户</span></a></li>}*
+			  <li><a href="@{CloudPaster.ask()}"><span>我要提问</span></a></li>
+			  
+			  #{if session['user.key']}
+				<li><a href="@{Auth.logout()}"><span>退出</span></a></li>
+			  #{/if}
+			  #{else}
+				  <li><a href="@{Auth.login()}"><span>用OpenID登录</span></a></li>
+			  #{/else}
+			</ul>
 		</div>
-		<div class="grid10">
-			<div class="grid10 first info">
-				简单的问答系统 <span class="small">已有${models.User.count()}人在使用云贴纸，希望下一个就是你噢</span>
-			</div>
-			<div class="grid2 first search-form">
-				<table>
-				#{form @CloudPaster.search(),method:'GET',class:'searchform'}
-				<tr><td>
-					<input type="hidden" name="from" value="0"/>
-					<input name="keywords" value="${keywords}" type="text">
-				</td><td>
-					<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
-				</td></tr>
-				#{/form}
-				</table>
-			</div>
-			<div class="grid8 header-menu">                
-		        <ul class="menuul fright">
-                  #{if session['user.key']}
-                    <li >#{a @UserCenter.index()}${user.name}#{/a}</li>
-                  #{/if}
-		          *{<li><a href="@{CloudPaster.activity()}"><span>最近活跃</span></a></li>}*
-		          <li><a href="@{CloudPaster.questions()}"><span>问题</span></a></li>
-		          <li><a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a></li>
-		          <li><a href="@{CloudPaster.tags()}"><span>分类</span></a></li>
-		          *{<li><a href="@{CloudPaster.users()}"><span>用户</span></a></li>}*
-		          <li><a href="@{CloudPaster.ask()}"><span>我要提问</span></a></li>
-		          
-		          #{if session['user.key']}
-			        <li><a href="@{Auth.logout()}"><span>退出</span></a></li>
-				  #{/if}
-				  #{else}
-			          <li><a href="@{Auth.login()}"><span>用OpenID登录</span></a></li>
-				  #{/else}
-				  
-		        </ul>
-	      	</div>
+		<div class="grid2 search-form">
+			<table>
+			#{form @CloudPaster.search(),method:'GET',class:'searchform'}
+			<tr><td>
+				<input type="hidden" name="from" value="0"/>
+				<input name="keywords" value="${keywords}" type="text">
+			</td><td>
+				<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
+			</td></tr>
+			#{/form}
+			</table>
 		</div>
 	</div>
 </div>
-<div class="clear"><p/></div>
+<div class="clear"></div>
+<div class="decorate-line"></div>
+
 <div class="container">
-	<div id="_editor"></div>
     #{doLayout/}
 </div> 
-<div class="clear"></div>
 <div id="footer">
-	<div class="container">
-	    <div class="grid10 first">
-	    	鸣谢：
+	<div class="clear"></div>
+	<div class="decorate-line"></div>
 	      <ul class="menuul">
 	      	<li><a href="http://nginx.org/">nginx</a></li>
 	      	<li><a href="http://www.mongodb.org/">mongodb</a></li>
@@ -81,9 +71,7 @@
 	      	<li><a href="http://www.eclipse.org/">eclipse</a></li>
 	      	<li><a href="http://redcloth.org/hobix.com/textile/">textile</a></li>
 	      </ul>
-	    </div>
-		<div class="grid2" id="footer-logo"><img alt="logo" src="@{'public/images/logo.png'}"></div>
-	</div>
+</div>
 </div>
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -101,26 +89,7 @@
 </script>
 
 <div style="display:none">
-	<div id="paster-template" class="grid8 first list-paster ">
-		<div class="paster-header">
-			<div class="grid6 first">
-				<div class="paster-icon"></div>
-				<a></a>
-				<span class="small"></span>
-			</div>
-			<div class="grid2 right" >
-				<a class="useful" href="javascript:void(0);" onclick="">有用</a>
-				<a class="small useless" href="javascript:void(0);" onclick="">没什么用</a>				
-			</div>
-
-		</div>
-		<div class="paster-content">
-		</div>
-	</div>
 	
-	<div id="useful-template"  class="even-border paster-header list-paster">
-		<a href=""></a> &nbsp; <span class="small" > 共有<span class="useful-count">0</span>被认为是有用的。</span>
-	</div>
 </div>
     </body>
 </html>

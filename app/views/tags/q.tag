@@ -2,6 +2,7 @@
     paster = _arg
 }%
 <div class="grid9 first question">
+<!--
     <div class="grid1 first voting-box ">
         <div class="vote-buttons">
             <table style="padding:0px;">
@@ -12,14 +13,15 @@
         <div class="vote-count">
             ${paster.voteup-paster.votedown}
         </div>
-    </div>
+    </div>	
     <div class="grid1 reply-box ">
         <div class="reply-count">
             ${paster.answerCount}
         </div>
         回复
     </div>
-    <div class="grid6 ">
+-->	
+    <div>
         <div class="question-title">
         #{a @CloudPaster.view(paster.id)}${paster?.title?.raw()}#{/a}
         </div>

@@ -10,7 +10,7 @@
 	
 }%
 #{if _index}
-	<div class="grid8 first  paginations">
+	<div class="grid9 first  paginations">
 	#{if _caller.count > 10}
 		#{if isfirst}
 			第一页
