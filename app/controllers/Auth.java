@@ -19,7 +19,7 @@ public class Auth extends Controller{
 		CloudPaster.index();
 	}
 	public static void yahoologin() throws UnsupportedEncodingException {
-		String returnto = Router.getFullUrl("Auth.login");
+		String returnto = Play.configuration.getProperty("auth.returnto", Router.getFullUrl("Auth.login"));
 		if(flash.contains("return.to"))
 			returnto+="?return="+URLEncoder.encode(flash.get("return.to"), "utf8");
 		if (!OpenID.id("https://me.yahoo.com").required(KEY_EMAIL, "http://axschema.org/contact/email")
@@ -30,7 +30,7 @@ public class Auth extends Controller{
 		}
 	}
 	public static void googlelogin() throws UnsupportedEncodingException {
-		String returnto = Router.getFullUrl("Auth.login");
+		String returnto = Play.configuration.getProperty("auth.returnto", Router.getFullUrl("Auth.login"));
 		if(flash.contains("return.to"))
 			returnto+="?return="+URLEncoder.encode(flash.get("return.to"), "utf8");
 		if (!OpenID.id("https://www.google.com/accounts/o8/id").required(KEY_EMAIL, "http://axschema.org/contact/email")
