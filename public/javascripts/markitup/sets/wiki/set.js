@@ -27,8 +27,9 @@ mySettings = {
         {name:'Url', className:'markItUpButton13', openWith:'[[![Url:!:http://]!] ', closeWith:']', placeHolder:'Your text to link here...' },
         {separator:'---------------' },
         {name:'Quotes', className:'markItUpButton14', openWith:'(!(> |!|>)!)'},
-        {name:'Code', className:'markItUpButton15', openWith:'{{{', closeWith:'}}}'}, 
-        {separator:'---------------' },
-        {name:'Preview', call:'preview', className:'preview'}
+        {name:'Code', className:'markItUpButton15', openWith:'{{{', closeWith:'}}}'}
+		//, 
+        //{separator:'---------------' },
+        //{name:'Preview', call:'preview', className:'preview'}
     ]
 }

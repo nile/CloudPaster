@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import play.db.jpa.Model;
+import util.CryptoUtil;
 @Entity
 public class User extends Model{
 	public String name;
@@ -23,6 +24,8 @@ public class User extends Model{
 		user = new User();
 		user.createDate = new Date();
 		user.email = email;
+		user.save();
+		user.name = CryptoUtil.longToString(user.id);
 		user.save();
 		return user;
 	}

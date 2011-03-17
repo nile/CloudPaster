@@ -26,7 +26,7 @@ public class Paster extends Model {
 	@Field
 	public String content;
 	public String wiki;
-	@Field(tokenize=true,sortable=true)
+	@Field(tokenize=true)
 	public String title;
 	@OneToOne
 	public Paster parent ;
@@ -150,14 +150,14 @@ public class Paster extends Model {
 			this.count = count;
 		}
 	}
-	public static QueryResult search(String keywords,int from,int pagesize) {
-		String query ="content:" + StringUtils.join(TokenUtil.token(keywords)," AND content:");
+
+	public static QueryResult search(String keywords, int from, int pagesize) {
+		String query = "content:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
+		query += " OR title:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
 		Query q = Search.search(query, Paster.class);
-		q.orderBy("title")
-		    .page(from*pagesize,pagesize)
-		    .reverse();
+		q.orderBy("title").page(from * pagesize, pagesize).reverse();
 		List<Paster> fetch = q.fetch();
-		return new QueryResult(fetch,q.count());
+		return new QueryResult(fetch, q.count());
 	}
 	public List<Paster> getAnswers() {
 		return Paster.find("state = ? and parent.id = ? and type=?", State.NORMAL,this.id,Type.A).fetch();

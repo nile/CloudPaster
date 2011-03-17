@@ -116,7 +116,7 @@ public class CloudPaster extends Controller {
 	@Restrictions(@Restrict("user"))
 	static public void ask(Long id,@NotEmpty String title,
 			@NotEmpty String content,String tagstext) {
-		
+		String state = "";
 		if(StringUtils.isNotEmpty(params.get("dosave"))&& id>0) {
 			Paster paster = Paster.update(id, title, content, Auth.getLoginUser(), tagstext);
 			view(paster.id);
@@ -129,30 +129,32 @@ public class CloudPaster extends Controller {
 			if(search.count>0) {
 				render(recommendPosts);
 			}else {
-				boolean newask = true;
-				render(newask);
+				state = "newask";
+				render(state);
 			}
 		}
 		if(StringUtils.isNotEmpty(params.get("newask"))) {
 			params.flash();
-			Boolean newask = true;
-			render(newask);
+			state="newask";
+			render(state);
 		}
 		if(StringUtils.isNotEmpty(params.get("doaddask"))) {
 			params.flash();
 			Paster paster = Paster.create(title,content, Auth.getLoginUser(),tagstext);
 			view(paster.id);
 		}
-		boolean start = true;
-		render(start);
+		state = "start";
+		render(state);
 	}
 	public static void edit(long id){
 		Paster paster = Paster.findById(id);
-		Boolean edit=true;
+		String state="answer-edit";
 		if(paster.type == Type.A) {
-			render("@view",paster,edit);
+			paster = paster.parent;
+			render("@view",paster,state,id);
 		}
-		render("@ask",paster,edit);
+		state = "question-edit";
+		render("@view",paster,state);
 	}
 	public static void index() {
 //		activity();

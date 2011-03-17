@@ -9,33 +9,24 @@
 	${flash.error}
 	${flash.success}
 	#{form @CloudPaster.ask()}
-        #{if start}
+        #{if state=="start"}
 			<div >请先用一句话描述你的问题:</div>
 			<input type="text" id="paster-title" name="title" value="${flash.title}" />
 			<div class="clear"></div>
             <input type="submit" name="doprequery" value="继续下一步"/>
         #{/if}
-        #{if newask}
-			<input id="paster-title" name="title" value="${flash.title}" />
+        #{if state=="newask"}
+			<input id="paster-title" type="text" name="title" value="${flash.title}" />
             #{editor id:"paster-content",name:"content",value:flash.content,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${flash.tagstext}" />
             <input type="submit" name="doaddask" value="新问题"/>
-            <div class="clear"></div>
-        #{/if}
-        #{if edit}
-			<input type="hidden" name="id" value="${paster.id}"/>
-			<input id="paster-title" name="title" value="${paster.title}" />
-            #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
-            <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
-            <input type="submit" name="dosave" value="保存"/>
-            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
             <div class="clear"></div>
         #{/if}
         #{if recommendPosts}
         <div>
             <h2>在提问前，请先确认你的问题是否已经有人问过:</h2>
             #{list items:recommendPosts,as:'paster'}
-            ${paster.title}
+            #{a @CloudPaster.view(paster.id)}${paster.title}#{/a}
             #{/list}
             <div class="clear"></div>
             <input type="submit" name="newask" value="我的问题是不同的"/>

@@ -89,16 +89,19 @@ body{
 }
 
 /** search form*/
-.search-form,.paster_form{
+.search-form,.paster_form{	
 	/*margin-top:10px;*/
 }
-.search-form input,.paster_form input{
+.paster_form{
+	padding: 20px 0 0 0;
+}
+.search-form input{
 	border-color:#CCCCCC #999999 #999999 #CCCCCC;
 	border-width:1px;
 	height:18px;
 }
 .paster_form input[type="text"]{
-	width:200px;
+	width:300px;
 }
 .search-form button, button{
 	border-color:#CCCCCC #999999 #999999 #CCCCCC;
@@ -221,8 +224,7 @@ a:hover{
     padding:2px;
     margin:0px;
 }
-.question-title{
-    color:#07c;
+.question-title{    
     font-size:18px;
     font-weight:bold;
 }
@@ -232,6 +234,7 @@ a:hover{
 }
 .question-signature{
     font-size:10px;
+	text-align:right;
 }
 
 .comment{

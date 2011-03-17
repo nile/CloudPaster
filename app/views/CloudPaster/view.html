@@ -8,15 +8,29 @@
         <div class="tags">
         #{list items:paster.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
         </div>
-        <div class="question-signature">
-        ${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
-        #{if paster.updated} <br/> ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-        </div>
         <div class="question-buttons">
-        #{a @CloudPaster.edit(paster.id)}编辑#{/a}
-        #{a @CloudPaster.answer(paster.id)}回复#{/a}
-        #{a @CloudPaster.comment(paster.id)}评论#{/a}
+			<div class="question-signature grid7">
+			${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
+			#{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+			</div>
+			#{a @CloudPaster.edit(paster.id)}编辑#{/a}
+			#{a @CloudPaster.answer(paster.id)}回复#{/a}
+			#{a @CloudPaster.comment(paster.id)}评论#{/a}
         </div>
+        #{if state=="question-edit"}
+			<div class="paster_form">
+			<h2>编辑问题</h2>
+			#{form @CloudPaster.ask()}
+			<input type="hidden" name="id" value="${paster.id}"/>
+			<input id="paster-title" type="text" name="title" value="${paster.title}" />
+            #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
+            <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
+            <input type="submit" name="dosave" value="保存"/>
+            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
+            <div class="clear"></div>
+			#{/form}
+			</div>
+        #{/if}
         <div class="first comment-list">
             #{list items:paster.comments,as:'comment'}
             <div class="comment">
@@ -73,28 +87,35 @@
             <div>
             ${answer.content.raw()}
             </div>
-            <div class="question-signature">
-            ${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
-            #{if answer.updated} <br/> ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-            </div>
             <div class="question-buttons">
-            #{a @CloudPaster.edit(answer.id)}编辑#{/a}
-            #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
+				<div class="question-signature grid7">
+				${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
+				#{if answer.updated} &nbsp; ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+				</div>
+				#{a @CloudPaster.edit(answer.id)}编辑#{/a}
+				#{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
             </div>
+			 #{if state=='answer-edit' && answer.id == id}
+                <div class="paster_form">
+                <h2>编辑回复</h2>
+                #{form @CloudPaster.answer(paster.id)}
+                    #{editor id:'answer-editor',name:'content',type:'wiki'/}
+                    <input type="submit" name="doansweradd" value="新回复"></input>	
+                    <input type="submit" name="docancel" value="取消" onclidk="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"></input>	
+                #{/form}
+                </div>
+            #{/if}
             <div class="comment-list">
             #{list items:answer.comments,as:'comment'}
                 <div class="comment">
                     <div>
                     ${comment.content.raw()}
                     </div>
-                    <div class="question-signature">
-                    ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
-                    #{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.created.format('yyyy-MM-dd hh:ss')}#{/if}
-                    </div>
                     <div class="question-buttons">
-                    #{a @CloudPaster.answer(paster.id)}编辑#{/a}
-                    #{a @CloudPaster.answer()}隐藏#{/a}
-                    #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
+						<div class="question-signature grid7">
+						${comment?.creator?.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
+						#{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.created.format('yyyy-MM-dd hh:ss')}#{/if}
+						</div>						
                     </div>
                 </div >
             #{/list}

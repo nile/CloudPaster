@@ -1,11 +1,6 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
-
-import java.util.*;
-
-import models.*;
+import play.mvc.Controller;
 import ys.wikiparser.WikiParser;
 
 public class Editor extends Controller {

@@ -3,9 +3,10 @@
 	<p class="large">${flash.error}</p>
 #{/if}
 #{ifnot flash.error}
-
-<p class="large">搜索<span class="added large">${keywords}</span>，共找到 ${count}张贴纸：</p>
-#{listpaster objects:pasters/}
-#{paginations search:true/}
+<p class="large">搜索<span class="added large">${keywords}</span>，共找到 ${count}个问题：</p>
+#{list items:pasters,as:'paster'}
+#{q paster/}
+#{/list}
+#{paginations questions:true/}
 
 #{/ifnot}
