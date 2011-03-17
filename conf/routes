@@ -5,17 +5,14 @@
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
-GET     /                                	    CloudPaster.index
-GET     /my                                	    CloudPaster.my
-GET     /start                  				CloudPaster.prepaste
-GET     /view/{key}                  			CloudPaster.view
-GET     /delete/{key}                 			CloudPaster.delete
-GET   	/intro                 					CloudPaster.intro
-GET   	/load/{<[0-9]+>from}					CloudPaster.load(from:'0')
-GET   	/loadmy/{<[0-9]+>from}					CloudPaster.loadmy(from:'0')
-POST    /paste                 					CloudPaster.paste
-POST    /ratingup/{key}              			CloudPaster.ratingup
-POST    /ratingdown/{key}            			CloudPaster.ratingdown
+GET     /                                	    CloudPaster.questions
+GET     /unanswered                             CloudPaster.unanswered
+GET     /view/{id}                              CloudPaster.view
+GET     /edit/{id}                  			CloudPaster.edit
+GET     /comment/{id}                 			CloudPaster.comment
+*   	/ask                 					CloudPaster.ask
+GET   	/tags									CloudPaster.tags
+GET   	/tag/{name}								CloudPaster.tag
 GET   	/search                 				CloudPaster.search
 
 GET     /logout                  				Auth.logout

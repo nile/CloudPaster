@@ -83,25 +83,32 @@ public class CloudPaster extends Controller {
 		}
 		view(paster.id);
 	}
-	static public void comment(long id,long answerId,String content) {
+	static public void comment(long id,long aid,String content) {
 		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("docommentadd"))) {
-			Paster.comment(answerId>0?answerId:id, content, Auth.getLoginUser());
+			Paster.comment(aid>0?aid:id, content, Auth.getLoginUser());
 			view(id);
 		}
 		if(StringUtils.isNotBlank(params.get("docancel"))) {
 			view(id);
 		}
 		String state = "comment";
-		if(answerId>0) {
+		if(aid>0) {
 			state = "answer-comment";
 		}
-		render("@view",paster,state,answerId);
+		render("@view",paster,state,aid);
 	}
-	static public void answer(long id,String content) {
+	static public void answer(long id,long aid,String content) {
 		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("doansweradd"))) {
 			Paster.answer(id, content, Auth.getLoginUser());
+			view(id);
+		}
+		if(StringUtils.isNotEmpty("doupdateanswer")) {
+			Paster answer = Paster.findById(aid);
+			if(answer.creator.id == Auth.getLoginUser().id) {
+				Paster.update(aid, answer.title, content, Auth.getLoginUser(), null);
+			}
 			view(id);
 		}
 		if(StringUtils.isNotBlank(params.get("docancel"))) {
@@ -117,11 +124,15 @@ public class CloudPaster extends Controller {
 	static public void ask(Long id,@NotEmpty String title,
 			@NotEmpty String content,String tagstext) {
 		String state = "";
-		if(StringUtils.isNotEmpty(params.get("dosave"))&& id>0) {
-			Paster paster = Paster.update(id, title, content, Auth.getLoginUser(), tagstext);
-			view(paster.id);
+		if(StringUtils.isNotEmpty(params.get("doupdatequestion"))&& id>0) {
+			Paster tmp = Paster.findById(id);
+			if(Auth.getLoginUser().id == tmp.creator.id) {
+				Paster paster = Paster.update(id, title, content, Auth.getLoginUser(), tagstext);
+				view(paster.id);
+			} else {
+				flash.error("你不能修改别人的问题");
+			}
 		}
-		
 		if(StringUtils.isNotEmpty(params.get("doprequery"))) {
 			params.flash();
 			QueryResult search = Paster.search(title, 0, 5);

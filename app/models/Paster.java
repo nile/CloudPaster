@@ -17,7 +17,6 @@ import play.modules.search.Field;
 import play.modules.search.Indexed;
 import play.modules.search.Query;
 import play.modules.search.Search;
-import util.PasterUtil;
 import util.TokenUtil;
 import ys.wikiparser.WikiParser;
 @Entity
@@ -85,7 +84,7 @@ public class Paster extends Model {
 		paster.title = title;
 		paster.tagstext = tagstext;
 		if(parentId>0) {
-			Paster tmp_parent = paster.findById(parentId);
+			Paster tmp_parent = Paster.findById(parentId);
 			if(type== Type.C)
 				tmp_parent.commentCount++;
 			if(type == Type.A)
@@ -97,7 +96,6 @@ public class Paster extends Model {
 			String[] tagNames = tagstext.trim().split("[ ,;]");
 			for (String tag : tagNames) {
 				if(StringUtils.isNotEmpty(tag)) {
-					System.out.println("========"+tag+"!!");
 					paster.tagWith(tag);
 				}
 			}

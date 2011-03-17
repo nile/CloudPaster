@@ -25,7 +25,7 @@
 			<input id="paster-title" type="text" name="title" value="${paster.title}" />
             #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
             <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
-            <input type="submit" name="dosave" value="保存"/>
+            <input type="submit" name="doupdatequestion" value="保存"/>
             <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
             <div class="clear"></div>
 			#{/form}
@@ -78,7 +78,7 @@
 
 <div class="clear"></div>
 
-<h2>${paster.answerCount}个回复</h2>
+<h2>${paster.answerCount}个回答</h2>
 
 <div class="answer-list">
     #{list items:paster.answers,as:'answer'}
@@ -97,10 +97,10 @@
             </div>
 			 #{if state=='answer-edit' && answer.id == id}
                 <div class="paster_form">
-                <h2>编辑回复</h2>
-                #{form @CloudPaster.answer(paster.id)}
-                    #{editor id:'answer-editor',name:'content',type:'wiki'/}
-                    <input type="submit" name="doansweradd" value="新回复"></input>	
+                <h2>编辑回答</h2>
+                #{form @CloudPaster.answer(paster.id,answer.id)}
+                    #{editor id:'answer-editor',name:'content',type:'wiki',value:answer.wiki/}
+                    <input type="submit" name="doupdateanswer" value="保存"></input>	
                     <input type="submit" name="docancel" value="取消" onclidk="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"></input>	
                 #{/form}
                 </div>
@@ -120,9 +120,9 @@
                 </div >
             #{/list}
             </div>			
-            #{if state=='answer-comment' && answerId==answer.id}
+            #{if state=='answer-comment' && aid==answer.id}
                 <div>
-                <h2>你对该回复的评论:</h2>
+                <h2>你对该回答的评论:</h2>
                 <div class="simple-form">
                 #{form @CloudPaster.comment(paster.id,answer.id)}
                     #{editor id:'answer-editor',name:'content',mode:'simple'/}

@@ -25,7 +25,7 @@ public class User extends Model{
 		user.createDate = new Date();
 		user.email = email;
 		user.save();
-		user.name = CryptoUtil.longToString(user.id);
+		user.name = "用户"+CryptoUtil.longToString(user.id);
 		user.save();
 		return user;
 	}

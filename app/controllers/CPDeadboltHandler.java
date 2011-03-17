@@ -11,11 +11,9 @@ public class CPDeadboltHandler extends AbstractDeadboltHandler {
 	public CPDeadboltHandler() {
 	}
 	public void beforeRoleCheck() {
-		System.out.println("beforeRoleCheck");
 	}
 	@Override
 	public RoleHolder getRoleHolder() {
-		System.out.println("getRoleHolder");
 		return new CPRoleHolder();
 	}
 	@Override
