@@ -99,12 +99,11 @@ public class CloudPaster extends Controller {
 		render("@view",paster,state,aid);
 	}
 	static public void answer(long id,long aid,String content) {
-		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("doansweradd"))) {
 			Paster.answer(id, content, Auth.getLoginUser());
 			view(id);
 		}
-		if(StringUtils.isNotEmpty("doupdateanswer")) {
+		if(StringUtils.isNotEmpty(params.get("doupdateanswer"))) {
 			Paster answer = Paster.findById(aid);
 			if(answer.creator.id == Auth.getLoginUser().id) {
 				Paster.update(aid, answer.title, content, Auth.getLoginUser(), null);
@@ -114,6 +113,7 @@ public class CloudPaster extends Controller {
 		if(StringUtils.isNotBlank(params.get("docancel"))) {
 			view(id);
 		}
+		Paster paster = Paster.findById(id);
 		String state = "answer";
 		render("@view",paster,state);
 	}
