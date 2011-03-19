@@ -1,5 +1,5 @@
-#{extends 'main.html'/}
-<h1>分类索引</h1>
+#{extends 'table.html'/}
+<h1>鍒嗙被绱㈠紩</h1>
 <div class="tags grid9">
 #{list items:tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a} &nbsp;&nbsp;#{/list}
 </div>

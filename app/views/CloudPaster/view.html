@@ -1,23 +1,23 @@
-#{extends 'main.html'/}
+#{extends 'table.html'/}
 <h2>${paster.title}</h2>
-<div class="grid9 first question">    
-    <div>
-        <div>
-        ${paster.content.raw()}
-        </div>
-        <div class="tags">
-        #{list items:paster.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
-        </div>
-        <div class="question-buttons">
-			<div class="question-signature grid7">
-			${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
-			#{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-			</div>
-			#{a @CloudPaster.edit(paster.id)}编辑#{/a}
-			#{a @CloudPaster.answer(paster.id)}回复#{/a}
-			#{a @CloudPaster.comment(paster.id)}评论#{/a}
-        </div>
-        #{if state=="question-edit"}
+<table style="width:100%">
+    <tr><td>
+    ${paster.content.raw()}
+    </td></tr>
+    <tr><td>
+        <table style="width:100%">
+        <tr><td style="width:70%">
+            #{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span style="color:blue">${tag.name}</span>#{/a}&nbsp;#{/list}
+            &nbsp;${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
+            #{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+        </td><td>
+            #{a @CloudPaster.edit(paster.id)}编辑#{/a}
+            &nbsp;#{a @CloudPaster.answer(paster.id)}回复#{/a}
+            &nbsp;#{a @CloudPaster.comment(paster.id)}评论#{/a}
+        </td></tr></table>
+    </td></tr>
+    <tr><td>
+    #{if state=="question-edit"}
 			<div class="paster_form">
 			<h2>编辑问题</h2>
 			#{form @CloudPaster.ask()}
@@ -30,7 +30,13 @@
             <div class="clear"></div>
 			#{/form}
 			</div>
-        #{/if}
+    #{/if}    
+  
+    </td></tr>
+    
+</table>
+    <div>
+       
         <div class="first comment-list">
             #{list items:paster.comments,as:'comment'}
             <div class="comment">
