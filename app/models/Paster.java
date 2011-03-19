@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import play.db.jpa.Model;
 import play.modules.search.Field;
@@ -54,18 +56,18 @@ public class Paster extends Model {
 		NORMAL,HIDDEN
 	}
 	public static Paster comment(long parentId,String content,User user) {
-		return createAndSave(null,content, user,null, -1,parentId,Type.C);
+		return createAndSave(null,content, user,null, -1,parentId,Type.C,false);
 	}
 	public static Paster answer(long parentId,String content,User user) {
-		return createAndSave(null,content, user,null, -1,parentId,Type.A);
+		return createAndSave(null,content, user,null, -1,parentId,Type.A,true);
 	}
 	public static Paster create(String title,String content,User user,String tags) {
-		return createAndSave(title,content, user,tags, -1,-1,Type.Q);
+		return createAndSave(title,content, user,tags, -1,-1,Type.Q,true);
 	}
 	public static Paster update(long id ,String title,String content,User user,String tags) {
-		return createAndSave(title,content, user,tags, id,-1,null);
+		return createAndSave(title,content, user,tags, id,-1,null,true);
 	}
-	public static Paster createAndSave(String title,String content,User user,String tagstext,long id,long parentId,Type type) {
+	public static Paster createAndSave(String title,String content,User user,String tagstext,long id,long parentId,Type type,boolean wiki) {
 		Paster paster = null;
 		if(id > 0) {
 			paster = Paster.findById(id);
@@ -78,7 +80,10 @@ public class Paster extends Model {
 			paster.creator = user;
 		}
 		paster.wiki = content;
-		paster.content = WikiParser.renderXHTML(paster.wiki);
+		if(wiki)
+			paster.content = WikiParser.renderXHTML(paster.wiki);
+		else
+			paster.content = Jsoup.clean(paster.wiki,Whitelist.none());
 		//PasterUtil.cleanUpAndConvertImages(content, user.email);
 		//paster.content = content;
 		paster.title = title;

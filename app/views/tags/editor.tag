@@ -1,5 +1,5 @@
 #{if _mode=='simple'}
-    <textarea id="${_id}" name="${_name}" cols="20" rows="10">${_value}</textarea>
+    <textarea style="width:60%;height:80px;" id="${_id}" name="${_name}"  rows="10">${_value}</textarea>
 #{/if}
 #{else}
 #{set 'moreScripts'}
@@ -35,5 +35,5 @@ $(document).ready(function()	{
 });
 -->
 </script>
-<textarea id="${_id}" name="${_name}" cols="80" rows="20">${_value}</textarea>
+<textarea style="height:140px" id="${_id}" name="${_name}" cols="80" rows="15">${_value}</textarea>
 #{/else}

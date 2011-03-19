@@ -1,144 +1,136 @@
-#{extends 'main.html'/}
+#{extends 'table.html'/}
 <h2>${paster.title}</h2>
-<div class="grid9 first question">    
-    <div>
-        <div>
-        ${paster.content.raw()}
-        </div>
-        <div class="tags">
-        #{list items:paster.tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a}#{/list}
-        </div>
-        <div class="question-buttons">
-			<div class="question-signature grid7">
-			${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
-			#{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-			</div>
-			#{a @CloudPaster.edit(paster.id)}编辑#{/a}
-			#{a @CloudPaster.answer(paster.id)}回复#{/a}
-			#{a @CloudPaster.comment(paster.id)}评论#{/a}
-        </div>
-        #{if state=="question-edit"}
-			<div class="paster_form">
-			<h2>编辑问题</h2>
-			#{form @CloudPaster.ask()}
-			<input type="hidden" name="id" value="${paster.id}"/>
-			<input id="paster-title" type="text" name="title" value="${paster.title}" />
-            #{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}
-            <input id="paster-tags" name="tagstext" value="${paster.tagstext}" />
-            <input type="submit" name="doupdatequestion" value="保存"/>
-            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
-            <div class="clear"></div>
-			#{/form}
-			</div>
-        #{/if}
-        <div class="first comment-list">
-            #{list items:paster.comments,as:'comment'}
-            <div class="comment">
-                <div>
-                ${comment.content.raw()}
-                </div>
-                <div class="question-signature">
-                ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
-                #{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-                </div>
-                <div class="question-buttons">
-                #{a @CloudPaster.answer(comment.id)}编辑#{/a}
-                #{a @CloudPaster.comment(paster.id)}评论#{/a}
-                </div>
-                <div class="decorate-line"></div>
-            </div >
-            #{/list}
-        </div>
-        <div>
-            #{if state=='answer'}
-                <div class="paster_form">
-                <h2>你的回复</h2>
-                #{form @CloudPaster.answer(paster.id)}
-                    #{editor id:'answer-editor',name:'content',type:'wiki'/}
-                    <input type="submit" name="doansweradd" value="新回复"></input>	
-                    <input type="submit" name="docancel" value="取消"></input>	
-                #{/form}
-                </div>
-            #{/if}
-            #{if state=='comment'}
-                <div>
-                <h2>你对该问题的评论:</h2>
-				<div class="simple-form">
-                #{form @CloudPaster.comment(paster.id)}
-                    #{editor id:'answer-editor',name:'content',mode:'simple'/}
-                    <input type="submit" name="docommentadd" value="新评论"></input>	
-                    <input type="submit" name="docancel" value="取消"></input>	
-                #{/form}
-				</div>
-                </div>
-            #{/if}
-        </div>
-    </div>
-</div>
-
-<div class="clear"></div>
-
-<h2>${paster.answerCount}个回答</h2>
-
-<div class="answer-list">
-    #{list items:paster.answers,as:'answer'}
-    <div class="grid9 first answer">        
-        <div>
-            <div>
-            ${answer.content.raw()}
-            </div>
-            <div class="question-buttons">
-				<div class="question-signature grid7">
-				${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
+<table style="width:100%">
+    <tr><td>
+    ${paster.content.raw()}
+    </td></tr>
+    <tr><td>
+        <table style="width:100%">
+        <tr><td style="width:70%">
+            #{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span style="color:blue">${tag.name}</span>#{/a}&nbsp;#{/list}
+            &nbsp;${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
+            #{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+        </td><td class="right">
+            #{a @CloudPaster.edit(paster.id)}编辑#{/a}
+            &nbsp;#{a @CloudPaster.answer(paster.id)}回复#{/a}
+            &nbsp;#{a @CloudPaster.comment(paster.id)}评论#{/a}
+        </td></tr></table>
+    </td></tr>
+    #{if paster.comments.size>0}
+    <tr><td>
+        <table>
+        #{list items:paster.comments,as:'comment'}
+            <tr><td style="width:5%">&nbsp;</td>
+            <td>${comment.content.raw()} ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
+            </td></tr>
+        #{/list}
+        </table>
+    </td></tr>
+    #{/if}
+    #{if state=="question-edit"}
+    <tr><td>
+        #{form @CloudPaster.ask()}
+        <input type="hidden" name="id" value="${paster.id}"/>
+        <table class="bg1">
+            <tr><td><h2>编辑问题</h2></td></tr>
+            <tr><td><input id="paster-title" type="text" name="title" value="${paster.title}" style="width:300px;"/></td></tr>
+            <tr><td>#{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}</td></tr>
+            <tr><td><input id="paster-tags" name="tagstext" value="${paster.tagstext}" style="width:200px;"/></td></tr>
+            <tr><td><input type="submit" name="doupdatequestion" value="保存"/>
+            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/></td></tr>
+         </table>
+         #{/form}
+    </td></tr>
+    #{/if}
+    
+    #{if state=='answer'}
+    <tr><td>
+    #{form @CloudPaster.answer(paster.id)}
+        <table class="bg1">
+        <tr><td><h2>你的回复</h2></td></tr>
+        <tr><td>#{editor id:'answer-editor',name:'content',type:'wiki'/}</td></tr>
+        <tr><td><input type="submit" name="doansweradd" value="新回复"></input>	
+            <input type="submit" name="docancel" value="取消"></input></td></tr>
+        </table>
+    #{/form}
+    </td></tr>
+    #{/if}
+    
+    #{if state=='comment'}
+    <tr><td>
+        #{form @CloudPaster.comment(paster.id)}
+        <table class="center bg1"><tr><td><h2>你对该问题的评论:</h2></td></tr>
+            <tr><td>#{editor id:'answer-editor',name:'content',mode:'simple'/}</td></tr>
+            <tr><td><input type="submit" name="docommentadd" value="新评论"></input>
+            <input type="submit" name="docancel" value="取消"></input></td></tr>
+        </table>
+        #{/form}
+    </td></tr>
+    #{/if}
+    
+    <tr><td>
+        <h2>${paster.answerCount}个回答</h2>
+    </td></tr>
+    
+    <tr><td>
+        #{list items:paster.answers,as:'answer'}
+            <table>
+            <tr><td>${answer.content.raw()}</td></tr>
+            <tr><td>
+                <table ><tr><td style="width:70%">
+                ${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
 				#{if answer.updated} &nbsp; ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
-				</div>
-				#{a @CloudPaster.edit(answer.id)}编辑#{/a}
+                </td><td class="right">
+                #{a @CloudPaster.edit(answer.id)}编辑#{/a}
 				#{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
-            </div>
-			 #{if state=='answer-edit' && answer.id == id}
-                <div class="paster_form">
-                <h2>编辑回答</h2>
-                #{form @CloudPaster.answer(paster.id,answer.id)}
-                    #{editor id:'answer-editor',name:'content',type:'wiki',value:answer.wiki/}
-                    <input type="submit" name="doupdateanswer" value="保存"></input>	
-                    <input type="submit" name="docancel" value="取消" onclidk="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"></input>	
-                #{/form}
-                </div>
+                </td></tr></table>
+             </td></tr>
+             #{if answer.comments.size>0}
+             <tr><td>
+             <table>
+                #{list items:answer.comments,as:'comment'}
+                    <tr><td style="width:5%">&nbsp;</td>
+                    <td>${comment.content.raw()}
+                    ${comment?.creator?.name} ${comment.created.format('yyyy-MM-dd hh:ss')}
+                    </td></tr>
+                #{/list}
+             </table>
+             </td></tr>
+             #{/if}
+             #{if state=='answer-edit' && answer.id == id}
+             <tr><td>
+             #{form @CloudPaster.answer(paster.id,answer.id)}
+                <table class="bg1">
+                <tr><td><h2>编辑回答</h2></td></tr>
+                <tr><td>#{editor id:'answer-editor',name:'content',type:'wiki',value:answer.wiki/}</td></tr>
+                <tr><td><input type="submit" name="doupdateanswer" value="保存"></input>
+                    <input type="submit" name="docancel" value="取消" onclidk="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"></input>
+                </td></tr>
+                </table>
+            #{/form}
+            </td></tr>
             #{/if}
-            <div class="comment-list">
-            #{list items:answer.comments,as:'comment'}
-                <div class="comment">
-                    <div>
-                    ${comment.content.raw()}
-                    </div>
-                    <div class="question-buttons">
-						<div class="question-signature grid7">
-						${comment?.creator?.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
-						#{if comment.updated} <br/> ${comment.lastUser.name} 修改于 ${comment.created.format('yyyy-MM-dd hh:ss')}#{/if}
-						</div>						
-                    </div>
-                </div >
-            #{/list}
-            </div>			
+            
             #{if state=='answer-comment' && aid==answer.id}
-                <div>
-                <h2>你对该回答的评论:</h2>
-                <div class="simple-form">
-                #{form @CloudPaster.comment(paster.id,answer.id)}
-                    #{editor id:'answer-editor',name:'content',mode:'simple'/}
-                    <div>
-                    <input type="submit" name="docommentadd" value="新评论"></input>
-                    <input type="submit" name="docancel" value="取消"></input>	
-                    </div>
-                #{/form}
-                </div>
-                </div>
+            <tr><td>
+            #{form @CloudPaster.comment()}
+            #{hidden name:'id',value:paster.id/}
+            #{hidden name:'aid',value:answer.id/}
+                <table class="center bg1"><tr><td><h2>你对该回答的评论:</h2></td></tr>
+                <tr><td>#{editor id:'answer-editor',name:'content',mode:'simple'/}</td></tr>
+                <tr><td><input type="submit" name="docommentadd" value="新评论"></input>
+                    <input type="submit" name="docancel" value="取消"></input></td></tr>
+                </table>
+            #{/form}
+            </td></tr>
             #{/if}
-        </div>
-    </div >
-    #{/list}
-</div>
-<div class="clear"></div>
+            </table>
+        #{/list}
+        
+    </td></tr>
+    
+</table>
+
 
 
 

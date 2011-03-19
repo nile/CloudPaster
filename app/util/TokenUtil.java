@@ -24,7 +24,6 @@ public class TokenUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(tokens);
 		return tokens.toArray(new String[tokens.size()]);
 	}
 	public static void main(String[] args) throws IOException {

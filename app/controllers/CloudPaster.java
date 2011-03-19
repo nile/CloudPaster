@@ -167,10 +167,7 @@ public class CloudPaster extends Controller {
 		state = "question-edit";
 		render("@view",paster,state);
 	}
-	public static void index() {
-//		activity();
-		questions(0);
-	}
+
 	public static void view(long id) {
 		Paster paster = Paster.findById(id);
 		render(paster);

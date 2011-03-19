@@ -16,7 +16,7 @@ public class Auth extends Controller{
 	public static final String KEY_EMAIL = "email";
 	public static void logout() {
 		session.clear();
-		CloudPaster.index();
+		CloudPaster.questions(0);
 	}
 	public static void yahoologin() throws UnsupportedEncodingException {
 		String returnto = Play.configuration.getProperty("auth.returnto", Router.getFullUrl("Auth.login"));

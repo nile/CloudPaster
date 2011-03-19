@@ -1,6 +1,9 @@
-#{extends 'main.html'/}
+#{extends 'table.html'/}
 <h2>问题</h2>
+<table style="width:100%">
 #{list items:pasters,as:'paster'}
-#{q paster/}
+    <tr><td>#{q paster/}</td></tr>
 #{/list}
-#{paginations questions:true/}
+    <tr><td>#{paginations questions:true/}</td></tr>
+</table>
+

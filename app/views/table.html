@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>云贴纸--简单的问答系统</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+        <script src="/public/javascripts/jquery-1.5.1.js" type="text/javascript" charset="utf-8"></script>
+		#{get "moreScripts"/}
+        <style>
+        body{
+            font-size:14px;
+            margin:0px;
+        }
+        a{
+            color:#0F0F0F;
+        }
+        table{
+            width:100%;
+        }
+        .center{
+            text-align:center;
+        }
+        .left{
+            text-align:left;
+        }
+        .right{
+            text-align:right;
+        }
+        .bg1{
+            background:#D9E3EA;
+        }
+        </style>
+    </head>
+    <body> 
+<table style="width:85%;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
+<tr style="background-color:orange">
+<td style="width:80%">
+ #{if session['user.key']}
+    
+  #{/if}
+  <a href="@{CloudPaster.questions()}"><span>问题</span></a>
+  <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
+  <a href="@{CloudPaster.tags()}"><span>分类</span></a>
+  <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>
+  &nbsp;&nbsp;
+  #{if session['user.key']}    
+    #{a @UserCenter.index()}${user.name?:"无名氏"}#{/a}
+    <a href="@{Auth.logout()}"><span>退出</span></a>
+  #{/if}
+  #{else}
+    <a href="@{Auth.login()}"><span>用OpenID登录</span></a>
+  #{/else}
+</td>
+<td>
+    <table>
+			#{form @CloudPaster.search(),method:'GET',class:'searchform'}
+			<tr><td>
+				<input type="hidden" name="from" value="0"/>
+				<input name="keywords" value="${keywords}" type="text">
+			</td><td>
+				<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
+			</td></tr>
+			#{/form}
+	</table>
+</td>
+</tr>
+<tr><td>
+    #{doLayout/}
+    </td>
+    <td>&nbsp;</td>
+</tr>
+<tr><td style="padding:20px 0 10px 0;">
+    <a href="http://nginx.org/">nginx</a>
+	<a href="http://www.mongodb.org/">mongodb</a>
+	<a href="http://www.playframework.org">playframework</a>
+	<a href="http://www.blueprint.org">blueprint</a>
+	<a href="http://lucene.apache.org">apache lucene</a>
+	<a href="http://openiconlibrary.sourceforge.net/">openiconlibrary</a>
+	<a href="http://www.eclipse.org/">eclipse</a>
+	<a href="http://redcloth.org/hobix.com/textile/">textile</a>
+    </td>
+</tr>
+</table>
+
+    </body>
+</html>
+    
