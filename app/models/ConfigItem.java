@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 
 import play.db.jpa.Model;
 @Entity
-public class ConfigItem extends Model{
-	public String key;
-	@Column(name="value")
-	public String value;
+public class ConfigItem extends Model{        
+	public String name;
+	@Column(name="val")
+	public String val;
 }

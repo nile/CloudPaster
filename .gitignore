@@ -5,3 +5,7 @@ eclipse/
 tmp/
 "public/upload"
 public/upload
+nbproject/
+logs/
+build.xml
+manifest.mf

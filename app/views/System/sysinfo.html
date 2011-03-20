@@ -1,0 +1,25 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+      <h1>系统信息</h1>
+      <table>
+          <tr><td>处理器个数：</td><td>${runtime.availableProcessors()}</td></tr>
+          <tr><td>空闲内存：</td><td>${runtime.freeMemory()}</td></tr>
+          <tr><td>总内存：</td><td>${runtime.totalMemory()}</td></tr>
+          <tr><td>最大内存：</td><td>${runtime.maxMemory()}</td></tr>
+      </table>
+      <table>
+          #{list itsm:configs,as:'config'}
+          <tr><td>${config.name}：</td><td>${config.val}</td></tr>          
+          #{/list}
+      </table>
+  </body>
+</html>
