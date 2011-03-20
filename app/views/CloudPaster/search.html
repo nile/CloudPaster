@@ -1,9 +1,9 @@
-#{extends 'main.html'/}
+#{extends 'table.html'/}
 #{if flash.error}
 	<p class="large">${flash.error}</p>
 #{/if}
 #{ifnot flash.error}
-<p class="large">搜索<span class="added large">${keywords}</span>，共找到 ${count}个问题：</p>
+<h1>搜索<span class="added large">${keywords}</span>，共找到 ${count}个问题：</h1>
 #{list items:pasters,as:'paster'}
 #{q paster/}
 #{/list}

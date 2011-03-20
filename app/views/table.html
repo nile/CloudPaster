@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>云贴纸--简单的问答系统</title>
@@ -36,9 +35,6 @@
 <table style="width:85%;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
 <td style="width:80%">
- #{if session['user.key']}
-    
-  #{/if}
   <a href="@{CloudPaster.questions()}"><span>问题</span></a>
   <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
@@ -53,16 +49,15 @@
   #{/else}
 </td>
 <td>
+#{form @CloudPaster.search(),method:'GET',class:'searchform'}
     <table>
-			#{form @CloudPaster.search(),method:'GET',class:'searchform'}
 			<tr><td>
-				<input type="hidden" name="from" value="0"/>
 				<input name="keywords" value="${keywords}" type="text">
 			</td><td>
 				<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
 			</td></tr>
-			#{/form}
 	</table>
+#{/form}	
 </td>
 </tr>
 <tr><td>
