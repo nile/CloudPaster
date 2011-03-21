@@ -9,6 +9,7 @@ and open the template in the editor.
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
+  ${flash.success}
       <h1>系统信息</h1>
       <table>
           <tr><td>处理器个数：</td><td>${runtime.availableProcessors()}</td></tr>
@@ -17,9 +18,19 @@ and open the template in the editor.
           <tr><td>最大内存：</td><td>${runtime.maxMemory()}</td></tr>
       </table>
       <table>
-          #{list itsm:configs,as:'config'}
-          <tr><td>${config.name}：</td><td>${config.val}</td></tr>          
+          #{list items:configs,as:'config'}
+          <tr><td>${config.name}：</td><td>${config.val}</td><td>#{a @Manager.delconfig(config.id)}删除#{/a}</td></tr>          
           #{/list}
       </table>
+	  #{form @Manager.addconfig()}
+	  <table>
+		  <tr><td>配置名称</td><td>值</td><td>&nbsp;</td></tr>
+          <tr><td><input type="text" name="item.name"></td>
+		  <td><input type="text" name="item.val"></td>
+		  <td><input type="submit" name="doaddconfig" value="设置"></td>
+		  </tr>          
+      </table>
+	  #{/form}
+	  #{a @Manager.apply()}应用#{/a}
   </body>
 </html>

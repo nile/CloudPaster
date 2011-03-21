@@ -8,6 +8,7 @@ import models.Paster.QueryResult;
 import models.Paster.Type;
 import models.User;
 import net.sf.oval.constraint.NotEmpty;
+import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -98,9 +99,11 @@ public class CloudPaster extends Controller {
 		}
 		render("@view",paster,state,aid);
 	}
+	@Restrictions(@Restrict("user"))
 	static public void answer(long id,long aid,String content) {
 		if(StringUtils.isNotEmpty(params.get("doansweradd"))) {
-			Paster.answer(id, content, Auth.getLoginUser());
+			Paster answer = Paster.answer(id, content, Auth.getLoginUser());
+			Notifier.anwser(answer.parent,answer);
 			view(id);
 		}
 		if(StringUtils.isNotEmpty(params.get("doupdateanswer"))) {

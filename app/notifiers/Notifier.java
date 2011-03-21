@@ -17,7 +17,13 @@ public class Notifier extends Mailer {
       send(email);
    }
  
-   
+   public static void anwser(Paster paster,Paster answer) {
+	   setSubject("CloudPaster更新通知："+paster.title);
+	   addRecipient(paster.creator.email);
+	   setContentType("text/html");
+	   setCharset("UTF-8");
+	   send("Notifier/answer",paster,answer);
+   }
    public static void paste(String email,Paster paster) {
 	   setSubject("Paster 更新提醒");
 	   addRecipient(email);

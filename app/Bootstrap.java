@@ -1,3 +1,6 @@
+import java.util.List;
+
+import models.ConfigItem;
 import play.Play;
 import play.data.parsing.DataParser;
 import play.jobs.Job;
@@ -14,5 +17,10 @@ public class Bootstrap extends Job {
         	 RobotMessager.init(Play.configuration.getProperty("robot.msnaccount"), Play.configuration.getProperty("robot.password"));
         	 RobotMessager.login();
          }
+         //应用系统配置
+        final List<ConfigItem> configs = ConfigItem.all().fetch();
+     	for (ConfigItem item : configs) {
+     		Play.configuration.put(item.name, item.val);
+ 		}
 	}
 }
