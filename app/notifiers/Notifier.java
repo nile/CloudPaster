@@ -2,6 +2,7 @@ package notifiers;
 import org.apache.commons.mail.EmailAttachment;
 
 import models.Paster;
+import play.Logger;
 import play.Play;
 import play.mvc.Mailer;
 
@@ -22,6 +23,7 @@ public class Notifier extends Mailer {
 	   addRecipient(paster.creator.email);
 	   setContentType("text/html");
 	   setCharset("UTF-8");
+           Logger.info("send email to %s", paster.creator.email);
 	   send("Notifier/answer",paster,answer);
    }
    public static void paste(String email,Paster paster) {
