@@ -1,9 +1,11 @@
 package models;
 
+import javax.persistence.Entity;
+
 import models.deadbolt.Role;
-
-public class CPRole implements Role {
-
+import play.db.jpa.Model;
+@Entity
+public class CPRole extends Model implements Role {
 	private String name;
 
 	public CPRole(String name) {
@@ -13,5 +15,12 @@ public class CPRole implements Role {
 	public String getRoleName() {
 		return name;
 	}
-
+	public static CPRole createOrGet(String name) {
+		CPRole role = CPRole.find("byName", name).first();
+		if(role==null) {
+			role = new CPRole(name);
+			role.save();
+		}
+		return role;
+	}
 }

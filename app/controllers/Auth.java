@@ -9,7 +9,6 @@ import play.libs.OpenID;
 import play.libs.OpenID.UserInfo;
 import play.mvc.Controller;
 import play.mvc.Router;
-import play.mvc.Http.Request;
 
 public class Auth extends Controller{
 	public static final String KEY_TIMESTAMP = "timestamp";
@@ -53,7 +52,7 @@ public class Auth extends Controller{
               String email = userinfo.extensions.get(KEY_EMAIL);
               User user = User.createOrGet(email);
               session.put(KEY_USER, user.id);
-              session.put(KEY_TIMESTAMP, System.currentTimeMillis());
+              session.put(KEY_TIMESTAMP, System.currentTimeMillis());              
               if(params._contains("return")) {
             	  redirect(params.get("return"));
               }

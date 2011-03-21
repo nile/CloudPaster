@@ -6,17 +6,24 @@
 package controllers;
 
 import java.util.List;
+
+import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import models.ConfigItem;
 import play.Play;
 import play.db.jpa.JPABase;
 import play.libs.Mail;
 import play.mvc.Controller;
+import play.mvc.With;
 
 /**
  *
  * @author nile
  */
+@With(Deadbolt.class)
 public class Manager extends Controller{
+	@Restrictions(@Restrict("admin"))
     public static void sysinfo(){
         final Runtime runtime = Runtime.getRuntime();  
         final List<ConfigItem> configs = ConfigItem.all().fetch();

@@ -84,6 +84,7 @@ public class CloudPaster extends Controller {
 		}
 		view(paster.id);
 	}
+	@Restrictions(@Restrict("user"))
 	static public void comment(long id,long aid,String content) {
 		Paster paster = Paster.findById(id);
 		if(StringUtils.isNotEmpty(params.get("docommentadd"))) {

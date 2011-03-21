@@ -1,5 +1,6 @@
 import java.util.List;
 
+import models.CPRole;
 import models.ConfigItem;
 import play.Play;
 import play.data.parsing.DataParser;
@@ -22,5 +23,9 @@ public class Bootstrap extends Job {
      	for (ConfigItem item : configs) {
      		Play.configuration.put(item.name, item.val);
  		}
+     	//创建角色
+     	CPRole.createOrGet("user");
+     	CPRole.createOrGet("admin");
+     	CPRole.createOrGet("guest");
 	}
 }

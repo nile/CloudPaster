@@ -41,7 +41,7 @@
   <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>
   &nbsp;&nbsp;
   #{if session['user.key']}    
-    #{a @UserCenter.index()}${user.name?:"无名氏"}#{/a}
+    #{a @UserCenter.index()}${user?.name?:"游客"}#{/a}
     <a href="@{Auth.logout()}"><span>退出</span></a>
   #{/if}
   #{else}
