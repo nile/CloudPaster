@@ -9,7 +9,8 @@ import play.libs.OpenID;
 import play.libs.OpenID.UserInfo;
 import play.mvc.Controller;
 import play.mvc.Router;
-
+import play.mvc.With;
+@With({GlobalUser.class})
 public class Auth extends Controller{
 	public static final String KEY_TIMESTAMP = "timestamp";
 	public static final String KEY_EMAIL = "email";

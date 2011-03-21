@@ -12,7 +12,6 @@ import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
 import models.ConfigItem;
 import play.Play;
-import play.db.jpa.JPABase;
 import play.libs.Mail;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -29,15 +28,18 @@ public class Manager extends Controller{
         final List<ConfigItem> configs = ConfigItem.all().fetch();
         render(runtime,configs);
     }
+        @Restrictions(@Restrict("admin"))
     public static void delconfig(long id) {
     	ConfigItem item = ConfigItem.findById(id);
     	item.delete();
     	sysinfo();
     }
+        @Restrictions(@Restrict("admin"))
     public static void addconfig(ConfigItem item) {
     	ConfigItem.createOrSave(item);
     	sysinfo();
     }
+        @Restrictions(@Restrict("admin"))
     public static void apply() {
     	final List<ConfigItem> configs = ConfigItem.all().fetch();
     	for (ConfigItem item : configs) {
