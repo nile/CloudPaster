@@ -59,7 +59,7 @@ public class CloudPaster extends Controller {
     static public void tag(String name, int from) {
         long count = Paster.count("select distinct count( p) from Paster p join p.tags as t where t.name = ?", name);
         List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(0).fetch(10);
-        render("@questions", pasters, from, count);
+        render(pasters, from, count,name);
     }
 
     /**

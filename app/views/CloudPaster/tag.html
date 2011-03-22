@@ -1,1 +1,9 @@
-#{extends 'main.html'/}
+#{extends 'table.html'/}
+#{set title:"分类索引 "+name/}
+<h2>问题</h2>
+<table style="width:100%">
+#{list items:pasters,as:'paster'}
+    <tr><td>#{q paster/}</td></tr>
+#{/list}
+    <tr><td>#{paginations questions:true/}</td></tr>
+</table>

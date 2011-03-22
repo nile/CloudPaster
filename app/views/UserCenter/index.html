@@ -57,5 +57,13 @@
         <td>
                 ${user.about?.raw()}
         </td>
-    </tr>    
+    </tr>
+    <tr>
+        <td >
+            角色：
+        </td>
+        <td>
+                #{list items:user.roles,as:'role'}${role.name} &nbsp;#{/list}
+        </td>
+    </tr>     
 </table>
