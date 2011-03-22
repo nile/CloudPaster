@@ -13,8 +13,8 @@
         <table style="width:100%">
         <tr><td style="width:70%;color:#828282;font-size:75%;padding-left:20px;">
             #{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span style="color:blue">${tag.name}</span>#{/a}&nbsp;#{/list}
-            &nbsp;${paster.creator.name} 发表于 ${paster.created.format('yyyy-MM-dd hh:ss')}
-            #{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+            &nbsp;${paster.creator.name} 发表于 ${paster.created.freindly()}
+            #{if paster.updated} &nbsp; ${paster.lastUser.name} 修改于 ${paster.updated.freindly()}#{/if}
         </td><td class="right">
             #{a @CloudPaster.edit(paster.id)}编辑#{/a}
             &nbsp;#{a @CloudPaster.answer(paster.id)}回复#{/a}
@@ -26,7 +26,7 @@
         <table>
         #{list items:paster.comments,as:'comment'}
             <tr><td style="width:5%">&nbsp;</td>
-            <td style="color:#828282;font-size:75%;padding-left:20px;">${comment.content.raw()} ${comment.creator.name} 发表于 ${comment.created.format('yyyy-MM-dd hh:ss')}
+            <td style="color:#828282;font-size:75%;padding-left:20px;">${comment.content.raw()} ${comment.creator.name} 发表于 ${comment.created.freindly()}
             </td></tr>
         #{/list}
         </table>
@@ -83,8 +83,8 @@
             <tr><td>${answer.content.raw()}</td></tr>
             <tr><td>
                 <table ><tr><td style="width:70%;color:#828282;font-size:75%;padding-left:20px;">
-                ${answer.creator.name} 发表于 ${answer.created.format('yyyy-MM-dd hh:ss')}
-				#{if answer.updated} &nbsp; ${answer.lastUser.name} 修改于 ${answer.updated.format('yyyy-MM-dd hh:ss')}#{/if}
+                ${answer.creator.name} 发表于 ${answer.created.freindly()}
+				#{if answer.updated} &nbsp; ${answer.lastUser.name} 修改于 ${answer.updated.freindly()}#{/if}
                 </td><td class="right">
                 #{a @CloudPaster.edit(answer.id)}编辑#{/a}
 				#{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
@@ -96,7 +96,7 @@
                 #{list items:answer.comments,as:'comment'}
                     <tr><td style="width:5%">&nbsp;</td>
                     <td style="color:#828282;font-size:75%;padding-left:20px;"><span style="color:#0f0f0f">${comment.content.raw()}</span>
-                    ${comment?.creator?.name} ${comment.created.format('yyyy-MM-dd hh:ss')}
+                    ${comment?.creator?.name} ${comment.created.freindly()}
                     </td></tr>
                 #{/list}
              </table>
