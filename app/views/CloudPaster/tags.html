@@ -2,5 +2,5 @@
 #{set title:"分类索引"/}
 <h1>分类索引</h1>
 <div class="tags grid9">
-#{list items:tags,as:'tag'}#{a @CloudPaster.tag(tag.name)}${tag.name}#{/a} &nbsp;&nbsp;#{/list}
+    #{list items:clouds,as:'cloud'}#{a @CloudPaster.tag(cloud.name)}${cloud.name}#{/a}&nbsp;(${cloud.count}) &nbsp;&nbsp;#{/list}
 </div>

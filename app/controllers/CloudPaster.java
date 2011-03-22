@@ -18,6 +18,7 @@ import play.mvc.With;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
+import java.util.Map;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
@@ -52,8 +53,10 @@ public class CloudPaster extends Controller {
      * 标签和分类
      */
     static public void tags() {
-        List<Tag> tags = Tag.findAll();
-        render(tags);
+        List<Map> clouds = Tag.find(
+            "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by t.name"
+        ).fetch();
+        render(clouds);
     }
 
     static public void tag(String name, int from) {
