@@ -41,6 +41,18 @@ public class Auth extends Controller{
 			login();
 		}
 	}
+	public static void clickpass() throws UnsupportedEncodingException {
+		String returnto = Play.configuration.getProperty("auth.returnto", Router.getFullUrl("Auth.login"));
+		if(flash.contains("return.to"))
+			returnto+="?return="+URLEncoder.encode(flash.get("return.to"), "utf8");
+		if (!OpenID.id("http://www.clickpass.com/openid_server").required(KEY_EMAIL, "http://axschema.org/contact/email")
+				.returnTo(returnto)
+				.forRealm(Play.configuration.getProperty("auth.returnto", "Auth.login")).verify()) {
+			flash.error("无法连接ClickPass服务器");
+			flash.keep();
+			login();
+		}
+	}
 	public static void login() {
 		flash.keep("return.to");
 		if(OpenID.isAuthenticationResponse()) {
