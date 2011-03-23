@@ -1,6 +1,7 @@
 #{extends 'table.html'/}
-<h2>${user.name}</h2>#{a @UserCenter.edit()}修改#{/a}
+<h2 style="display:inline;">${user.name}</h2> &nbsp; #{a @UserCenter.edit()}修改#{/a}
 <table style="width:600px;">
+    <caption>基本信息</caption>
     <tr>
         <td>
             名字：
@@ -58,6 +59,7 @@
                 ${user.about?.raw()}
         </td>
     </tr>
+    
     <tr>
         <td >
             角色：
@@ -65,5 +67,40 @@
         <td>
                 #{list items:user.roles,as:'role'}${role.name} &nbsp;#{/list}
         </td>
-    </tr>     
+    </tr>
+    
+</table>
+<script type="text/javascript">
+    function subscribe(name){
+        $.post("@{UserCenter.subscribe()}",{"topic":name},function(){
+            location.reload();
+        });        
+    }
+    function unsubscribe(name){
+        $.post("@{UserCenter.unsubscribe()}",{"topic":name},function(){
+            location.reload();
+        });
+    }
+</script>
+
+<table style="width:600px;">
+    <caption>订阅</caption>
+    <tr>
+        <td >
+            所有新问题
+        </td>
+        <td>
+            #{if !subscribes.contains('all_question')}<a href="javascript:void(0)" onclick="subscribe('all_question')" >订阅</a>#{/if}
+            #{else}<a href="javascript:void(0)" onclick="unsubscribe('all_question')" >取消</a>#{/else}
+        </td>
+    </tr>   
+    <tr>
+        <td >
+            所有我的问题的回答
+        </td>
+        <td>
+            #{if !subscribes.contains('answer_for_me')}<a href="javascript:void(0)" onclick="subscribe('answer_for_me')" >订阅</a>#{/if}
+            #{else}<a href="javascript:void(0)" onclick="unsubscribe('answer_for_me')" >取消</a>#{/else}
+        </td>
+    </tr>   
 </table>

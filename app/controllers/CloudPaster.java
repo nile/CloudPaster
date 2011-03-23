@@ -12,6 +12,7 @@ import net.sf.oval.constraint.NotEmpty;
 import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
+import play.db.jpa.GenericModel.JPAQuery;
 
 import play.mvc.Controller;
 import play.mvc.With;
@@ -157,6 +158,8 @@ public class CloudPaster extends Controller {
         if (StringUtils.isNotEmpty(params.get("doaddask"))) {
             params.flash();
             Paster paster = Paster.create(title, content, Auth.getLoginUser(), tagstext);
+            List<Map> subscribeUsers = User.find("select distinct new map(u.name as name,u.email as email) from User as u , Subscribe s where s.user = u").fetch();
+            Notifier.newquestion(subscribeUsers, paster);
             view(paster.id);
         }
         state = "start";

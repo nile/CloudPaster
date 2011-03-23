@@ -1,4 +1,7 @@
 package notifiers;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.mail.EmailAttachment;
 
 import models.Paster;
@@ -17,7 +20,20 @@ public class Notifier extends Mailer {
 	addAttachment(emailAttachment);
       send(email);
    }
- 
+   public static void newquestion(List<Map> subscribeUsers,Paster paster){
+        setSubject("CloudPaster更新通知："+paster.title);        
+	setContentType("text/html");
+	setCharset("UTF-8");
+        for(Map u : subscribeUsers){
+            Logger.info("send email to %s", u.get("email"));
+            HashMap<String, Object> map = infos.get();
+            map.remove("attachments");            
+            map.remove("recipients");            
+            addRecipient(u.get("email"));            
+            String name = (String) u.get("name");
+            send("Notifier/newquestion",name,paster);
+        }
+   }
    public static void anwser(Paster paster,Paster answer) {
 	   setSubject("CloudPaster更新通知："+paster.title);
 	   addRecipient(paster.creator.email);

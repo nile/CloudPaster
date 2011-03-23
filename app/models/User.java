@@ -17,7 +17,6 @@ public class User extends Model{
 	public Date birthday;
 	public String about;
 	public String email;
-	public boolean subscribe;
 	public Date	createDate;
 	@ManyToMany
 	public Set<CPRole> roles = new java.util.HashSet<CPRole>();
