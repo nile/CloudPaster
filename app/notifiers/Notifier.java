@@ -21,7 +21,7 @@ public class Notifier extends Mailer {
       send(email);
    }
    public static void newquestion(List<Map> subscribeUsers,Paster paster){
-        setSubject("CloudPaster更新通知："+paster.title);        
+        setSubject("CP更新通知："+paster.title);        
 	setContentType("text/html");
 	setCharset("UTF-8");
         for(Map u : subscribeUsers){
@@ -35,7 +35,7 @@ public class Notifier extends Mailer {
         }
    }
    public static void anwser(Paster paster,Paster answer) {
-	   setSubject("CloudPaster更新通知："+paster.title);
+	   setSubject("CP更新通知："+paster.title);
 	   addRecipient(paster.creator.email);
 	   setContentType("text/html");
 	   setCharset("UTF-8");
