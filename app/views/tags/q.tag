@@ -9,8 +9,9 @@
 </tr>
 <tr>
 <td style="color:#828282;font-size:75%;padding-left:20px;">
-#{a @UserCenter.index()}${paster?.creator.name}#{/a} ${paster?.created?.freindly()} 提问
-#{if paster?.updated} &nbsp; #{a @UserCenter.index()}${paster?.creator.name}#{/a} ${paster?.updated.freindly()} 修改#{/if}
+<b>${paster?.creator.name}</b> ${paster?.created?.freindly()} 提问
+#{if paster?.updated} &nbsp; <b>${paster?.creator.name}</b> ${paster?.updated.freindly()} 修改#{/if}
+#{if paster?.lastAnswerUser} &nbsp; <b>${paster?.lastAnswerUser.name}</b> ${paster?.lastAnswered?.freindly()} 回答#{/if}
 </td>
 </tr>
 </table>

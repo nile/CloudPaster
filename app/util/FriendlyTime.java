@@ -12,33 +12,32 @@ public class FriendlyTime {
 	public static String friendlyTime(Date date) {
 		long delta = new Date().getTime() - date.getTime();
 		if (delta < 1L * ONE_MINUTE) {
-			return toSeconds(delta) == 1 ? "1 秒钟前" : toSeconds(delta)
-					+ " 秒钟前";
+			return "刚刚";
 		}
 		if (delta < 2L * ONE_MINUTE) {
-			return "1 分钟前";
+			return "1分钟前";
 		}
 		if (delta < 45L * ONE_MINUTE) {
-			return toMinutes(delta) + " 分钟前";
+			return toMinutes(delta) + "分钟前";
 		}
 		if (delta < 90L * ONE_MINUTE) {
-			return "1 小时前";
+			return "1小时前";
 		}
 		if (delta < 24L * ONE_HOUR) {
-			return toHours(delta) + " 小时前";
+			return toHours(delta) + "小时前";
 		}
 		if (delta < 48L * ONE_HOUR) {
 			return "昨天";
 		}
 		if (delta < 30L * ONE_DAY) {
-			return toDays(delta) + " 天前";
+			return toDays(delta) + "天前";
 		}
 		if (delta < 12L * 4L * ONE_WEEK) {
 			long months = toMonths(delta);
-			return months <= 1 ? "1 月前" : months + " 月前";
+			return months <= 1 ? "1月前" : months + "月前";
 		} else {
 			long years = toYears(delta);
-			return years <= 1 ? "1 年前" : years + " 年前";
+			return years <= 1 ? "1年前" : years + "年前";
 		}
 	}
 

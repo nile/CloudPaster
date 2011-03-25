@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -33,7 +34,7 @@ public class Paster extends Model {
 	public Paster parent ;
 	@OneToOne
 	public Paster best;
-	@ManyToOne
+	@OneToOne
 	public User creator;
 	public Date created;
 	public Type type = Type.Q;
@@ -48,6 +49,11 @@ public class Paster extends Model {
 	public int votedown;
 	public int answerCount;
 	public int commentCount;
+	@OneToOne
+	public User lastAnswerUser;
+	@OneToOne(fetch=FetchType.LAZY)
+	public Paster lastAnswer;
+	public Date lastAnswered;
 	
 	public static enum Type{
 		Q,A,C
@@ -88,15 +94,6 @@ public class Paster extends Model {
 		//paster.content = content;
 		paster.title = title;
 		paster.tagstext = tagstext;
-		if(parentId>0) {
-			Paster tmp_parent = Paster.findById(parentId);
-			if(type== Type.C)
-				tmp_parent.commentCount++;
-			if(type == Type.A)
-				tmp_parent.answerCount++;
-			paster.parent = tmp_parent;
-			paster.parent.save();
-		}
 		if(paster.tagstext!=null) {
 			String[] tagNames = tagstext.trim().split("[ ,;]");
 			for (String tag : tagNames) {
@@ -105,7 +102,20 @@ public class Paster extends Model {
 				}
 			}
 		}
+		if(parentId>0) {
+			Paster tmp_parent = Paster.findById(parentId);
+			paster.parent = tmp_parent;
+			if(type== Type.C)
+				paster.parent.commentCount++;
+			if(type == Type.A) {
+				paster.parent.answerCount++;
+				paster.parent.lastAnswerUser = user;
+				paster.parent.lastAnswer = paster;
+				paster.parent.lastAnswered = new Date();
+			}
+		}
 		paster.save();
+		paster.parent.save();
 		return paster;
 	}
 	public Paster tagWith(String tag) {
