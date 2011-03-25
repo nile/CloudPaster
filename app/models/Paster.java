@@ -115,7 +115,8 @@ public class Paster extends Model {
 			}
 		}
 		paster.save();
-		paster.parent.save();
+                if(parentId >0)
+                    paster.parent.save();
 		return paster;
 	}
 	public Paster tagWith(String tag) {
