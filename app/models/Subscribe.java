@@ -15,6 +15,7 @@ import play.db.jpa.Model;
  */
 @Entity
 public class Subscribe extends Model{
+	public static final String TOPOIC_ALL_QESTION="all_question",TOPIC_ANSWER_FOR_ME = "answer_for_me";
     @ManyToOne
     public User user;
     public String topic;

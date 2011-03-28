@@ -1,25 +1,24 @@
 package controllers;
 
-import controllers.GlobalUser;
 import java.util.List;
+import java.util.Map;
 
 import models.Paster;
-import models.Tag;
 import models.Paster.QueryResult;
 import models.Paster.Type;
+import models.Subscribe;
+import models.Tag;
 import models.User;
 import net.sf.oval.constraint.NotEmpty;
 import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
-import play.db.jpa.GenericModel.JPAQuery;
 
 import play.mvc.Controller;
 import play.mvc.With;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
-import java.util.Map;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
@@ -105,7 +104,8 @@ public class CloudPaster extends Controller {
     static public void answer(long id, long aid, String content) {
         if (StringUtils.isNotEmpty(params.get("doansweradd"))) {
             Paster answer = Paster.answer(id, content, Auth.getLoginUser());
-            Notifier.anwser(answer.parent, answer);
+            if(Subscribe.count("user = ? and topic = ?", Auth.getLoginUser(),Subscribe.TOPIC_ANSWER_FOR_ME)>0)
+            	Notifier.anwser(answer.parent, answer);
             view(id);
         }
         if (StringUtils.isNotEmpty(params.get("doupdateanswer"))) {
