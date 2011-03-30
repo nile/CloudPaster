@@ -16,14 +16,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import play.db.jpa.Model;
-import play.modules.search.Field;
-import play.modules.search.Indexed;
-import play.modules.search.Query;
-import play.modules.search.Search;
+import play.modules.search.*;
+import util.PasterConverter;
 import util.TokenUtil;
 import ys.wikiparser.WikiParser;
 @Entity
-@Indexed
+@Indexed(converters = {PasterConverter.class})
 public class Paster extends Model {
 	@Field
 	public String content;

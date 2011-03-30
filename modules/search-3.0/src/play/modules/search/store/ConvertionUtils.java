@@ -14,6 +14,7 @@ import play.db.jpa.FileAttachment;
 import play.db.jpa.JPABase;
 import play.db.jpa.Model;
 import play.exceptions.UnexpectedException;
+import play.modules.search.DocumentConverter;
 import play.modules.search.Indexed;
 
 /**
@@ -31,6 +32,14 @@ public class ConvertionUtils {
      */
     public static Document toDocument(Object object) throws Exception {
         Indexed indexed = object.getClass().getAnnotation(Indexed.class);
+        Class<?>[] converters = indexed.converters();
+        if(converters.length>0){
+            Class<?> converterClass = converters[0];
+            if(DocumentConverter.class.isAssignableFrom(converterClass)){
+                DocumentConverter converter = (DocumentConverter) converterClass.newInstance();
+                return converter.toDocument(object);
+            }
+        }
         if (indexed == null)
             return null;
         if (!(object instanceof JPABase))

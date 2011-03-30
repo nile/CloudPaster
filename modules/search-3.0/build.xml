@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="search module" default="build" basedir=".">
-	<property name="play.path" value="X:/play-1.1.1"></property>
+	<property name="play.path" value="/home/nile/play-1.1.1"></property>
     <path id="project.classpath">
         <!--<pathelement path="${play.path}/framework/classes"/>-->
         <fileset dir="${play.path}/framework/lib">
