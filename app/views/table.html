@@ -17,6 +17,9 @@
         table{
             width:100%;
         }
+        .push{
+            padding-left:6px;
+        }
         .center{
             text-align:center;
         }
@@ -34,7 +37,7 @@
     <body> 
 <table style="width:85%;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
-<td style="width:80%">
+<td class="push" style="width:80%">
   <a href="@{CloudPaster.questions()}"><span>问题</span></a>
   <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
@@ -92,15 +95,12 @@ $(document).ready(function(){
     #{/else}    
 	</td>
 </tr>
-<tr style="margin-top10px; border-top: 1px solid orange"><td style="padding:10px 0 10px 0;">
+<tr style="margin-top10px; border-top: 1px solid orange"><td class="push" style="padding-top:10px;padding-bottom:10px;">
+    &#169;2010-2011 感谢无私的奉献者
     <a href="http://nginx.org/">nginx</a>
-	<a href="http://www.mongodb.org/">mongodb</a>
 	<a href="http://www.playframework.org">playframework</a>
-	<a href="http://www.blueprint.org">blueprint</a>
 	<a href="http://lucene.apache.org">apache lucene</a>
-	<a href="http://openiconlibrary.sourceforge.net/">openiconlibrary</a>
 	<a href="http://www.eclipse.org/">eclipse</a>
-	<a href="http://redcloth.org/hobix.com/textile/">textile</a>
     </td>
     <td>
     &nbsp;
