@@ -32,6 +32,8 @@ public class ConvertionUtils {
      */
     public static Document toDocument(Object object) throws Exception {
         Indexed indexed = object.getClass().getAnnotation(Indexed.class);
+        if (indexed == null)
+            return null;
         Class<?>[] converters = indexed.converters();
         if(converters.length>0){
             Class<?> converterClass = converters[0];
@@ -40,8 +42,6 @@ public class ConvertionUtils {
                 return converter.toDocument(object);
             }
         }
-        if (indexed == null)
-            return null;
         if (!(object instanceof JPABase))
             return null;
         JPABase jpaBase = (JPABase) object;

@@ -92,6 +92,7 @@ public class Paster extends Model {
 		//paster.content = content;
 		paster.title = title;
 		paster.tagstext = tagstext;
+        paster.tags.clear();
 		if(paster.tagstext!=null) {
 			String[] tagNames = tagstext.trim().split("[ ,;]");
 			for (String tag : tagNames) {
