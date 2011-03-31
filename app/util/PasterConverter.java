@@ -25,15 +25,14 @@ public class PasterConverter implements DocumentConverter{
        document.add(new Field("title", paster.title, Field.Store.NO,Field.Index.ANALYZED));
        StringBuffer allcontent = new StringBuffer(paster.wiki);
         for (Paster c : paster.getComments()) {
-                allcontent.append(c.wiki);
+                allcontent.append('\n').append(c.wiki);
         }
         for (Paster p : paster.getAnswers()) {
             allcontent.append(p.wiki);
             for (Paster c : p.getComments()) {
-                allcontent.append(c.wiki);
+                allcontent.append('\n').append(c.wiki);
             }
         }
-        System.out.println(allcontent);
        document.add(new Field("content", allcontent.toString(), Field.Store.NO,Field.Index.ANALYZED));
        //document.add(new Field("tagstext", paster.tagstext, Field.Store.NO,Field.Index.ANALYZED));
        return document;
