@@ -1,0 +1,29 @@
+#{extends 'table.html'/}
+#{set title:"提交链接"/}   
+<h2>${title}</h2>
+#{if flash.error}
+	<div class="warning">
+	<p>${flash.error}</p>
+	</div>
+#{/if}
+
+#{form @CLink.submit()}
+<table>
+<tr>
+<td>标题</td>
+<td><input type="text" name="title" style="width:280px" value="${flash.title}"></td>
+</tr>
+<tr>
+<td>地址</td>
+<td><input type="text" name="url" style="width:280px" value="${flash.url}"> <input type="submit" name="dofecthtitle" value="获取标题"></td>
+</tr>
+<tr>
+<td>描述</td>
+<td><textarea name="desc" style="width:280px">${flash.desc}</textarea></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><input type="submit" name="dosubmit" value="提交"><input type="submit" name="docancel" value="取消"></td>
+</tr>
+</table>
+#{/form}

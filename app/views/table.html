@@ -51,6 +51,9 @@
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
   <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>
   &nbsp;&nbsp;
+  <a href="@{CLink.index()}"><span>资讯</span></a>
+  <a href="@{CLink.submit()}"><span>提交资讯</span></a>
+  &nbsp;&nbsp;
   #{if session['user.key']}    
     #{a @UserCenter.index()}${user?.name?:"游客"}#{/a}
     <a href="@{Auth.logout()}"><span>退出</span></a>
