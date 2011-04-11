@@ -54,7 +54,7 @@ public class CloudPaster extends Controller {
      */
     static public void tags() {
         List<Map> clouds = Tag.find(
-            "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by t.name"
+            "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
         ).fetch();
         render(clouds);
     }

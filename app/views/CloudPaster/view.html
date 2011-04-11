@@ -1,12 +1,12 @@
 #{extends 'table.html'/}
 #{set title:paster.title/}
+#{if flash.error}
+	<div class="warning">
+	<p>${flash.error}</p>
+	</div>
+#{/if}
 
 <h2>${paster.title}</h2>
-#{if flash.error}
-<div >
-<p>${flash.error}</p>
-</div>
-#{/if}
 <table style="width:100%">
     <tr><td>
     ${paster.content.raw()}

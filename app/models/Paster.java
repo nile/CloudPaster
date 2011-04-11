@@ -168,7 +168,7 @@ public class Paster extends Model {
 		String query = "content:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
 		query += " OR title:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
 		Query q = Search.search(query, Paster.class);
-		q.orderBy("title").page(from * pagesize, pagesize).reverse();
+		q.orderBy("title").page(pagesize, pagesize).reverse();
 		List<Paster> fetch = q.fetch();
 		return new QueryResult(fetch, q.count());
 	}
