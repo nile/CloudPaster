@@ -40,17 +40,21 @@
         	font-size:16px;
         	padding:6px 6px 6px 20px;
         }
+		.lightblack{
+			color:#0F0F0F;
+		}
         </style>
     </head>
     <body> 
-<table style="width:85%;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
+<table style="width:85%;margin:auto;margin-top:6px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
-<td class="push" style="width:80%">
+<td class="push" style="width:80%;padding-bottom:4px;">
   <a href="@{CloudPaster.questions()}"><span>问题</span></a>
   <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
-  <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>
-  &nbsp;&nbsp;
+  <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>  
+</td>
+<td>
   #{if session['user.key']}    
     #{a @UserCenter.index()}${user?.name?:"游客"}#{/a}
     <a href="@{Auth.logout()}"><span>退出</span></a>
@@ -58,10 +62,22 @@
   #{else}
     <a href="@{Auth.login()}"><span>用OpenID登录</span></a>
   #{/else}
+
 </td>
-<td>
-#{form @CloudPaster.search(),method:'GET',class:'searchform'}
+</tr>
+<tr><td>
+    #{doLayout/}
+    </td>
+    <td style="vertical-align:text-top;">
+	<table width="100%" border="0">
+  <tr>
+    <td class="bg1">
+	#{form @CloudPaster.search(),method:'GET',class:'searchform'}
     <table>
+			<tr>
+			  <td class="lightblack">查找问题</td>
+			  <td>&nbsp;</td>
+			  </tr>
 			<tr><td>
 				<input name="keywords" value="${keywords}" type="text">
 			</td><td>
@@ -70,16 +86,14 @@
 	</table>
 #{/form}	
 </td>
-</tr>
-<tr><td>
-    #{doLayout/}
-    </td>
-    <td style="vertical-align:text-top;">
-    #{if request.path == '/'}
-    <h3>待解决Bug</h3>
+  </tr>
+  <tr>
+    <td class="bg1">
+	#{if request.path == '/'}
+    <h3 class="lightblack">待解决Bug</h3>
     <ol id="issues-open">
     </ol>
-    <h3>已解决Bug</h3>
+    <h3 class="lightblack">已解决Bug</h3>
     <ol id="issues-fixed">
     </ol>
 <script src="https://github.com/fitzgen/github-api/raw/master/github.js" type="text/javascript" charset="utf-8"></script>    
@@ -100,7 +114,12 @@ $(document).ready(function(){
     #{/if}
     #{else}
     &nbsp;
-    #{/else}    
+    #{/else}
+	</td>
+  </tr>
+</table>
+
+        
 	</td>
 </tr>
 <tr style="margin-top10px; border-top: 1px solid orange"><td class="push" style="padding-top:10px;padding-bottom:10px;">
@@ -110,8 +129,8 @@ $(document).ready(function(){
 	<a href="http://lucene.apache.org">apache lucene</a>
 	<a href="http://www.eclipse.org/">eclipse</a>
     </td>
-    <td>
-    &nbsp;
+    <td>&nbsp;
+    
     </td>
 </tr>
 </table>
