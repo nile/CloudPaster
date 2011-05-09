@@ -51,7 +51,7 @@ public class CLink extends Controller{
 	}
 	public static void index(int from) {
 		long count = Link.count();
-		List<Link> links = Link.find("order by dateSubmitted desc").from(from).fetch(10);
+		List<Link> links = Link.find("order by dateSubmitted desc").from(from).fetch(30);
 		render(links,count,from);
 	}
 	public static void view(long id) {

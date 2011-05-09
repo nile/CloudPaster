@@ -22,12 +22,12 @@ import controllers.deadbolt.Restrictions;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
-
+	final static int PAGE_SIZE=20;
     /**
      * 最近活跃
      */
     static public void activity() {
-        List<Paster> pasters = Paster.find("type=? order by created desc,updated desc ", Type.Q).fetch(10);
+        List<Paster> pasters = Paster.find("type=? order by created desc,updated desc ", Type.Q).fetch(PAGE_SIZE);
         render(pasters);
     }
 
@@ -36,7 +36,7 @@ public class CloudPaster extends Controller {
      */
     static public void questions(int from) {
         long count = Paster.count("type=?", Type.Q);
-        List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(10);
+        List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
         render(pasters, from, count);
     }
 
@@ -45,7 +45,7 @@ public class CloudPaster extends Controller {
      */
     static public void unanswered(int from) {
         long count = Paster.count("type=? and answerCount = 0", Type.Q);
-        List<Paster> pasters = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q).from(from).fetch(10);
+        List<Paster> pasters = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
         render(pasters, from, count);
     }
 
@@ -61,7 +61,7 @@ public class CloudPaster extends Controller {
 
     static public void tag(String name, int from) {
         long count = Paster.count("select distinct count( p) from Paster p join p.tags as t where t.name = ?", name);
-        List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(0).fetch(10);
+        List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(0).fetch(PAGE_SIZE);
         render(pasters, from, count,name);
     }
 
@@ -190,7 +190,7 @@ public class CloudPaster extends Controller {
 
     public static void search(String keywords, int from) {
         if (StringUtils.isNotEmpty(keywords)) {
-            QueryResult search = Paster.search(keywords, from, 10);
+            QueryResult search = Paster.search(keywords, from, PAGE_SIZE);
             long count = search.count;
             List<Paster> pasters = search.results;
             render(pasters, count, from, keywords);
