@@ -37,7 +37,8 @@ public class CloudPaster extends Controller {
     static public void questions(int from) {
         long count = Paster.count("type=?", Type.Q);
         List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
-        render(pasters, from, count);
+		long pagesize = PAGE_SIZE;
+        render(pasters, from, count, pagesize);
     }
 
     /**
@@ -46,7 +47,8 @@ public class CloudPaster extends Controller {
     static public void unanswered(int from) {
         long count = Paster.count("type=? and answerCount = 0", Type.Q);
         List<Paster> pasters = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
-        render(pasters, from, count);
+		long pagesize = PAGE_SIZE;
+        render(pasters, from, count, pagesize);
     }
 
     /**
@@ -61,8 +63,9 @@ public class CloudPaster extends Controller {
 
     static public void tag(String name, int from) {
         long count = Paster.count("select distinct count( p) from Paster p join p.tags as t where t.name = ?", name);
-        List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(0).fetch(PAGE_SIZE);
-        render(pasters, from, count,name);
+        List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(from).fetch(PAGE_SIZE);
+		long pagesize = PAGE_SIZE;
+        render(pasters, from, count, pagesize, name);
     }
 
     /**
@@ -193,7 +196,8 @@ public class CloudPaster extends Controller {
             QueryResult search = Paster.search(keywords, from, PAGE_SIZE);
             long count = search.count;
             List<Paster> pasters = search.results;
-            render(pasters, count, from, keywords);
+			long pagesize = PAGE_SIZE;
+            render(pasters, count, from, pagesize, keywords);
         } else {
             flash.error("请输入要查询的内容。");
             render();
