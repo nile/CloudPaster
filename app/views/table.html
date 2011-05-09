@@ -48,11 +48,15 @@
     <body> 
 <table style="width:85%;margin:auto;margin-top:6px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
-<td class="push" style="width:80%;padding-bottom:4px;">
+<td class="push" style="width:60%;padding-bottom:4px;">
   <a href="@{CloudPaster.questions()}"><span>问题</span></a>
   <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
+  <a href="@{CLink.index()}"><span style="color:blue;">资讯</span></a>
+</td>
+<td style="width:20%">
   <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>  
+  <a href="@{CLink.submit()}"><span>提交资讯</span></a>
 </td>
 <td>
   #{if session['user.key']}    
@@ -65,7 +69,7 @@
 
 </td>
 </tr>
-<tr><td>
+<tr><td colspan="2">
     #{doLayout/}
     </td>
     <td style="vertical-align:text-top;">
