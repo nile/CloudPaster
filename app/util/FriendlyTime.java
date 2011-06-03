@@ -29,9 +29,13 @@ public class FriendlyTime {
 		if (delta < 48L * ONE_HOUR) {
 			return "昨天";
 		}
-		if (delta < 30L * ONE_DAY) {
+		if (delta < 7L * ONE_DAY) {
 			return toDays(delta) + "天前";
 		}
+		if (delta < 30L * ONE_DAY) {
+			return "几周前";
+		}
+
 		if (delta < 12L * 4L * ONE_WEEK) {
 			long months = toMonths(delta);
 			return months <= 1 ? "1月前" : months + "月前";

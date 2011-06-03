@@ -22,7 +22,7 @@ import controllers.deadbolt.Restrictions;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
-	final static int PAGE_SIZE=20;
+	final static int PAGE_SIZE=30;
     /**
      * 最近活跃
      */
