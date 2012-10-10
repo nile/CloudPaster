@@ -82,7 +82,7 @@
 </td>
 <td>
   #{if session['user.key']}    
-    #{a @UserCenter.index()}${user?.name?:"游客"}#{/a}
+    #{a @UserCenter.index(user.id)}${user?.name?:"游客"}#{/a}
     <a href="@{Auth.logout()}"><span>退出</span></a>
   #{/if}
   #{else}

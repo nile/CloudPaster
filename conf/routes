@@ -15,7 +15,7 @@ GET   	/tags									CloudPaster.tags
 GET   	/tag/{name}								CloudPaster.tag
 GET   	/search                 				CloudPaster.search
 
-GET   	/me                 					UserCenter.index
+GET   	/user/{id}                 					UserCenter.index
 
 GET     /logout                  				Auth.logout
 GET     /login                 					Auth.login
