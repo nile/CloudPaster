@@ -21,7 +21,7 @@
 		<div class="grid8 header-menu first">
 			<ul class="menuul">
 			  #{if session['user.key']}
-				<li >#{a @UserCenter.index()}${user.name?:"无名氏"}#{/a}</li>
+				<li >#{a @UserCenter.index(user.id)}${user.name?:"无名氏"}#{/a}</li>
 			  #{/if}
 			  *{<li><a href="@{CloudPaster.activity()}"><span>最近活跃</span></a></li>}*
 			  <li><a href="@{CloudPaster.questions()}"><span>问题</span></a></li>
