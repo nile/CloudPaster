@@ -1,4 +1,8 @@
 #{extends 'table.html'/}
 #{set title:"分类索引"/}
 <h1>分类索引</h1>
-#{list items:clouds,as:'cloud'}#{a @CloudPaster.tag(cloud.name)}${cloud.name}#{/a}&nbsp;(${cloud.count}) &nbsp;&nbsp;#{/list}
+
+#{list items:clouds,as:'cloud'}
+	<span style="white-space: nowrap">#{a @CloudPaster.tag(cloud.name)}<span class="tag">${cloud.name}</span>#{/a}<span style="line-height:22px;">${cloud.count}</span>&nbsp;
+	</span>
+#{/list}

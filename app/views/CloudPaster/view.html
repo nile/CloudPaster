@@ -14,12 +14,12 @@
     <tr><td>
         <table style="width:100%">
         <tr><td style="width:70%;color:#828282;font-size:75%;padding-left:20px;">
-            #{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span style="color:blue">${tag.name}</span>#{/a}&nbsp;#{/list}
+            #{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span class="tag">${tag.name}</span>#{/a}&nbsp;#{/list}
             &nbsp;${paster.creator.name} ${paster.created.freindly()} 提问
             #{if paster.updated} &nbsp; ${paster.lastUser.name} ${paster.updated.freindly()} 修改#{/if}
         </td><td class="right">
             #{a @CloudPaster.edit(paster.id)}编辑#{/a}
-            &nbsp;#{a @CloudPaster.answer(paster.id)}回复#{/a}
+            &nbsp;#{a @CloudPaster.answer(paster.id)}回答#{/a}
             &nbsp;#{a @CloudPaster.comment(paster.id)}评论#{/a}
         </td></tr></table>
     </td></tr>

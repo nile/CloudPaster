@@ -24,8 +24,8 @@ public class UserCenter extends Controller{
 	}
     @Restrictions(@Restrict("user"))
 	static public void index(Long id) {
-		User user = Auth.getLoginUser();
-                List<String> subscribes = Subscribe.find("select topic from Subscribe where user = ?", user).fetch();
+		User user = User.findById(id);
+        List<String> subscribes = Subscribe.find("select topic from Subscribe where user = ?", user).fetch();
 		render(user,subscribes);
 	}
     @Restrictions(@Restrict("user"))

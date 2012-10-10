@@ -12,7 +12,8 @@
             margin:0px;
         }
         a{
-            color:#0F0F0F;
+            color:#222;
+            text-decoration:none;
         }
         button{
         	border:1px solid gray;
@@ -44,10 +45,26 @@
 		.lightblack{
 			color:#0F0F0F;
 		}
+		.tag{
+			color: blue; 
+			background: lightgray; 
+			border: 1px solid lightblue;
+			padding: 1px 4px;
+			font-size: 12px;
+		}
+		.question-list-title{
+			line-height: 18px; 
+			font-size: 16px;
+		}
+		.info{
+			color:gray;
+			font-size:75%;
+			padding-left:10px;
+		}
         </style>
     </head>
-    <body>	
-<table style="width:85%;margin:auto;margin-top:6px;background:#f6f6f6;border-collapse:collapse;">
+    <body>
+<table style="width:85%;max-width:960px;min-width:800px;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
 <td class="push" style="width:80%;padding-bottom:2px;padding-top:2px;">
 	<table style="width:100%;padding:0px;margin:0px;border-collapse:collapse;">
@@ -81,64 +98,14 @@
 	<table width="100%" border="0">
   <tr>
     <td class="bg1">
-	#{form @CloudPaster.search(),method:'GET',class:'searchform'}
-    <table>
-			<tr>
-			  <td class="lightblack">查找问题</td>
-			  <td>&nbsp;</td>
-			  </tr>
-			<tr><td>
-				<input name="keywords" value="${keywords}" type="text">
-			</td><td>
-				<button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
-			</td></tr>
-	</table>
-#{/form}	
+	#{searchbox/}
 </td>
   </tr>
   <tr>
   <td class="bg1">
-<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style ">
-<a class="addthis_button_preferred_1"></a>
-<a class="addthis_button_preferred_2"></a>
-<a class="addthis_button_preferred_3"></a>
-<a class="addthis_button_preferred_4"></a>
-<a class="addthis_button_compact"></a>
-<a class="addthis_counter addthis_bubble_style"></a>
-</div>
-<script type="text/javascript">var addthis_config = {"data_track_clickback":true,"data_track_addressbar":true};</script>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4db8f45851b9a947"></script>
-<!-- AddThis Button END -->
+	#{jiathis/}
   </td>
   </tr>
-	#{if request.path == '/'}
-  <tr>
-    <td class="bg1">
-    <h3 class="lightblack">待解决Bug</h3>
-    <ol id="issues-open">
-    </ol>
-    <h3 class="lightblack">已解决Bug</h3>
-    <ol id="issues-fixed">
-    </ol>
-<script src="https://github.com/fitzgen/github-api/raw/master/github.js" type="text/javascript" charset="utf-8"></script>    
-<script>
-$(document).ready(function(){
-	gh.issue.list('nile','CloudPaster','open',function(data){
-		$(data.issues).each(function(i,item){
-			$("#issues-open").append("<li><a href='"+item.html_url+"'>"+item.title+"</a></li>");
-		});
-	},{})
-	gh.issue.list('nile','CloudPaster','closed',function(data){
-		$(data.issues).each(function(i,item){
-			$("#issues-fixed").append("<li><a href='"+item.html_url+"'>"+item.title+"</a></li>");
-		});
-	},{})
-});
-</script>
-	</td>
-  </tr>
-    #{/if}
 </table>
 
         

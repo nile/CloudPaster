@@ -1,6 +1,6 @@
 #{extends 'table.html'/}
 #{set title:"分类索引 "+name/}
-<h2>问题</h2>
+<h2>标记有"${name}"的问题</h2>
 <table style="width:100%">
 #{list items:pasters,as:'paster'}
     <tr><td>#{q paster/}</td></tr>

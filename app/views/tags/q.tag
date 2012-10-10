@@ -3,16 +3,16 @@
 }%
 <table>
 <tr>
-	<td style="width:16px;font-size:14px;font-weight:bold;">${paster.answerCount} </td>
-	<td>#{a @CloudPaster.view(paster.id)}${paster?.title?.raw()}#{/a}
-	#{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span style="color:blue">${tag.name}</span>#{/a}&nbsp;#{/list}
-
-	<span style="color:#828282;font-size:75%;padding-left:20px;">	
+	<td style="width:26px;font-size:26px;text-align:center;font-weight:bold;">${paster.answerCount} </td>
+	<td>#{a @CloudPaster.view(paster.id), class:'question-list-title'}${paster?.title?.raw()}#{/a}
+	<br>#{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span class="tag">${tag.name}</span>#{/a}#{/list}
+	
+	<span class="info">	
 	#{ifnot paster?.lastAnswerUser} 
-		#{ifnot} ${paster?.creator.name} ${paster?.created?.freindly()} 提问 #{/ifnot}
-		#{if paster?.updated} ${paster?.creator.name} ${paster?.updated.freindly()} 修改#{/if}
+		#{ifnot} #{a @UserCenter.index(paster?.creator.id)}${paster?.creator.name}#{/a} ${paster?.created?.freindly()} 提问 #{/ifnot}
+		#{if paster?.updated} #{a @UserCenter.index(paster?.creator.id)}${paster?.creator.name}#{/a} ${paster?.updated.freindly()} 修改#{/if}
 	#{/ifnot}
-	#{if paster?.lastAnswerUser} ${paster?.lastAnswerUser.name} ${paster?.lastAnswered?.freindly()} 回答#{/if}
+	#{if paster?.lastAnswerUser} #{a @UserCenter.index(paster?.lastAnswerUser.id)}${paster?.lastAnswerUser.name}#{/a} ${paster?.lastAnswered?.freindly()} 回答#{/if}
 	</span>
 	</td>
 </tr></table>

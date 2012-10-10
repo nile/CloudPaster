@@ -4,6 +4,7 @@
 <table>   
 #{list items:links,as:'link'}
 <tr><td>&{link_index} &nbsp;#{a @Clink.view(link.id),target:'_blank'}${link.title}#{/a} ${link.dateSubmitted.freindly()}</td></tr>
+#{if (link_index%5)==0}<tr style="height:10px;"></tr>#{/if}
 #{/list}
 </table>
 #{paginations link:true/}
