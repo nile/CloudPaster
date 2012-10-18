@@ -1,10 +1,12 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import models.deadbolt.Role;
 import play.db.jpa.Model;
 @Entity
+@Table(name="cprole")
 public class CPRole extends Model implements Role {
 	private String name;
 

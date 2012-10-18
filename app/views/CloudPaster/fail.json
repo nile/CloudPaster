@@ -1,1 +1,1 @@
-{ "stat":"fail","err": { "code":"${code}", "msg":"${message}" } } 
+{ "stat":"fail", "code":"${code}", "msg":"${message}" } 

@@ -4,7 +4,7 @@
 <table style="width:100%">
 #{list items:pasters,as:'paster'}	
     <tr><td>#{q paster/}</td></tr>
-    #{if (paster_index%5)==0}<tr style="height:10px;"></tr>#{/if}
+    #{if (paster_index%5)==0}<tr style="height:20px;"></tr>#{/if}
 #{/list}
     <tr><td>#{paginations questions:true/}</td></tr>
 </table>

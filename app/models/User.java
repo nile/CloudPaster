@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import play.db.jpa.Model;
 import util.CryptoUtil;
 @Entity
+@Table(name="user")
 public class User extends Model{
 	public String name;
 	public String realname;
@@ -19,6 +22,7 @@ public class User extends Model{
 	public String email;
 	public Date	createDate;
 	@ManyToMany
+	@JoinTable(name="user_cprole")
 	public Set<CPRole> roles = new java.util.HashSet<CPRole>();
 	public static User createOrGet(String email) {
 		User user = User.find("byEmail",email).first();

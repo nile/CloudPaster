@@ -9,3 +9,6 @@ nbproject/
 logs/
 build.xml
 manifest.mf
+compliled/
+precompliled/
+precompiled/

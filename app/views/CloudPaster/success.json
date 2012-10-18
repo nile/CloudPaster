@@ -1,1 +1,1 @@
-{"stat":"ok"}
+{"state":"${state}","code":"${code}", "msg":"${msg}","newscore":${newscore}}

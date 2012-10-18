@@ -5,70 +5,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
         <script src="/public/javascripts/jquery-1.5.1.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/public/javascripts/cp.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/public/javascripts/jquery.pnotify.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="/public/stylesheets/jquery.pnotify.default.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="/public/stylesheets/cp.css" media="screen, projection" />
 		#{get "moreScripts"/}
         <style>
-        body{
-            font-size:14px;
-            margin:0px;
-        }
-        a{
-            color:#222;
-            text-decoration:none;
-        }
-        button{
-        	border:1px solid gray;
-        }
-        table{
-            width:100%;
-			border-collapse:collapse;
-        }
-        .push{
-            padding-left:6px;
-        }
-        .center{
-            text-align:center;
-        }
-        .left{
-            text-align:left;
-        }
-        .right{
-            text-align:right;
-        }
-        .bg1{
-            background:#D9E3EA;
-        }
-        .warning{
-        	background:#CF8613;
-        	font-size:16px;
-        	padding:6px 6px 6px 20px;
-        }
-		.lightblack{
-			color:#0F0F0F;
-		}
-		.tag{
-			color: blue; 
-			background: lightgray; 
-			border: 1px solid lightblue;
-			padding: 1px 4px;
-			font-size: 12px;
-		}
-		.question-list-title{
-			line-height: 18px; 
-			font-size: 16px;
-		}
-		.info{
-			color:gray;
-			font-size:75%;
-			padding-left:10px;
-		}
         </style>
     </head>
     <body>
 <table style="width:85%;max-width:960px;min-width:800px;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
 <tr style="background-color:orange">
-<td class="push" style="width:80%;padding-bottom:2px;padding-top:2px;">
+<td class="push" style="width:80%;padding-bottom:6px;padding-top:4px;">
 	<table style="width:100%;padding:0px;margin:0px;border-collapse:collapse;">
 	<tr><td  style="padding:0px;margin:0px;">
+  <a href="@{CloudPaster.questions()}"><img src="@{'/public/images/favicon.png'}"></a>
   <a href="@{CloudPaster.questions()}"><span>问题</span></a>
   <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
   <a href="@{CloudPaster.tags()}"><span>分类</span></a>
@@ -94,7 +45,7 @@
 <tr><td>
     #{doLayout/}
     </td>
-    <td style="vertical-align:text-top;">
+    <td style="vertical-align:text-top;background:#fcfcfc;">
 	<table width="100%" border="0">
   <tr>
     <td class="bg1">
@@ -123,11 +74,6 @@
     </td>
 </tr>
 </table>
-
-<script src="http://static.getclicky.com/js" type="text/javascript"></script>
-<script type="text/javascript">try{ clicky.init(66402623); }catch(err){}</script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/66402623ns.gif" /></p></noscript>
-
     </body>
 </html>
     

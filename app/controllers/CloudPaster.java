@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import models.Paster;
+import models.Event;
+import models.Action;
 import models.Paster.QueryResult;
 import models.Paster.Type;
 import models.Subscribe;
@@ -188,6 +190,8 @@ public class CloudPaster extends Controller {
 
     public static void view(long id) {
         Paster paster = Paster.findById(id);
+        paster.viewCount ++;
+        paster.save();
         render(paster);
     }
 
@@ -204,47 +208,59 @@ public class CloudPaster extends Controller {
         }
     }
 
-    static void fail(String code, String message) {
+    static void voteresult(String state, String code, String msg,int newscore){
         request.format = "json";
         response.contentType = "application/json";
-        render("@fail", code, message);
-    }
-
-    static void success(Paster paster) {
-        request.format = "json";
-        response.contentType = "application/json";
-        render("@success", paster);
+        render("@success", state, code, msg, newscore);
     }
 
     public static void voteup(long id) {
         User user = Auth.getLoginUser();
+	if(user == null){
+	    voteresult("failed","need-login","请登录",0);
+	}
         Paster paster = Paster.findById(id);
-        Event event = Event.find("action=? and user=? and target=?", Action.Voteup, user, paster).first();
+        Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
         if (event != null) {
-            fail("vote-dumplicate", "只能投票一次");
+	    event.delete();
+	    if(event.action == Action.Votedown){
+		paster.votedown(false);
+	    }else{
+		paster.voteup(false);
+		voteresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
+	    }
         }
-        Event newevent = new Event();
-        newevent.action = Action.Voteup;
-        newevent.user = user;
-        newevent.target = paster;
-        newevent.save();
-        paster.voteup();
-        success(paster);
+	Event newevent = new Event();
+	newevent.action = Action.Voteup;
+	newevent.user = user;
+	newevent.target = paster;
+	newevent.save();
+	paster.voteup(true);
+	voteresult("ok","vote-success","顶上了",paster.voteup-paster.votedown);
     }
 
     public static void votedown(long id) {
         User user = Auth.getLoginUser();
+	if(user == null){
+	    voteresult("failed","need-login","请登录",0);
+	}
         Paster paster = Paster.findById(id);
-        Event event = Event.find("action=? and user=? and target=?", Action.Votedown, user, paster).first();
+        Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
         if (event != null) {
-            fail("vote-dumplicate", "只能投票一次");
+	    event.delete();
+	    if(event.action == Action.Voteup){
+		paster.voteup(false);
+	    }else{
+		paster.votedown(false);
+		voteresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
+	    }
         }
-        Event newevent = new Event();
-        newevent.action = Action.Voteup;
-        newevent.user = user;
-        newevent.target = paster;
-        newevent.save();
-        paster.votedown();
-        success(paster);
+	Event newevent = new Event();
+	newevent.action = Action.Votedown;
+	newevent.user = user;
+	newevent.target = paster;
+	newevent.save();
+	paster.votedown(true);
+	voteresult("ok","vote-success","踩中了",paster.voteup-paster.votedown);
     }
 }

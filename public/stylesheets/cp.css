@@ -1,0 +1,97 @@
+/*覆盖定义pnotify的样式*/
+.ui-pnotify{
+    background-color:orange;
+}
+
+body{
+    font-size:14px;
+    margin:0px;
+    font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;
+}
+
+a{
+    color:#222;
+    text-decoration:none;
+}
+button{
+    border:1px solid gray;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+.push{
+    padding-left:6px;
+}
+.center{
+    text-align:center;
+}
+.left{
+    text-align:left;
+}
+.right{
+    text-align:right;
+}
+.bg1{
+    background:#D9E3EA;
+}
+.warning{
+    background:#CF8613;
+    font-size:16px;
+    padding:6px 6px 6px 20px;
+}
+.lightblack{
+    color:#0F0F0F;
+}
+.tag{
+    background-color: #FAAC58;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    color: #222222;
+    font-size: 12px;
+    line-height: 2.4;
+    margin: 2px 2px 2px 0;
+    padding: 3px 4px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.question-list-title{
+    line-height: 18px; 
+    font-size: 16px;
+}
+.info{
+    color:gray;
+    font-size:75%;
+    padding-left:10px;
+}
+div.vote-actions{
+    display: inline-block;
+}
+
+
+.vote-up, .vote-up-on, .vote-down, .vote-down-on{
+    display:inline-block;
+    width: 24px;
+    height: 24px;
+    vertical-align:bottom;
+}
+.vote-up{
+    background-image:url('../images/vote-arrow-up.png');
+}
+.vote-up-on{
+    background-image:url('../images/vote-arrow-up-on.png');
+}
+.vote-down{
+    background-image:url('../images/vote-arrow-down.png');
+}
+.vote-down-on{
+    background-image:url('../images/vote-arrow-down-on.png');
+}
+.vote-score{
+    color: gray;
+    font-size: 24px;
+    font-weight: bold;
+    text-align:center;
+    display: inline-block;
+    width: 32px;
+}

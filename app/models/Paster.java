@@ -7,22 +7,32 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import play.db.jpa.Model;
-import play.modules.search.*;
+import play.db.jpa.NoTransaction;
+import play.modules.search.Field;
+import play.modules.search.Indexed;
+import play.modules.search.Query;
+import play.modules.search.Search;
 import util.PasterConverter;
 import util.TokenUtil;
 import ys.wikiparser.WikiParser;
 @Entity
+@Table(name="paster")
 @Indexed(converters = {PasterConverter.class})
 public class Paster extends Model {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4480896812936822950L;
 	@Field
 	public String content;
 	public String wiki;
@@ -38,6 +48,7 @@ public class Paster extends Model {
 	public Type type = Type.Q;
 	public String tagstext;
 	@ManyToMany
+	@JoinTable(name="paster_tag")
 	public Set<Tag> tags = new HashSet<Tag>();
 	@OneToOne
 	public User lastUser;
@@ -45,6 +56,7 @@ public class Paster extends Model {
 	public State state = State.NORMAL;
 	public int voteup;
 	public int votedown;
+	public int viewCount;
 	public int answerCount;
 	public int commentCount;
 	@OneToOne
@@ -114,32 +126,39 @@ public class Paster extends Model {
 			}
 		}
 		paster.save();
-                if(parentId >0)
-                    paster.parent.save();
+        if(parentId >0)
+            paster.parent.save();
 		return paster;
 	}
+	@NoTransaction
 	public Paster tagWith(String tag) {
 		this.tags.add(Tag.findOrCreateByName(tag));
 		return this;
 	}
+	@NoTransaction
 	public static long countByCreator(String email){
 		return Paster.count("byCreator", email);
 	}
+	@NoTransaction
 	public static List<Paster> findByCreator(String email,int from,int pagesize){
 		JPAQuery find = Paster.find("creator=? order by createDate desc",email);
 		if(from>0)
 			find.from(from);
 		return find.fetch(pagesize);
 	}
+	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize){
 		return findAll(from, pagesize,"order by createDate desc");
 	}
+	@NoTransaction
 	public static List<Paster> findMostUseful(int from ,int pagesize){
 		return findAll(from, pagesize,"order by useful desc");
 	}
+	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize,String order){
 		return Paster.find(order).from(from).fetch(pagesize);
 	}
+	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize,String query,String order){
 		return Paster.find(query +" " + order).from(from).fetch(pagesize);
 	}
@@ -147,13 +166,19 @@ public class Paster extends Model {
 	public void remove() {
 		delete();
 	}
-	public void voteup() {
-		voteup+=1;
-		save();
+        public boolean hadVoteup(User user){
+	    return Event.count("action=? and user=? and target=?", Action.Voteup, user, this)>0;
 	}
-	public void votedown() {
-		votedown+=1;
-		save();
+    public boolean hadVotedown(User user){
+        return Event.count("action=? and user=? and target=?", Action.Votedown, user, this)>0;
+    }
+	public void voteup(boolean up) {
+	    voteup+=(up?1:-1);		
+	    save();
+	}
+	public void votedown(boolean up) {
+	    votedown+=(up?1:-1);
+	    save();
 	}
 	public static class QueryResult{
 		public long count;

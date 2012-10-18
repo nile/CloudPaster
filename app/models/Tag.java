@@ -3,9 +3,11 @@ package models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import play.db.jpa.Model;
 @Entity
+@Table(name="tag")
 public class Tag extends Model {
 	public String name;
 	public Date lastPaste;
