@@ -39,8 +39,11 @@ public class CloudPaster extends Controller {
     static public void questions(int from) {
         long count = Paster.count("type=?", Type.Q);
         List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
-		long pagesize = PAGE_SIZE;
-        render(pasters, from, count, pagesize);
+	long pagesize = PAGE_SIZE;
+	List<Map> clouds = Tag.find(
+				    "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
+				    ).fetch();
+        render(pasters, from, count, pagesize, clouds);
     }
 
     /**
@@ -174,10 +177,8 @@ public class CloudPaster extends Controller {
     public static void edit(long id) {
         Paster paster = Paster.findById(id);
         if(paster.creator.id != Auth.getLoginUser().id){
-            flash.error("只有作者才能修改。");
-            if(paster.type == Type.Q)
-                view(id);
-            view(paster.parent.id);
+	    jsonresult("failed","permission-limited", "你不能修改别人的问题",0);
+	    return;
         }
         String state = "answer-edit";
         if (paster.type == Type.A) {
@@ -208,16 +209,16 @@ public class CloudPaster extends Controller {
         }
     }
 
-    static void voteresult(String state, String code, String msg,int newscore){
+    static void jsonresult(String state, String code, String msg,int newscore){
         request.format = "json";
         response.contentType = "application/json";
-        render("@success", state, code, msg, newscore);
+        render("@jsonresult", state, code, msg, newscore);
     }
 
     public static void voteup(long id) {
         User user = Auth.getLoginUser();
 	if(user == null){
-	    voteresult("failed","need-login","请登录",0);
+	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
         Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
@@ -227,7 +228,7 @@ public class CloudPaster extends Controller {
 		paster.votedown(false);
 	    }else{
 		paster.voteup(false);
-		voteresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
+		jsonresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
 	    }
         }
 	Event newevent = new Event();
@@ -236,13 +237,13 @@ public class CloudPaster extends Controller {
 	newevent.target = paster;
 	newevent.save();
 	paster.voteup(true);
-	voteresult("ok","vote-success","顶上了",paster.voteup-paster.votedown);
+	jsonresult("ok","vote-success","顶上了",paster.voteup-paster.votedown);
     }
 
     public static void votedown(long id) {
         User user = Auth.getLoginUser();
 	if(user == null){
-	    voteresult("failed","need-login","请登录",0);
+	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
         Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
@@ -252,7 +253,7 @@ public class CloudPaster extends Controller {
 		paster.voteup(false);
 	    }else{
 		paster.votedown(false);
-		voteresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
+		jsonresult("ok","vote-success","已经取消",paster.voteup-paster.votedown);
 	    }
         }
 	Event newevent = new Event();
@@ -261,6 +262,6 @@ public class CloudPaster extends Controller {
 	newevent.target = paster;
 	newevent.save();
 	paster.votedown(true);
-	voteresult("ok","vote-success","踩中了",paster.voteup-paster.votedown);
+	jsonresult("ok","vote-success","踩中了",paster.voteup-paster.votedown);
     }
 }

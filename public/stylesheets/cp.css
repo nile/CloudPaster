@@ -64,7 +64,7 @@ table{
     font-size:75%;
     padding-left:10px;
 }
-div.vote-actions{
+div.vote-actions, div.post-actions{
     display: inline-block;
 }
 
@@ -95,3 +95,4 @@ div.vote-actions{
     display: inline-block;
     width: 32px;
 }
+

@@ -21,9 +21,11 @@
 	    </span>
           </td><td class="right">
 	    #{voteactions user:user,paster:paster/}
+	    <div class="post-actions">
             #{a @CloudPaster.edit(paster.id)}编辑#{/a}
             &nbsp;#{a @CloudPaster.answer(paster.id)}回答#{/a}
             &nbsp;#{a @CloudPaster.comment(paster.id)}评论#{/a}
+	    </div>
       </td></tr></table>
   </td></tr>
   #{if paster.comments.size>0}
@@ -92,8 +94,10 @@
 		  #{if answer.updated} &nbsp; ${answer.lastUser.name} ${answer.updated.freindly()}修改#{/if} 
                 </td><td class="right">
 		  #{voteactions user:user,paster:answer/}
-                  #{a @CloudPaster.edit(answer.id)}编辑#{/a}
-                  #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
+		  <div class="post-actions">
+                    #{a @CloudPaster.edit(answer.id)}编辑#{/a}
+                    #{a @CloudPaster.comment(paster.id,answer.id)}评论#{/a}
+		  </div>
             </td></tr></table>
         </td></tr>
         #{if answer.comments.size>0}

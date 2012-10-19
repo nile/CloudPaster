@@ -1,82 +1,90 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>${title} - 开发者问答服务</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
-        <script src="/public/javascripts/jquery-1.5.1.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/cp.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/jquery.pnotify.js" type="text/javascript" charset="utf-8"></script>
-	<link rel="stylesheet" type="text/css" href="/public/stylesheets/jquery.pnotify.default.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="/public/stylesheets/cp.css" media="screen, projection" />
-		#{get "moreScripts"/}
-        <style>
-        </style>
-    </head>
-    <body>
-<table style="width:85%;max-width:960px;min-width:800px;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
-<tr style="background-color:orange">
-<td class="push" style="width:80%;padding-bottom:6px;padding-top:4px;">
-	<table style="width:100%;padding:0px;margin:0px;border-collapse:collapse;">
-	<tr><td  style="padding:0px;margin:0px;">
-  <a href="@{CloudPaster.questions()}"><img src="@{'/public/images/favicon.png'}"></a>
-  <a href="@{CloudPaster.questions()}"><span>问题</span></a>
-  <a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
-  <a href="@{CloudPaster.tags()}"><span>分类</span></a>
-  <a href="@{CLink.index()}"><span style="color:blue;">资讯</span></a>
+  <head>
+    <title>${title} - 开发者问答服务</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+    <script src="/public/javascripts/jquery-1.5.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/javascripts/cp.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/javascripts/jquery.pnotify.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/jquery.pnotify.default.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/cp.css" media="screen, projection" />
+    #{get "moreScripts"/}
+    <style>
+    </style>
+  </head>
+  <body>
+    <table style="width:85%;max-width:960px;min-width:800px;margin:auto;margin-top:0px;background:#f6f6f6;border-collapse:collapse;">
+      <tr style="background-color:orange">
+	<td class="push" style="width:80%;padding-bottom:6px;padding-top:4px;">
+	  <table style="width:100%;padding:0px;margin:0px;border-collapse:collapse;">
+	    <tr><td  style="padding:0px;margin:0px;">
+		<a href="@{CloudPaster.questions()}"><img src="@{'/public/images/favicon.png'}"></a>
+		<a href="@{CloudPaster.questions()}"><span>问题</span></a>
+		<a href="@{CloudPaster.unanswered()}"><span>等待回答</span></a>
+		<a href="@{CloudPaster.tags()}"><span>分类</span></a>
+		<a href="@{CLink.index()}"><span style="color:blue;">资讯</span></a>
+	      </td>
+	      <td style="width:20%;padding:0px;margin:0px;">
+		<a href="@{CloudPaster.ask()}"><span>我要提问</span></a>  
+		<a href="@{CLink.submit()}"><span>提交资讯</span></a>
+	      </td>
+	  </tr></table>
 	</td>
-	<td style="width:20%;padding:0px;margin:0px;">
-  <a href="@{CloudPaster.ask()}"><span>我要提问</span></a>  
-  <a href="@{CLink.submit()}"><span>提交资讯</span></a>
+	<td>
+	  #{if session['user.key']}    
+	  #{a @UserCenter.index(user.id)}${user?.name?:"游客"}#{/a}
+	  <a href="@{Auth.logout()}"><span>退出</span></a>
+	  #{/if}
+	  #{else}
+	  <a href="@{Auth.login()}"><span>用OpenID登录</span></a>
+	  #{/else}
+
 	</td>
-	</tr></table>
-</td>
-<td>
-  #{if session['user.key']}    
-    #{a @UserCenter.index(user.id)}${user?.name?:"游客"}#{/a}
-    <a href="@{Auth.logout()}"><span>退出</span></a>
-  #{/if}
-  #{else}
-    <a href="@{Auth.login()}"><span>用OpenID登录</span></a>
-  #{/else}
-
-</td>
-</tr>
-<tr><td>
-    #{doLayout/}
-    </td>
-    <td style="vertical-align:text-top;background:#fcfcfc;">
-	<table width="100%" border="0">
-  <tr>
-    <td class="bg1">
-	#{searchbox/}
-</td>
-  </tr>
-  <tr>
-  <td class="bg1">
-	#{jiathis/}
-  </td>
-  </tr>
-</table>
-
-        
+      </tr>
+      <tr><td>
+	  #{doLayout/}
 	</td>
-</tr>
-<tr style="margin-top10px; border-top: 1px solid orange"><td class="push" style="padding-top:10px;padding-bottom:10px;">
-    &#169;2010-2011 感谢无私的奉献者
-    <a href="http://nginx.org/">nginx</a>
-	<a href="http://www.playframework.org">playframework</a>
-	<a href="http://lucene.apache.org">apache lucene</a>
-	<a href="http://www.eclipse.org/">eclipse</a>
-    </td>
-    <td>&nbsp;
-    
-    </td>
-</tr>
-</table>
+	<td style="vertical-align:text-top;background:#fcfcfc;">
+	  <table width="100%" border="0">
+	    <tr>
+	      <td class="bg1">
+		#{searchbox/}
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="bg1">
+		#{jiathis/}
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="bg2">
+		#{favoritetags tags:clouds/}
+	      </td>
+	    </tr>
+	  </table>
 
-#{ga/}
+          
+	</td>
+      </tr>
+      <tr style="margin-top10px; border-top: 1px solid orange"><td class="push" style="padding-top:10px;padding-bottom:10px;">
+	  &#169;2010-2011 感谢无私的奉献者
+	  <a href="http://nginx.org/">nginx</a>
+	  <a href="http://www.playframework.org">playframework</a>
+	  <a href="http://lucene.apache.org">apache lucene</a>
+	  <a href="http://www.eclipse.org/">eclipse</a>
+	</td>
+	<td>
+    数据库查询次数：#{jpastats.databaseQueries /}	  
+    ：#{jpastats.hibernateQueries /}
+    ：#{jpastats.fetchedCollections /}
+    ：#{jpastats.fetchedEntities /}
+	</td>
+      </tr>
+    </table>
 
-    </body>
+    #{ga/}
+
+  </body>
 </html>
-    
+

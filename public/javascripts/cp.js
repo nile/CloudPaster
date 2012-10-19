@@ -1,6 +1,5 @@
 $(document).ready(function(){
     function show_stack_info(a,info) {
-    var modal_overlay;
     info_box = $.pnotify({
         text: info,
         icon: false,
@@ -18,6 +17,17 @@ $(document).ready(function(){
         }
     });
     }
+    $('.post-actions').delegate('a','click',function(a){
+	a.preventDefault();
+	var that = $(a.currentTarget);
+	$.get(that.attr('href'),function(ret){
+	    if(ret.state == 'failed'){
+		show_stack_info(that,ret.msg);
+	    }else{
+		window.location.href=that.attr('href');
+	    }
+	});
+    });
     $('.vote-actions').delegate('a','click',function(a){
 	a.preventDefault();
 	var that = $(a.currentTarget);
