@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    function show_stack_info(a,info) {
+    function show_info_box(a,info) {
     info_box = $.pnotify({
         text: info,
         icon: false,
@@ -22,7 +22,7 @@ $(document).ready(function(){
 	var that = $(a.currentTarget);
 	$.get(that.attr('href'),function(ret){
 	    if(ret.state == 'failed'){
-		show_stack_info(that,ret.msg);
+		show_info_box(that,ret.msg);
 	    }else{
 		window.location.href=that.attr('href');
 	    }
@@ -42,7 +42,7 @@ $(document).ready(function(){
 		}
 		that.parent().find('.vote-score').html(ret.newscore);
 	    }else{
-		show_stack_info(that,ret.msg);
+		show_info_box(that,ret.msg);
 	    }
 	})
     });

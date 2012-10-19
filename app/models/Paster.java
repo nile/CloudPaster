@@ -42,7 +42,7 @@ public class Paster extends Model {
 	public Paster parent ;
 	@OneToOne
 	public Paster best;
-	@OneToOne
+    @OneToOne
 	public User creator;
 	public Date created;
 	public Type type = Type.Q;
@@ -61,7 +61,7 @@ public class Paster extends Model {
 	public int commentCount;
 	@OneToOne
 	public User lastAnswerUser;
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	public Paster lastAnswer;
 	public Date lastAnswered;
 	
