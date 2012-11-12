@@ -69,8 +69,8 @@
 	      </td>
 	    </tr>
 #{/if}
-#{if favoriteTags}
-	    <tr>
+#{if session['user.key']}
+          <tr>
 	      <td class="bg2">
 		#{favoritetags tags:favoriteTags/}
 	      </td>

@@ -1,5 +1,9 @@
 $(document).ready(function() {
+    var info_box;
     function show_info_box(a, info) {
+        if(info_box)
+            info_box.pnotify_remove();
+        info_box = undefined;
         info_box = $.pnotify({
             text: info,
             icon: false,
@@ -17,26 +21,39 @@ $(document).ready(function() {
             }
         });
     }
-    $('.favorite-tags a').hoverIntent({
+    var tag_delay_hover = {
             sensitivity: 3,
-            interval: 1000,
+            interval: 500,
             over:function(a){
-                $.get($(a.currentTarget).attr('href'),function(ret){
+                $.get($(a.currentTarget).attr('rel'),function(ret){
                    show_info_box($(a.currentTarget),ret);
                 });
             },
             out: function(){}
-      });
-   
+      };
+    $('.favorite-tags a').hoverIntent(tag_delay_hover);
+    $('body').delegate('a.bt-tag-unfocused','click',function(a){
+        a.preventDefault();
+        var that = $(a.currentTarget);
+        $.get(that.attr('href'),function(ret){
+            var tags = $('.favorite-tags').find('.tags');
+            tags.find('[data-tag-id='+ret.data.id+']').detach() ;
+            show_info_box(tags,ret.msg)
+        });
+
+    });
     $('.favorite-tags').delegate('button', 'click', function(b) {
         b.preventDefault();
         var that = $(b.currentTarget);
         var frm = that.parent('form');
         $(frm).ajaxSubmit(function(ret) {
             if (ret.state === 'ok') {
-                var tags = that.parents('.favorite-tags');
-                $('<span style="white-space: nowrap"><a href="/tag/' + ret.data.name + '"><span class="tag">' + ret.data.name + '</span></a></span>')
-                        .insertBefore(tags, tags.find('form'));
+                var tags = that.parents('.favorite-tags').find('.tags');
+                var ele = $(
+                        '<span style="white-space: nowrap" data-tag-id="'+ret.data.id + '">'
+                        +'<a href="/tag/' + ret.data.name +'" rel="/taginfo/'+ret.data.name+'"><span class="tag">' + ret.data.name + '</span></a></span>');
+                ele.appendTo(tags);
+                ele.find('a').hoverIntent(tag_delay_hover);
             } else {
                 show_info_box(that, ret.msg);
             }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import controllers.vm.Result;
 import models.*;
 import models.Event;
 import models.Action;
@@ -269,6 +270,25 @@ public class CloudPaster extends Controller {
 	paster.votedown(true);
 	jsonresult("ok","vote-success","踩中了",paster.voteup-paster.votedown);
     }
+    public static void removeFavoriteTag(String tagName){
+        User user =  Auth.getLoginUser();
+        if(user == null){
+            jsonresult("failed","need-login","请登录",0);
+            return;
+        }
+        Tag tag = Tag.findByName(tagName);
+        if(tag == null){
+            jsonresult("failed","tag-not-exists","指定的分类不存在",0);
+            return;
+        }
+        FavoriteTag ft = new FavoriteTag();
+        if(FavoriteTag.count("user = ? and tag = ?",Auth.getLoginUser(),tag)>0){
+            FavoriteTag.delete("user=? and tag = ?", Auth.getLoginUser(), tag);
+            jsonresult("ok","tag-unfocused","已经取消关注",tag);
+            return;
+        }
+        jsonresult("faild","tag-not-focused","没有关注",tag);
+    }
     public static void addFavoriteTag(String tagName){
 	User user =  Auth.getLoginUser();
 	if(user == null){
@@ -291,7 +311,8 @@ public class CloudPaster extends Controller {
 	ft.save();
 	jsonresult("ok","tag-followed","关注成功",tag);
     }
-    public static void tagInfo(String tag){
-        
+    public static void tagInfo(String name){
+        Tag tag = Tag.findByName(name);
+        render(tag);
     }
 }

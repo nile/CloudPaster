@@ -15,6 +15,7 @@ GET     /comment/{id}                 			CloudPaster.comment
 *   	/ask                 					CloudPaster.ask
 GET   	/tags									CloudPaster.tags
 GET   	/tag/{name}								CloudPaster.tag
+GET   	/taginfo/{name}								CloudPaster.tagInfo
 GET   	/search                 				CloudPaster.search
 
 GET   	/user/{id}                 					UserCenter.index

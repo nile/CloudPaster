@@ -96,3 +96,6 @@ div.vote-actions, div.post-actions{
     width: 32px;
 }
 
+.favorite-tags span:after{
+
+}
