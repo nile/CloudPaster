@@ -8,7 +8,9 @@
 	  <span class="vote-score" title="答案数量">${paster.answerCount}</span>
 	  <span class="vote-score" title="浏览数量">${paster.viewCount}</span></td>
 	<td>#{a @CloudPaster.view(paster.id), class:'question-list-title'}${paster?.title?.raw()}#{/a}
-	<br>#{list items:paster?.tags,as:'tag'} #{a @CloudPaster.tag(tag.name)}<span class="tag">${tag.name}</span>#{/a}#{/list}
+	<br>
+#{tags paster.tags/}
+
 	<span class="info">	
 	#{ifnot paster?.lastAnswerUser} 
 		#{ifnot} #{a @UserCenter.index(paster?.creator.id)}${paster?.creator.name}#{/a} ${paster?.created?.freindly()} 提问 #{/ifnot}

@@ -2,8 +2,9 @@ package controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import models.Paster;
+import models.*;
 import models.Event;
 import models.Action;
 import models.Paster.QueryResult;
@@ -43,7 +44,12 @@ public class CloudPaster extends Controller {
 	List<Map> clouds = Tag.find(
 				    "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
 				    ).fetch();
-        render(pasters, from, count, pagesize, clouds);
+	List<Tag> favoriteTags = null;
+	if(Auth.getLoginUser()!=null){
+	    favoriteTags = FavoriteTag.find("select ft.tag from FavoriteTag ft where ft.user = ?", Auth.getLoginUser()).fetch();
+	    System.out.println(favoriteTags);
+	}
+        render(pasters, from, count, pagesize, clouds, favoriteTags);
     }
 
     /**
@@ -193,7 +199,8 @@ public class CloudPaster extends Controller {
         Paster paster = Paster.findById(id);
         paster.viewCount ++;
         paster.save();
-        render(paster);
+	Set<Tag> tags = paster.tags;
+        render(paster,tags);
     }
 
     public static void search(String keywords, int from) {
@@ -209,10 +216,8 @@ public class CloudPaster extends Controller {
         }
     }
 
-    static void jsonresult(String state, String code, String msg,int newscore){
-        request.format = "json";
-        response.contentType = "application/json";
-        render("@jsonresult", state, code, msg, newscore);
+    static void jsonresult(String state, String code, String msg,Object data){
+        renderJSON(Result.one(state, code, msg, data));
     }
 
     public static void voteup(long id) {
@@ -263,5 +268,30 @@ public class CloudPaster extends Controller {
 	newevent.save();
 	paster.votedown(true);
 	jsonresult("ok","vote-success","踩中了",paster.voteup-paster.votedown);
+    }
+    public static void addFavoriteTag(String tagName){
+	User user =  Auth.getLoginUser();
+	if(user == null){
+	    jsonresult("failed","need-login","请登录",0);
+	    return;
+	}
+	Tag tag = Tag.findByName(tagName);
+	if(tag == null){
+	    jsonresult("failed","tag-not-exists","指定的分类不存在",0);
+	    return;
+	}
+	FavoriteTag ft = new FavoriteTag();
+	if(FavoriteTag.count("user = ? and tag = ?",Auth.getLoginUser(),tag)>0){
+	    jsonresult("failed","tag-had-focused","已经关注了",0);
+	    return;
+	}
+	
+	ft.user = user;
+	ft.tag = tag;
+	ft.save();
+	jsonresult("ok","tag-followed","关注成功",tag);
+    }
+    public static void tagInfo(String tag){
+        
     }
 }

@@ -4,7 +4,9 @@
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
+GET	/favicon.ico				staticFile:/public/images/favicon.ico
 
+GET     /questions/{from}                                	    CloudPaster.questions
 GET     /                                	    CloudPaster.questions
 GET     /unanswered                             CloudPaster.unanswered
 GET     /view/{id}                              CloudPaster.view

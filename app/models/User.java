@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -21,7 +22,7 @@ public class User extends Model{
 	public String about;
 	public String email;
 	public Date	createDate;
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="user_cprole")
 	public Set<CPRole> roles = new java.util.HashSet<CPRole>();
 	public static User createOrGet(String email) {

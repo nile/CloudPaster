@@ -3,7 +3,9 @@
 <h2>问题</h2>
 <table style="width:100%">
 #{list items:pasters,as:'paster'}	
+#{cache 'paster-'+paster.id, for:'10s'}
     <tr><td>#{q paster/}</td></tr>
+#{/cache}
     #{if (paster_index%5)==0}<tr style="height:20px;"></tr>#{/if}
 #{/list}
     <tr><td>#{paginations questions:true/}</td></tr>

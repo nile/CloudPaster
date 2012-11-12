@@ -47,7 +47,7 @@ public class Paster extends Model {
 	public Date created;
 	public Type type = Type.Q;
 	public String tagstext;
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="paster_tag")
 	public Set<Tag> tags = new HashSet<Tag>();
 	@OneToOne
@@ -59,7 +59,7 @@ public class Paster extends Model {
 	public int viewCount;
 	public int answerCount;
 	public int commentCount;
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	public User lastAnswerUser;
 	@OneToOne
 	public Paster lastAnswer;

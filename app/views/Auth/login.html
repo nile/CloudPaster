@@ -2,31 +2,31 @@
 #{set title:"用户登陆"/}
 
 <div style="margin-bottom:320px;">
-#{if flash.error}
-<p>${flash.error}</p>
-#{/if}
-	<p>		
-<div style="text-align:center;width:220px;display:inline;float:left;">
-<pre>                              
+    #{if flash.error}
+    <p>${flash.error}</p>
+    #{/if}
+    <p>		
+    <div style="text-align:center;width:220px;display:inline;float:left;">
+        <pre>                              
                     |         
 ,---.,---.,---.,---.|    ,---.
 |   ||   ||   ||   ||    |---'
 `---|`---'`---'`---|`---'`---'
 `---'          `---'          
-</pre>
-<a href="@{Auth.googlelogin()}">用Gmail帐号登录</a>
-</div>
-<div style="text-align:center;width:220px;display:inline;float:left;">		
-<pre>                         
+        </pre>
+        <a href="@{Auth.googlelogin()}">用Gmail帐号登录</a>
+    </div>
+    <div style="text-align:center;width:220px;display:inline;float:left;">		
+        <pre>                         
           |              
 ,   .,---.|---.,---.,---.
 |   |,---||   ||   ||   |
 `---|`---^`   '`---'`---'
 `---'                    
-</pre>
-<a href="@{Auth.yahoologin()}">用Yahoo帐号登录</a>
-</div>		
-	</p>
+        </pre>
+        <a href="@{Auth.yahoologin()}">用Yahoo帐号登录</a>
+    </p>
 </div>
 
 
+    </div>

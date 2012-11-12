@@ -1,4 +1,5 @@
 .settings/
+.idea/
 tpm/
 data/
 eclipse/
@@ -12,3 +13,4 @@ manifest.mf
 compliled/
 precompliled/
 precompiled/
+modules/jpastats-0.9/
