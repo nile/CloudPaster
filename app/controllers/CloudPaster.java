@@ -23,10 +23,18 @@ import play.mvc.With;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
+import play.mvc.Before;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
 	final static int PAGE_SIZE=30;
+        @Before
+        static public void prepare(){
+            if(Auth.getLoginUser()!=null){
+                List<FavoriteTag> favoriteTags = FavoriteTag.find("select ft.tag from FavoriteTag ft where ft.user = ?", Auth.getLoginUser()).fetch();
+                renderArgs.put("favoriteTags", favoriteTags);
+            }
+        }
     /**
      * 最近活跃
      */
@@ -45,12 +53,7 @@ public class CloudPaster extends Controller {
 	List<Map> clouds = Tag.find(
 				    "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
 				    ).fetch();
-	List<Tag> favoriteTags = null;
-	if(Auth.getLoginUser()!=null){
-	    favoriteTags = FavoriteTag.find("select ft.tag from FavoriteTag ft where ft.user = ?", Auth.getLoginUser()).fetch();
-	    System.out.println(favoriteTags);
-	}
-        render(pasters, from, count, pagesize, clouds, favoriteTags);
+	render(pasters, from, count, pagesize, clouds);
     }
 
     /**

@@ -22,8 +22,8 @@ $(document).ready(function() {
         });
     }
     var tag_delay_hover = {
-            sensitivity: 3,
-            interval: 500,
+            sensitivity: 1,
+            interval: 300,
             over:function(a){
                 $.get($(a.currentTarget).attr('rel'),function(ret){
                    show_info_box($(a.currentTarget),ret);
