@@ -2,9 +2,9 @@
 #{form @CloudPaster.search(),method:'GET',class:'searchform'}
 <table>
   <tr><td>
-      <input name="keywords" value="${keywords}" type="text" style="width:120px;margin-bottom:auto;">
+      <input name="keywords" value="${keywords}" type="text" style="width:150px;margin-bottom:auto;">
     </td><td>
-      <button type="submit" class="btn">
+      <button type="submit" class="btn btn-success btn-small">
 	搜问题
       </button>
   </td></tr>

@@ -57,6 +57,12 @@ div.vote-actions, div.post-actions{
     margin-bottom: 0px;
 }
 
+
+.footer{
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
 .ui-pnotify{
     background-color:orange;
     position: absolute;

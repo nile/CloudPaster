@@ -9,8 +9,8 @@
     </div>
     <div>
     #{form @CloudPaster.addFavoriteTag()}
-        <input type="text" name="tagName" style="width:120px;margin-bottom:auto;">
-        <button class="btn">关注</button>
+        <input type="text" name="tagName" style="width:150px;margin-bottom:auto;">
+        <button class="btn btn-success btn-small">关注</button>
     #{/form}
     </div>
 </div>

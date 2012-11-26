@@ -26,9 +26,9 @@
     <body>
         <div class="container">
             <div class="row-fluid top-nav">
-	      <div class="span1" style="vertical-algin:bottom;line-height:34px;padding-left:5px;">
-		      #{a @CloudPaster.questions()}<img src="@{'/public/images/logo-new.png'}"/>#{/a}
-	      </div>
+            <div class="span1" style="vertical-algin:bottom;line-height:34px;padding-left:5px;">
+            #{a @CloudPaster.questions()}<img src="@{'/public/images/logo-new.png'}"/>#{/a}
+            </div>
                 <div class="span5">
                     <ul class="nav nav-pills">
                         <li #{if request.action == 'CloudPaster.questions'} class="active"#{/if}><a href="@{CloudPaster.questions()}">问题</a></li >
@@ -62,38 +62,29 @@
                     #{doLayout/}
                 </div>
                 <div class="span3">
-                    <table width="100%" border="0">
-                        <tr>
-                            <td class="bg1">
+                    <div>
                                 #{searchbox/}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="bg1">
+                    </div>
+                    <div>
                                 #{jiathis/}
-                            </td>
-                        </tr>
-                        #{if tags}
-                        <tr>
-                            <td class="bg2">
-                                <h3>标签</h3>
-                                #{tags tags/}
-                            </td>
-                        </tr>
-                        #{/if}
-                        #{if session['user.key']}
-                        <tr>
-                            <td class="bg2">
-                                #{favoritetags tags:favoriteTags/}
-                            </td>
-                        </tr>
-                        #{/if}
-                    </table>
+                    </div>
+                    #{if tags}
+                    <div>
+                        <h3>标签</h3>
+                        #{tags tags/}
+                    </div>
+                    #{/if}
+                    #{if session['user.key']}
+                    <div>
+                            #{favoritetags tags:favoriteTags/}
+                    </div>
+                    #{/if}
+                   
                 </div>
 
             </div>
 
-            <div class="row-fluid">
+            <div class="row-fluid footer">
                 <div class="span8">
 
                     &#169;2010-2011 感谢无私的奉献者

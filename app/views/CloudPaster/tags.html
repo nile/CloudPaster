@@ -1,6 +1,6 @@
 #{extends 'table.html'/}
 #{set title:"分类索引"/}
-<h1>分类索引</h1>
+<h2>分类索引</h2>
 
 #{list items:clouds,as:'cloud'}
 	<div class="btn btn-warning" style="white-space: nowrap;margin:4px;text-shadow:none;color:#ccc;">#{a @CloudPaster.tag(cloud.name)}<span >${cloud.name}</span>#{/a}<span>${cloud.count}</span>&nbsp;
