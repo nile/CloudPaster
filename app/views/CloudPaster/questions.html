@@ -1,13 +1,11 @@
-#{extends 'table.html'/}
+	#{extends 'table.html'/}
 #{set title:"问题列表"/}
 <h2>问题</h2>
-<table style="width:100%">
 #{list items:pasters,as:'paster'}	
 #{cache 'paster-'+paster.id, for:'10s'}
-    <tr><td>#{q paster/}</td></tr>
+	#{q paster/}
 #{/cache}
-    #{if (paster_index%5)==0}<tr style="height:20px;"></tr>#{/if}
+    #{if (paster_index%5)==0}<div style="height:20px;"></div>#{/if}
 #{/list}
-    <tr><td>#{paginations questions:true/}</td></tr>
-</table>
+    #{paginations questions:true/}
 
