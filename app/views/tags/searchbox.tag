@@ -2,9 +2,11 @@
 #{form @CloudPaster.search(),method:'GET',class:'searchform'}
 <table>
   <tr><td>
-      <input name="keywords" value="${keywords}" type="text">
+      <input name="keywords" value="${keywords}" type="text" style="width:120px;margin-bottom:auto;">
     </td><td>
-      <button type="submit" class="searchbutton"><img alt="搜索" src="@{'public/images/search.png'}"></button>
+      <button type="submit" class="btn">
+	搜问题
+      </button>
   </td></tr>
 </table>
 #{/form}	

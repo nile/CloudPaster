@@ -3,6 +3,6 @@
 <h1>分类索引</h1>
 
 #{list items:clouds,as:'cloud'}
-	<span style="white-space: nowrap">#{a @CloudPaster.tag(cloud.name)}<span class="tag">${cloud.name}</span>#{/a}<span style="line-height:22px;">${cloud.count}</span>&nbsp;
-	</span>
+	<div class="btn btn-warning" style="white-space: nowrap;margin:4px;text-shadow:none;color:#ccc;">#{a @CloudPaster.tag(cloud.name)}<span >${cloud.name}</span>#{/a}<span>${cloud.count}</span>&nbsp;
+	</div>
 #{/list}

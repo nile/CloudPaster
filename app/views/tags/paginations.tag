@@ -156,38 +156,41 @@
 #{/if}
 
 #{if _questions}
-	<div class="grid8 first  paginations">
-	#{if _caller.count > pagesize}
-		#{if isfirst}
-			第一页
-		#{/if}
-		#{else}
-			<a href="@{CloudPaster.questions(0)}">第一页</a>
-			<a href="@{CloudPaster.questions(_caller.from-pagesize)}">前一页</a>
-		#{/else}	
-		
-		%{  if(s>1) out << "...";
-			for( int a = s;a < e; a++ ){
-		}%
-			#{if a+1 == cur}
-				${a+1}
-			#{/if}
-			#{else}
-				<a href="@{CloudPaster.questions(a*pagesize)}">${a+1}</a>
-			#{/else}
-		%{
-			}
-			if(e<pagecount) out << "...";
-		}%
-		#{if islast }
-			最后一页
-		#{/if}
-		#{else}
-			<a href="@{CloudPaster.questions(_caller.from+pagesize)}">下一页</a>
-			<a href="@{CloudPaster.questions(lastindx)}">最后一页</a>
-		#{/else}
+<div class="pagination">
+    #{if _caller.count > pagesize}
+    <ul>
+        #{if isfirst}
+        <li class="disabled"><span>第一页</span></li>
 	#{/if}
-	</div>
+        #{else}
+            <li><a href="@{CloudPaster.questions(0)}">第一页</a></li>
+            <li><a href="@{CloudPaster.questions(_caller.from-pagesize)}">前一页</a></li>
+        #{/else}
+        %{  if(s>1) 
+        out << "<li><span>...</span></li>";
+                for( int a = s;a < e; a++ ){
+        }%
+            #{if a+1 == cur}
+            <li><span>${a+1}</span></li>
+            #{/if}
+            #{else}
+            <li><a href="@{CloudPaster.questions(a*pagesize)}">${a+1}</a></li>
+            #{/else}
+        %{
+                }
+                if( e < pagecount ) out << "<li><span>...</span></li>.";
+        }%
+        #{if islast }
+        <li class="disabled"><span>最后一页<span></li>
+        #{/if}
+        #{else}
+        <li><a href="@{CloudPaster.questions(_caller.from+pagesize)}">下一页</a></li>
+        <li><a href="@{CloudPaster.questions(lastindx)}">最后一页</a></li>
+        #{/else}
+    </ul>
+    #{/if}
+  
+</div>
 #{/if}
 
 #{if _link}

@@ -7,7 +7,10 @@ $(document).ready(function() {
         info_box = $.pnotify({
             text: info,
             icon: false,
-            delay: 1500,
+            insert_brs:false,
+            sticker:false,
+            closer:false,
+            delay: 100000,
             history: false,
             stack: false,
             before_open: function(pnotify) {
@@ -51,7 +54,7 @@ $(document).ready(function() {
                 var tags = that.parents('.favorite-tags').find('.tags');
                 var ele = $(
                         '<span style="white-space: nowrap" data-tag-id="'+ret.data.id + '">'
-                        +'<a href="/tag/' + ret.data.name +'" rel="/taginfo/'+ret.data.name+'"><span class="tag">' + ret.data.name + '</span></a></span>');
+                        +'<a href="/tag/' + ret.data.name +'" rel="/taginfo/'+ret.data.name+'"><span class="tag btn btn-warning">' + ret.data.name + '</span></a></span>');
                 ele.appendTo(tags);
                 ele.find('a').hoverIntent(tag_delay_hover);
             } else {
