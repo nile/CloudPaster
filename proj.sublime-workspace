@@ -1,0 +1,416 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"mar",
+				"margin-top"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/run/Broadview/COSS/sql-to-trap/conf/trapdef.yaml",
+			"settings":
+			{
+				"buffer_size": 1071,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "功能说明\n==============================\n	1. 增加机房集成\n	2. 集成机房告警\n\n\n适用范围\n===========================================\n	适用于Broadview_COSS_V6.0.R1.1.20120712版本。\n	依赖于Broadview_COSS_V6.0.R1.4.20121020.P补丁包。\n\n\n升级说明\n===========================================	\n	将升级包中的文件拷贝至安装目录下，双击upgradeStartup.exe执行升级\n  \n\n注意事项\n===========================================\n	备份好现场环境，包括程序和数据库。\n\n	升级好之后执行sql-to-trap\\sql-to-trap.exe程序，需要在arbiter中配置告警解析\n\n	\n	",
+			"file": "/D/run/Broadview/Broadview_COSS_V6.0.R1.5.20121203.C/版本说明.txt",
+			"file_size": 547,
+			"file_write_time": 129989729961285206,
+			"settings":
+			{
+				"buffer_size": 422,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<rdbbridge>\n	<sync>\n		<resource>\n		<!--服务器节点\n		 	arg参数配置格式：include|exclude:节点资源类型1,节点资源类型2...      \n			大小写不敏感\n\n		  	例：\n		 		 arg=\"include:aix,solaris\"  	        含义：节点资源类型包含在配置类型之内的服务器节点将被同步\n		 		 arg=\"exclude:aix,solaris\"         含义：节点资源类型在配置类型之外的其他服务器节点将被同步\n			-->	\n			<task interval=\"7200\" remoteClassCode=\"PCServer\" impl=\"com.broada.sync.BccNodeServerSync\"\n				arg=\"exclude:aix,solaris,hp-ux,scounix,vm-esx\" srcSys=\"{probe-name}\" />\n			<task interval=\"7200\" remoteClassCode=\"MiniServer\" impl=\"com.broada.sync.BccNodeServerSync\"\n				arg=\"include:aix,solaris,hp-ux,scounix,vm-esx\" srcSys=\"numen\" />\n			\n		<!--安全设备节点-->		\n			<task interval=\"7200\" remoteClassCode=\"SecDev\" impl=\"com.broada.sync.BccNodeResSync\"\n				arg=\"security\" srcSys=\"numen\" />\n			\n		<!--网络设备节点-->		\n			<task interval=\"7200\" remoteClassCode=\"NetDev\" impl=\"com.broada.sync.BccNodeResSync\"\n				arg=\"network\" srcSys=\"numen\" />\n			\n		<!--IP地址 -->	\n			<task interval=\"7200\" remoteClassCode=\"IPAddr\" impl=\"com.broada.sync.BccIpAddressResSync\"\n				arg=\"ipAddress\" srcSys=\"numen\" />\n			\n		<!--处理器-->	\n			<task interval=\"7200\" remoteClassCode=\"Processor\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"processor\" srcSys=\"numen\" />\n			\n		<!--内存-->	\n			<task interval=\"7200\" remoteClassCode=\"Memory\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"memory\" srcSys=\"numen\" />\n				\n		<!--监测实例-->\n			<!--DB表空间 -->\n			<task interval=\"7200\" remoteClassCode=\"DBTablespace\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"DB2-TBSCONT,ORACLE-TABLESPACE\" srcSys=\"numen\" />\n			<!--DB实例-->\n			<task interval=\"7200\" remoteClassCode=\"DBInstance\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"SYBASE-DATABASE\" srcSys=\"numen\" />\n			<!--中间件:weblogic,websphere-->\n			<task interval=\"7200\" remoteClassCode=\"Thread\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"WLSTHREAD\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"WebApp\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"WLSWEBAPP,WASWEBAPP\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"ThreadPool\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"WASTHREADPOOL\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Servlet\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"WLSSERVLET,WASSERVLET\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"ConnPool\" impl=\"com.broada.sync.BccMonitorInstResSync\"\n				arg=\"WASJDBC\" srcSys=\"numen\" />\n			\n		<!--操作系统-->\n			<task interval=\"7200\" remoteClassCode=\"Windows\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osWindows\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Linux\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osLinux\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Unix\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osUnix\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"HPUX\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osHP-UX\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"ESX\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osESX\" srcSys=\"numen\" />				\n			<task interval=\"7200\" remoteClassCode=\"AIX\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osAIX\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"SOLARIS\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"osSolaris\" srcSys=\"numen\" />	\n				\n		<!--数据库-->			\n			<task interval=\"7200\" remoteClassCode=\"Oracle\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbOracle\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"DB2\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbDB2\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Informix\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbInformix\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"SQLSERVER\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbMssql\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Sybase\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbSybase\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"MySQL\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbMysql\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"PostgreSQL\"\n				impl=\"com.broada.sync.BccResourceSync\" arg=\"dbPostgreSQL\" srcSys=\"numen\" />\n				\n		<!--中间件-->\n			<task interval=\"7200\" remoteClassCode=\"Weblogic\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"weblogic\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"WebSphere\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"websphere\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"WebSphereMQ\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"ibmmq\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Tomcat\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"tomcat\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Tuxedo\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"tuxedo\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"RESIN\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"resin\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"TongWeb\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"tongweb\" srcSys=\"numen\" />\n			<task interval=\"7200\" remoteClassCode=\"Domino\" impl=\"com.broada.sync.BccResourceSync\"\n				arg=\"domino\" srcSys=\"numen\" />\n		</resource>\n		\n		<perf>\n		<!-- 监测实例性能指标组-->\n			<!--DB表空间-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"ORACLE-TABLESPACE\"	remoteGroupCode=\"oracle-tablespace\">\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-1\" remoteTypeCode=\"db-ts-use-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-2\" remoteTypeCode=\"db-ts-use-util\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-4\" remoteTypeCode=\"db-ts-r-time\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-5\" remoteTypeCode=\"db-ts-w-time\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-6\" remoteTypeCode=\"db-ts-extent-num\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-8\" remoteTypeCode=\"db-ts-extent-next-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-7\" remoteTypeCode=\"db-ts-free-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-11\" remoteTypeCode=\"db-ts-free-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"DB2-TBSCONT\" remoteGroupCode=\"db2-tablespace\">\n				<indictor localTypeCode=\"DB2-TBSCONT-4\" remoteTypeCode=\"db-page-use-num\"/>\n				<indictor localTypeCode=\"DB2-TBSCONT-5\" remoteTypeCode=\"db-page-idle-num\"/>\n				<!--bcc不支持指标\n				<indictor localTypeCode=\"DB2-TBSCONT-6\" remoteTypeCode=\"db-page-idle-util\"/>\n				<indictor localTypeCode=\"DB2-TBSCONT-7\" remoteTypeCode=\"db-page-use-util\"/>\n				-->\n			</task>\n			<!--DB实例-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"SYBASE-DATABASE\" remoteGroupCode=\"sybase-db\">\n				<indictor localTypeCode=\"SYBASE-DATABASE-1\" remoteTypeCode=\"db-size\"/>\n				<indictor localTypeCode=\"SYBASE-DATABASE-2\" remoteTypeCode=\"db-data-size\"/>\n				<indictor localTypeCode=\"SYBASE-DATABASE-3\" remoteTypeCode=\"db-index-size\"/>\n				<indictor localTypeCode=\"SYBASE-DATABASE-4\" remoteTypeCode=\"db-use-size\"/>\n				<indictor localTypeCode=\"SYBASE-DATABASE-5\" remoteTypeCode=\"db-use-util\"/>\n			</task>\n			<!--中间件weblogic -->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WLSSERVLET\" remoteGroupCode=\"wls-servlet\">\n				<indictor localTypeCode=\"WLSSERVLET-1\" remoteTypeCode=\"j2e-servlet-exec-time\"/>\n				<indictor localTypeCode=\"WLSSERVLET-2\" remoteTypeCode=\"j2e-servlet-exec-time-max\"/>\n				<indictor localTypeCode=\"WLSSERVLET-3\" remoteTypeCode=\"j2e-servlet-call-num\"/>\n				<indictor localTypeCode=\"WLSSERVLET-4\" remoteTypeCode=\"j2e-servlet-call-speed\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WLSWEBAPP,WLSTHREAD\" remoteGroupCode=\"wls\">\n				<indictor localTypeCode=\"WLSTHREAD-1\" remoteTypeCode=\"mw-thread-num\"/>\n				<indictor localTypeCode=\"WLSTHREAD-2\" remoteTypeCode=\"mw-thread-idle-num\"/>\n				<indictor localTypeCode=\"WLSTHREAD-3\" remoteTypeCode=\"mw-thread-wait-num\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-1\" remoteTypeCode=\"wls-session-num\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-2\" remoteTypeCode=\"wls-session-num-max\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-3\" remoteTypeCode=\"wls-session-num-sum\"/>\n			</task>\n			\n			<!--中间件websphere-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WASSERVLET\" remoteGroupCode=\"was-servlet\">\n				<indictor localTypeCode=\"WASSERVLET-1\" remoteTypeCode=\"j2e-servlet-create-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-2\" remoteTypeCode=\"j2e-servlet-inv-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-3\" remoteTypeCode=\"j2e-servlet-to-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-4\" remoteTypeCode=\"j2e-servlet-new-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-5\" remoteTypeCode=\"j2e-servlet-active-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WASTHREADPOOL\" remoteGroupCode=\"was-threadpool\">\n				<indictor localTypeCode=\"WASTHREADPOOL-1\" remoteTypeCode=\"threadpool-create-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-2\" remoteTypeCode=\"threadpool-destroy-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-3\" remoteTypeCode=\"threadpool-active-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-4\" remoteTypeCode=\"threadpool-len\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-5\" remoteTypeCode=\"threadpool-unfree-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-6\" remoteTypeCode=\"threadpool-use-util-max\"/>\n			</task>			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WASWEBAPP\" remoteGroupCode=\"was-app\">\n				<indictor localTypeCode=\"WASWEBAPP-1\" remoteTypeCode=\"webapp-servlet-load-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-2\" remoteTypeCode=\"webapp-servlet-reload-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-3\" remoteTypeCode=\"webapp-servlet-req-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-4\" remoteTypeCode=\"webapp-req-conc-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-5\" remoteTypeCode=\"webapp-req-complet-time\"/>\n				<indictor localTypeCode=\"WASWEBAPP-6\" remoteTypeCode=\"webapp-jsp-err-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccMonitorInstPerfSync\" arg=\"WASJDBC\" remoteGroupCode=\"was-connpool\">\n				<indictor localTypeCode=\"WASJDBC-1\" remoteTypeCode=\"connpool-create-num\"/>\n				<indictor localTypeCode=\"WASJDBC-2\" remoteTypeCode=\"connpool-close-num\"/>\n				<indictor localTypeCode=\"WASJDBC-3\" remoteTypeCode=\"connpool-alloc-num\"/>\n				<indictor localTypeCode=\"WASJDBC-4\" remoteTypeCode=\"connpool-ret-num\"/>\n				<indictor localTypeCode=\"WASJDBC-5\" remoteTypeCode=\"connpool-len\"/>\n				<indictor localTypeCode=\"WASJDBC-6\" remoteTypeCode=\"connpool-idle-len\"/>\n				<indictor localTypeCode=\"WASJDBC-7\" remoteTypeCode=\"connpool-conc-wait-num\"/>\n				<indictor localTypeCode=\"WASJDBC-8\" remoteTypeCode=\"connpool-err-num\"/>\n				<indictor localTypeCode=\"WASJDBC-9\" remoteTypeCode=\"connpool-use-util\"/>\n				<indictor localTypeCode=\"WASJDBC-10\" remoteTypeCode=\"connpool-use-time-avg\"/>\n				<indictor localTypeCode=\"WASJDBC-11\" remoteTypeCode=\"connpool-wait-time-avg\"/>\n			</task>\n		<!--处理器-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"HOSTCPU\" remoteGroupCode=\"cpu-use\">\n				<indictor localTypeCode=\"HOSTCPU-1\" remoteTypeCode=\"cpu-use-util\"/>\n			</task>				\n		<!--内存-->	\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"HOSTRAM\" remoteGroupCode=\"ram-use\">\n				<indictor localTypeCode=\"HOSTRAM-1\" remoteTypeCode=\"ram-use-size\"/>\n				<indictor localTypeCode=\"HOSTRAM-2\" remoteTypeCode=\"ram-use-util\"/>\n			</task>	\n		<!--节点网络状态-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ICMP\" remoteGroupCode=\"device-net-state\">\n				<indictor localTypeCode=\"ICMP-1\" remoteTypeCode=\"icmp-response-time\"/>\n			</task>\n		<!--操作系统-->	\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"CLI-HOSTCPU\" remoteGroupCode=\"os-cpu-use\">\n				<indictor localTypeCode=\"CLI-HOSTCPU-1\" remoteTypeCode=\"cpu-use-util\"/>\n				<indictor localTypeCode=\"CLI-HOSTCPU-2\" remoteTypeCode=\"os-cpu-use-sys-util\"/>\n				<indictor localTypeCode=\"CLI-HOSTCPU-3\" remoteTypeCode=\"os-cpu-use-user-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"CLI-HOSTMEMORY\" remoteGroupCode=\"os-ram-use\">\n				<indictor localTypeCode=\"CLI-HOSTMEMORY-1\" remoteTypeCode=\"ram-use-util\"/>\n				<indictor localTypeCode=\"CLI-HOSTMEMORY-2\" remoteTypeCode=\"os-ram-vir-use-util\"/>\n				<indictor localTypeCode=\"CLI-HOSTMEMORY-3\" remoteTypeCode=\"ram-use-size\"/>\n				<indictor localTypeCode=\"CLI-HOSTMEMORY-4\" remoteTypeCode=\"os-ram-vir-use-size\"/>\n			</task>\n		<!-- 数据库-->\n			<!-- oracle:12组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE,ORACLE-FTS,ORACLE-LOCK,ORACLE-STORAGE\" remoteGroupCode=\"oracle\">\n				<indictor localTypeCode=\"ORACLE-1\" remoteTypeCode=\"db-use-util\"/>\n				<indictor localTypeCode=\"ORACLE-2\" remoteTypeCode=\"db-conn-num\"/>\n				<!--bcc不支持指标\n				<indictor localTypeCode=\"\" remoteTypeCode=\"process-running-time\"/>\n				 -->\n				<indictor localTypeCode=\"ORACLE-FTS-1\" remoteTypeCode=\"db-scan-fulltable-util\"/>\n				<indictor localTypeCode=\"ORACLE-FTS-2\" remoteTypeCode=\"db-rowsource-util\"/>\n				<indictor localTypeCode=\"ORACLE-LOCK-1\" remoteTypeCode=\"db-freespace-index-util\"/>\n				<indictor localTypeCode=\"ORACLE-STORAGE-1\" remoteTypeCode=\"oracle-dump-use-util\"/>\n			</task>\n			<!--暂不同步\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-ADVANCEDQUE\" remoteGroupCode=\"oracle-queue\">\n				<indictor localTypeCode=\"ORACLE-ADVANCEDQUE-1\" remoteTypeCode=\"oracle-msg-num\"/>\n				<indictor localTypeCode=\"ORACLE-ADVANCEDQUE-2\" remoteTypeCode=\"oracle-msg-ready-num\"/>\n				<indictor localTypeCode=\"ORACLE-ADVANCEDQUE-3\" remoteTypeCode=\"oracle-msg-err-num\"/>\n				<indictor localTypeCode=\"ORACLE-ADVANCEDQUE-4\" remoteTypeCode=\"oracle-msg-access-time\"/>\n			</task>\n			-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-CHECKPOINT\" remoteGroupCode=\"oracle-chkpt\">\n				<indictor localTypeCode=\"ORACLE-CHECKPOINT-1\" remoteTypeCode=\"db-chkpt-num\"/>\n				<indictor localTypeCode=\"ORACLE-CHECKPOINT-2\" remoteTypeCode=\"db-chkpt-complet-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-PGA\" remoteGroupCode=\"oracle-pga\">\n				<indictor localTypeCode=\"ORACLE-PGA-1\" remoteTypeCode=\"oracle-pga-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-2\" remoteTypeCode=\"oracle-pga-a-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-3\" remoteTypeCode=\"oracle-pga-work-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-4\" remoteTypeCode=\"oracle-pga-use-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-5\" remoteTypeCode=\"oracle-pga-alloc-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-6\" remoteTypeCode=\"oracle-pga-alloc-size-max\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-7\" remoteTypeCode=\"oracle-pga-free-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-8\" remoteTypeCode=\"oracle-pga-m-use-size-max\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-9\" remoteTypeCode=\"oracle-pga-release-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-10\" remoteTypeCode=\"oracle-pga-a-use-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-11\" remoteTypeCode=\"oracle-pga-a-use-size-max\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-12\" remoteTypeCode=\"oracle-pga-m-use-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-13\" remoteTypeCode=\"oracle-pga-alloc-num\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-14\" remoteTypeCode=\"oracle-pga-process-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-15\" remoteTypeCode=\"oracle-pga-extrarw-size\"/>\n				<indictor localTypeCode=\"ORACLE-PGA-16\" remoteTypeCode=\"oracle-pga-cache-shoot\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-RATIO\" remoteGroupCode=\"oracle-buff\">\n				<indictor localTypeCode=\"ORACLE-RATIO-1\" remoteTypeCode=\"db-buff-high-shoot\"/>\n				<indictor localTypeCode=\"ORACLE-RATIO-2\" remoteTypeCode=\"db-buff-share-shoot\"/>\n				<indictor localTypeCode=\"ORACLE-RATIO-3\" remoteTypeCode=\"db-buff-share-dict-shoot\"/>\n				<indictor localTypeCode=\"ORACLE-RATIO-4\" remoteTypeCode=\"db-rollback-wait-util\"/>\n				<indictor localTypeCode=\"ORACLE-RATIO-5\" remoteTypeCode=\"db-sort-disk-ram-util\"/>\n				<indictor localTypeCode=\"ORACLE-RATIO-6\" remoteTypeCode=\"db-buff-high-mr-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-RECURSION\" remoteGroupCode=\"oracle-recursion\">\n				<indictor localTypeCode=\"ORACLE-RECURSION-1\" remoteTypeCode=\"db-recur-time-util\"/>\n				<indictor localTypeCode=\"ORACLE-RECURSION-2\" remoteTypeCode=\"db-recur-util\"/>\n				<indictor localTypeCode=\"ORACLE-RECURSION-3\" remoteTypeCode=\"db-recur-speed\"/>\n				<indictor localTypeCode=\"ORACLE-RECURSION-4\" remoteTypeCode=\"db-recur-user-util\"/>\n				<indictor localTypeCode=\"ORACLE-RECURSION-5\" remoteTypeCode=\"db-recur-num\"/>\n				<indictor localTypeCode=\"ORACLE-RECURSION-6\" remoteTypeCode=\"db-recur-user-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-REDOLOG\" remoteGroupCode=\"oracle-redolog\">\n				<indictor localTypeCode=\"ORACLE-REDOLOG-1\" remoteTypeCode=\"db-redo-l-wtw-fail-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-2\" remoteTypeCode=\"db-redo-l-wtw-succ-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-3\" remoteTypeCode=\"db-redo-l-imme-fail-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-4\" remoteTypeCode=\"db-redo-l-imme-succ-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-5\" remoteTypeCode=\"db-redo-l-wtw-fail-util\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-6\" remoteTypeCode=\"db-redo-l-imme-fail-util\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-7\" remoteTypeCode=\"db-redo-cannot-alloc-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-8\" remoteTypeCode=\"db-redo-file-num\"/>\n				<indictor localTypeCode=\"ORACLE-REDOLOG-9\" remoteTypeCode=\"db-redo-item-size\"/>\n			</task>\n			<!-- bcc不支持指标\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"\" remoteGroupCode=\"oracle-rman\">\n				<indictor localTypeCode=\"\" remoteTypeCode=\"db-bak-full-size\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"db-bak-inc-size\"/>\n			</task>\n			-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-SGA\" remoteGroupCode=\"oracle-sga\">\n				<indictor localTypeCode=\"ORACLE-SGA-1\" remoteTypeCode=\"db-buff-high-size\"/>\n				<indictor localTypeCode=\"ORACLE-SGA-2\" remoteTypeCode=\"db-buff-redo-size\"/>\n				<indictor localTypeCode=\"ORACLE-SGA-3\" remoteTypeCode=\"db-buff-sharepool-size\"/>\n				<indictor localTypeCode=\"ORACLE-SGA-4\" remoteTypeCode=\"db-buff-dict-size\"/>\n				<indictor localTypeCode=\"ORACLE-SGA-5\" remoteTypeCode=\"db-buff-share-size\"/>\n				<indictor localTypeCode=\"ORACLE-SGA-6\" remoteTypeCode=\"db-buff-sql-size\"/>\n			</task>\n			<!--由于表空间存在多个监测实例，改进：性能指标同步到对应的监测实例中。\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-TABLESPACE\" remoteGroupCode=\"oracle-tablespace\">\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-1\" remoteTypeCode=\"db-ts-use-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-2\" remoteTypeCode=\"db-ts-use-util\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-4\" remoteTypeCode=\"db-ts-r-time\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-5\" remoteTypeCode=\"db-ts-w-time\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-6\" remoteTypeCode=\"db-ts-extent-num\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-8\" remoteTypeCode=\"db-ts-extent-next-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-7\" remoteTypeCode=\"db-ts-free-size\"/>\n				<indictor localTypeCode=\"ORACLE-TABLESPACE-11\" remoteTypeCode=\"db-ts-free-util\"/>\n			</task>\n			-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-UNDOSTAT\" remoteGroupCode=\"oracle-undo\">\n				<indictor localTypeCode=\"ORACLE-UNDOSTAT-1\" remoteTypeCode=\"db-undo-nospace-num\"/>\n				<indictor localTypeCode=\"ORACLE-UNDOSTAT-2\" remoteTypeCode=\"db-undo-toold-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"ORACLE-WORKQUE\" remoteGroupCode=\"oracle-workqueue\">\n				<indictor localTypeCode=\"ORACLE-WORKQUE-1\" remoteTypeCode=\"db-workqueue-bad-num\"/>\n				<indictor localTypeCode=\"ORACLE-WORKQUE-2\" remoteTypeCode=\"db-workqueue-fail-num\"/>\n				<indictor localTypeCode=\"ORACLE-WORKQUE-3\" remoteTypeCode=\"db-workqueue-over-num\"/>\n			</task>\n\n			<!--Mssql:1组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"MSSQL,MSSQL-DBSIZE,MSSQL-BASIC\" remoteGroupCode=\"mssql\">\n				<indictor localTypeCode=\"MSSQL-1\" remoteTypeCode=\"db-file-size\"/>\n				<indictor localTypeCode=\"MSSQL-2\" remoteTypeCode=\"db-log-size\"/>\n				<indictor localTypeCode=\"MSSQL-3\" remoteTypeCode=\"process-cpu-use-util\"/>\n				<indictor localTypeCode=\"MSSQL-4\" remoteTypeCode=\"db-conn-num\"/>\n				<!--bcc不支持指标\n				<indictor localTypeCode=\"\" remoteTypeCode=\"process-running-time\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"db-buff-query-num\"/>\n				-->\n				<indictor localTypeCode=\"MSSQL-BASIC-9\" remoteTypeCode=\"process-wait-num\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-1\" remoteTypeCode=\"db-size\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-2\" remoteTypeCode=\"db-use-size\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-3\" remoteTypeCode=\"db-index-size\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-4\" remoteTypeCode=\"db-free-size\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-5\" remoteTypeCode=\"db-unalloc-size\"/>\n				<indictor localTypeCode=\"MSSQL-DBSIZE-6\" remoteTypeCode=\"db-reserve-size\"/>\n			</task>\n				\n			<!-- DB2:4组 -->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DB2,DB2-SORT-JDBC\" remoteGroupCode=\"db2\">\n				<indictor localTypeCode=\"DB2-3\" remoteTypeCode=\"db-conn-num\"/>\n				<indictor localTypeCode=\"DB2-4\" remoteTypeCode=\"db-conn-num-sum\"/>\n				<indictor localTypeCode=\"DB2-SORT-JDBC-1\" remoteTypeCode=\"db-sort-num\"/>\n				<indictor localTypeCode=\"DB2-SORT-JDBC-2\" remoteTypeCode=\"db-sort-over-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DB2-BUFFERPOOL-JDBC\" remoteGroupCode=\"db2-buff\">\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-1\" remoteTypeCode=\"db-buff-data-lr-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-2\" remoteTypeCode=\"db-buff-index-lr-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-3\" remoteTypeCode=\"db-buff-data-pr-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-4\" remoteTypeCode=\"db-buff-index-pr-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-5\" remoteTypeCode=\"db-buff-data-shoot-util\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-6\" remoteTypeCode=\"db-buff-index-shoot-util\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-7\" remoteTypeCode=\"db-r-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-8\" remoteTypeCode=\"db-w-num\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-9\" remoteTypeCode=\"db-buff-dir-shoot-util\"/>\n				<indictor localTypeCode=\"DB2-BUFFERPOOL-JDBC-10\" remoteTypeCode=\"db-buff-pkt-shoot-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DB2-LOCK-JDBC\" remoteGroupCode=\"db2-lock\">\n				<indictor localTypeCode=\"DB2-LOCK-JDBC-1\" remoteTypeCode=\"db-lock-num\"/>\n				<indictor localTypeCode=\"DB2-LOCK-JDBC-2\" remoteTypeCode=\"db-lock-upgrade-util\"/>\n				<indictor localTypeCode=\"DB2-LOCK-JDBC-3\" remoteTypeCode=\"db-lock-wait-util\"/>\n			</task>\n			<!--\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DB2-TBSCONT\" remoteGroupCode=\"db2-tablespace\">\n				<indictor localTypeCode=\"DB2-TBSCONT-4\" remoteTypeCode=\"db-page-use-num\"/>\n				<indictor localTypeCode=\"DB2-TBSCONT-5\" remoteTypeCode=\"db-page-idle-num\"/>\n			</task>\n			-->\n			<!--Sybase:1组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"Sybase,SYBASE-SEGMENT\" remoteGroupCode=\"sybase\">\n				<!--SYBASE-SEGMENT暂不同步\n				<indictor localTypeCode=\"SYBASE-SEGMENT-1\" remoteTypeCode=\"db-segment-size\"/>\n				<indictor localTypeCode=\"SYBASE-SEGMENT-2\" remoteTypeCode=\"db-segment-data-size\"/>\n				<indictor localTypeCode=\"SYBASE-SEGMENT-3\" remoteTypeCode=\"db-segment-index-size\"/>\n				<indictor localTypeCode=\"SYBASE-SEGMENT-4\" remoteTypeCode=\"db-segment-free-size\"/>\n				-->\n				<!--由于存在争议，Sybase只同步下列2个指标-->\n				<indictor localTypeCode=\"Sybase-3\" remoteTypeCode=\"process-cpu-use-util\"/>\n				<indictor localTypeCode=\"Sybase-4\" remoteTypeCode=\"db-conn-num\"/>\n			</task>\n			\n			<!-- informix:5组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"INFORMIX-BASIC,INFORMIX-DBSPACE\" remoteGroupCode=\"infomix\">\n				<indictor localTypeCode=\"INFORMIX-BASIC-1\" remoteTypeCode=\"db-conn-num\"/>\n				<indictor localTypeCode=\"INFORMIX-BASIC-2\" remoteTypeCode=\"db-buff-r-shoot-util\"/>\n				<indictor localTypeCode=\"INFORMIX-BASIC-3\" remoteTypeCode=\"db-buff-w-shoot-util\"/>\n				<indictor localTypeCode=\"INFORMIX-BASIC-4\" remoteTypeCode=\"db-lock-num\"/>\n				<indictor localTypeCode=\"INFORMIX-BASIC-5\" remoteTypeCode=\"db-tran-rollback-num\"/>\n				<indictor localTypeCode=\"INFORMIX-DBSPACE-1\" remoteTypeCode=\"db-use-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"INFORMIX-CHKPT-JDBC\" remoteGroupCode=\"infomix-chkpt\">\n				<indictor localTypeCode=\"INFORMIX-CHKPT-JDBC-1\" remoteTypeCode=\"db-chkpt-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-CHKPT-JDBC-2\" remoteTypeCode=\"db-chkpt-wait-speed\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"INFORMIX-DISK-JDBC,INFORMIX-LOCK-JDBC\" remoteGroupCode=\"infomix-io\">\n				<!--bcc不支持指标\n				<indictor localTypeCode=\"\" remoteTypeCode=\"read-speed\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"write-speed\"/>\n				-->\n				<indictor localTypeCode=\"INFORMIX-DISK-JDBC-3\" remoteTypeCode=\"db-page-r-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-DISK-JDBC-4\" remoteTypeCode=\"db-page-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOCK-JDBC-1\" remoteTypeCode=\"db-lock-req-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOCK-JDBC-2\" remoteTypeCode=\"db-lock-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOCK-JDBC-3\" remoteTypeCode=\"db-lock-wait-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOCK-JDBC-4\" remoteTypeCode=\"db-lock-to-speed\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"INFORMIX-LOG-JDBC\" remoteGroupCode=\"infomix-log\">\n				<indictor localTypeCode=\"INFORMIX-LOG-JDBC-1\" remoteTypeCode=\"db-logic-log-rec-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOG-JDBC-2\" remoteTypeCode=\"db-logic-log-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOG-JDBC-3\" remoteTypeCode=\"db-logic-log-page-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOG-JDBC-4\" remoteTypeCode=\"db-phy-log-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-LOG-JDBC-5\" remoteTypeCode=\"db-phy-log-page-w-speed\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"INFORMIX-BASIC,INFORMIX-SHM-JDBC,INFORMIX-SORT-JDBC,INFORMIX-TRANS-JDBC\" remoteGroupCode=\"infomix-buff\">\n				<indictor localTypeCode=\"INFORMIX-BASIC-2\" remoteTypeCode=\"db-buff-r-shoot-util\"/>\n				<indictor localTypeCode=\"INFORMIX-BASIC-3\" remoteTypeCode=\"db-buff-w-shoot-util\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-3\" remoteTypeCode=\"db-buff-wait-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-4\" remoteTypeCode=\"db-lru-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-5\" remoteTypeCode=\"db-scan-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-6\" remoteTypeCode=\"db-latch-wait-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-7\" remoteTypeCode=\"db-buff-todisk-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-8\" remoteTypeCode=\"db-fore-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SHM-JDBC-9\" remoteTypeCode=\"db-block-w-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SORT-JDBC-1\" remoteTypeCode=\"db-sort-ram-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-SORT-JDBC-2\" remoteTypeCode=\"db-sort-disk-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-TRANS-JDBC-1\" remoteTypeCode=\"db-tran-commit-speed\"/>\n				<indictor localTypeCode=\"INFORMIX-TRANS-JDBC-2\" remoteTypeCode=\"db-tran-rollback-speed\"/>\n			</task>\n		<!--中间件-->\n			<!--tomcat:1组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"TOMCAT-BASIC,TOMCAT-JVM\" remoteGroupCode=\"tomcat\">\n				<indictor localTypeCode=\"TOMCAT-BASIC-7\" remoteTypeCode=\"response-time\"/>\n				<indictor localTypeCode=\"TOMCAT-JVM-1\" remoteTypeCode=\"jvm-ram-free-size\"/>\n				<indictor localTypeCode=\"TOMCAT-JVM-2\" remoteTypeCode=\"jvm-ram-size\"/>\n				<indictor localTypeCode=\"TOMCAT-JVM-3\" remoteTypeCode=\"jvm-ram-use-size\"/>\n			</task>\n			<!--tongweb:1组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"TONGWEB-CONN,TONGWEB-DBPOOL\" remoteGroupCode=\"tongweb\">\n				<indictor localTypeCode=\"TONGWEB-CONN-1\" remoteTypeCode=\"mw-thread-idle-num\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-2\" remoteTypeCode=\"mw-thread-active-num\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-3\" remoteTypeCode=\"mw-thread-num-max\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-4\" remoteTypeCode=\"mw-req-queue-len\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-5\" remoteTypeCode=\"mw-client-to-time\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-6\" remoteTypeCode=\"mw-thread-wait-to-time\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-7\" remoteTypeCode=\"mw-req-wait-num\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-8\" remoteTypeCode=\"mw-conn-speed\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-9\" remoteTypeCode=\"mw-send-speed\"/>\n				<indictor localTypeCode=\"TONGWEB-CONN-10\" remoteTypeCode=\"mw-rece-speed\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-1\" remoteTypeCode=\"mw-conn-num-max\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-2\" remoteTypeCode=\"mw-conn-num-min\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-3\" remoteTypeCode=\"mw-conn-num\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-4\" remoteTypeCode=\"mw-conn-active-num\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-5\" remoteTypeCode=\"mw-conn-create-num\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-6\" remoteTypeCode=\"mw-conn-close-num\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-7\" remoteTypeCode=\"mw-conn-free-num\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-8\" remoteTypeCode=\"mw-conn-use-num-size\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-9\" remoteTypeCode=\"mw-conn-block-to-time\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-10\" remoteTypeCode=\"mw-conn-idle-time\"/>\n				<indictor localTypeCode=\"TONGWEB-DBPOOL-11\" remoteTypeCode=\"mw-conn-to-time\"/>\n			</task>\n			<!--tuxedo:1组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"TUX-MACHINE\" remoteGroupCode=\"tux\">\n							<indictor localTypeCode=\"TUX-MACHINE-1\" remoteTypeCode=\"tux-queue-process-speed\"/>\n							<indictor localTypeCode=\"TUX-MACHINE-2\" remoteTypeCode=\"tux-queue-in-speed\"/>\n							<indictor localTypeCode=\"TUX-MACHINE-3\" remoteTypeCode=\"tux-client-num\"/>\n							<indictor localTypeCode=\"TUX-MACHINE-4\" remoteTypeCode=\"tux-client-ws-num\"/>\n			</task>\n			<!--resin:3组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"RESIN-BASEINFO\" remoteGroupCode=\"resin\">\n				<indictor localTypeCode=\"RESIN-BASEINFO-8\" remoteTypeCode=\"process-running-time\"/>\n				<indictor localTypeCode=\"RESIN-BASEINFO-9\" remoteTypeCode=\"process-ram-size\"/>\n				<indictor localTypeCode=\"RESIN-BASEINFO-10\" remoteTypeCode=\"process-ram-free-size\"/>\n				<indictor localTypeCode=\"RESIN-BASEINFO-11\" remoteTypeCode=\"process-cpu-use-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"RESIN-CONNPOOL\" remoteGroupCode=\"resin-conn\">\n				<indictor localTypeCode=\"RESIN-CONNPOOL-1\" remoteTypeCode=\"mw-conn-active-num\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-2\" remoteTypeCode=\"mw-conn-idle-num\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-3\" remoteTypeCode=\"mw-conn-shoot-util\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-4\" remoteTypeCode=\"mw-conn-num\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-5\" remoteTypeCode=\"mw-conn-init-num\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-6\" remoteTypeCode=\"mw-conn-fail-num\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-8\" remoteTypeCode=\"mw-conn-num-max\"/>\n				<indictor localTypeCode=\"RESIN-CONNPOOL-9\" remoteTypeCode=\"mw-conn-idle-time-max\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"RESIN-RATIO\" remoteGroupCode=\"resin-service\">\n				<indictor localTypeCode=\"RESIN-RATIO-1\" remoteTypeCode=\"resin-service-shoot-util\"/>\n				<indictor localTypeCode=\"RESIN-RATIO-2\" remoteTypeCode=\"resin-service-shoot-num\"/>\n				<indictor localTypeCode=\"RESIN-RATIO-3\" remoteTypeCode=\"resin-service-num\"/>\n			</task>\n			<!--weblogic:7组-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLS-JCA,WLSBASIC,WLSBASIC\" remoteGroupCode=\"wls-jca\">\n				<indictor localTypeCode=\"WLS-JCA-1\" remoteTypeCode=\"wls-jca-free-util\"/>\n				<indictor localTypeCode=\"WLS-JCA-2\" remoteTypeCode=\"wls-jca-lake-util\"/>\n				<indictor localTypeCode=\"WLSBASIC-7\" remoteTypeCode=\"mw-conn-active-num\"/>\n				<indictor localTypeCode=\"WLSBASIC-10\" remoteTypeCode=\"jvm-size\"/>\n				<indictor localTypeCode=\"WLSBASIC-11\" remoteTypeCode=\"jvm-stack-free-size\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSEJB\" remoteGroupCode=\"wls-ejb\">\n				<indictor localTypeCode=\"WLSEJB-1\" remoteTypeCode=\"mw-ejb-active-num\"/>\n				<indictor localTypeCode=\"WLSEJB-2\" remoteTypeCode=\"mw-ejb-pass-num\"/>\n				<indictor localTypeCode=\"WLSEJB-3\" remoteTypeCode=\"mw-ejb-buff-num\"/>\n				<indictor localTypeCode=\"WLSEJB-4\" remoteTypeCode=\"mw-ejb-tran-commit-num\"/>\n				<indictor localTypeCode=\"WLSEJB-5\" remoteTypeCode=\"mw-ejb-tran-rollback-num\"/>\n				<indictor localTypeCode=\"WLSEJB-6\" remoteTypeCode=\"mw-ejb-tran-to-num\"/>\n				<indictor localTypeCode=\"WLSEJB-7\" remoteTypeCode=\"mw-ejb-access-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSJDBC\" remoteGroupCode=\"wls-jdbc\">\n				<indictor localTypeCode=\"WLSJDBC-1\" remoteTypeCode=\"db-conn-num\"/>\n				<indictor localTypeCode=\"WLSJDBC-2\" remoteTypeCode=\"db-conn-active-num\"/>\n				<indictor localTypeCode=\"WLSJDBC-3\" remoteTypeCode=\"db-conn-active-num-max\"/>\n				<indictor localTypeCode=\"WLSJDBC-4\" remoteTypeCode=\"db-conn-wait-num\"/>\n				<indictor localTypeCode=\"WLSJDBC-5\" remoteTypeCode=\"db-conn-wait-num-max\"/>\n				<indictor localTypeCode=\"WLSJDBC-6\" remoteTypeCode=\"db-conn-wait-time-max\"/>\n				<indictor localTypeCode=\"WLSJDBC-7\" remoteTypeCode=\"connpool-cap\"/>\n				<indictor localTypeCode=\"WLSJDBC-8\" remoteTypeCode=\"connpool-free-util\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSJTA\" remoteGroupCode=\"wls-jta\">\n				<indictor localTypeCode=\"WLSJTA-1\" remoteTypeCode=\"jta-roll-reserr-num\"/>\n				<indictor localTypeCode=\"WLSJTA-2\" remoteTypeCode=\"jta-roll-syserr-num\"/>\n				<indictor localTypeCode=\"WLSJTA-3\" remoteTypeCode=\"jta-roll-apperr-num\"/>\n				<indictor localTypeCode=\"WLSJTA-4\" remoteTypeCode=\"jta-process-num\"/>\n				<indictor localTypeCode=\"WLSJTA-5\" remoteTypeCode=\"jta-roll-num\"/>\n				<indictor localTypeCode=\"WLSJTA-6\" remoteTypeCode=\"jta-roll-reserr-util\"/>\n				<indictor localTypeCode=\"WLSJTA-7\" remoteTypeCode=\"jta-roll-syserr-util\"/>\n				<indictor localTypeCode=\"WLSJTA-8\" remoteTypeCode=\"jta-roll-apperr-util\"/>\n				<indictor localTypeCode=\"WLSJTA-9\" remoteTypeCode=\"jta-process-speed\"/>\n			</task>			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSJVM\" remoteGroupCode=\"wls-jvm\">\n				<indictor localTypeCode=\"WLSJVM-1\" remoteTypeCode=\"jvm-stack-size\"/>\n				<indictor localTypeCode=\"WLSJVM-2\" remoteTypeCode=\"jvm-stack-use-util\"/>\n			</task>\n			<!--\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSSERVLET\" remoteGroupCode=\"wls-servlet\">\n				<indictor localTypeCode=\"WLSSERVLET-1\" remoteTypeCode=\"j2e-servlet-exec-time\"/>\n				<indictor localTypeCode=\"WLSSERVLET-2\" remoteTypeCode=\"j2e-servlet-exec-time-max\"/>\n				<indictor localTypeCode=\"WLSSERVLET-3\" remoteTypeCode=\"j2e-servlet-call-num\"/>\n				<indictor localTypeCode=\"WLSSERVLET-4\" remoteTypeCode=\"j2e-servlet-call-speed\"/>\n			</task>\n			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WLSWEBAPP,WLSTHREAD\" remoteGroupCode=\"wls\">\n				<indictor localTypeCode=\"WLSTHREAD-1\" remoteTypeCode=\"mw-thread-num\"/>\n				<indictor localTypeCode=\"WLSTHREAD-2\" remoteTypeCode=\"mw-thread-idle-num\"/>\n				<indictor localTypeCode=\"WLSTHREAD-3\" remoteTypeCode=\"mw-thread-wait-num\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-1\" remoteTypeCode=\"wls-session-num\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-2\" remoteTypeCode=\"wls-session-num-max\"/>\n				<indictor localTypeCode=\"WLSWEBAPP-3\" remoteTypeCode=\"wls-session-num-sum\"/>\n			</task>\n			-->\n			<!--websphere:11组，最后2组bcc不支持--> \n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WAS-CACHE-PMI\" remoteGroupCode=\"was-buff\">\n				<indictor localTypeCode=\"WAS-CACHE-PMI-1\" remoteTypeCode=\"mw-buff-high-num-max\"/>\n				<indictor localTypeCode=\"WAS-CACHE-PMI-2\" remoteTypeCode=\"mw-buff-high-num\"/>\n				<indictor localTypeCode=\"WAS-CACHE-PMI-3\" remoteTypeCode=\"mw-buff-high-use-util\"/>\n				<indictor localTypeCode=\"WAS-CACHE-PMI-4\" remoteTypeCode=\"mw-buff-high-unshoot-util\"/>\n			</task>\n			<!--监测实例，j2c和ejb暂不同步\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WAS-EJB-PMI\" remoteGroupCode=\"was-ejb\">\n				<indictor localTypeCode=\"WAS-EJB-PMI-1\" remoteTypeCode=\"mw-ejb-response-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-2\" remoteTypeCode=\"mw-ejb-active-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-3\" remoteTypeCode=\"mw-ejb-pass-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-4\" remoteTypeCode=\"mw-ejb-create-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-5\" remoteTypeCode=\"mw-ejb-per-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-6\" remoteTypeCode=\"mw-ejb-load-time\"/>\n				<indictor localTypeCode=\"WAS-EJB-PMI-7\" remoteTypeCode=\"mw-ejb-call-time\"/>\n			</task>\n			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WAS-J2C-PMI\" remoteGroupCode=\"was-j2c\">\n				<indictor localTypeCode=\"WAS-J2C-PMI-1\" remoteTypeCode=\"mw-j2c-time\"/>\n				<indictor localTypeCode=\"WAS-J2C-PMI-2\" remoteTypeCode=\"mw-j2c-time-inc\"/>\n			</task>\n			-->\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WAS-TRANS-PMI\" remoteGroupCode=\"was-trans\">\n				<indictor localTypeCode=\"WAS-TRANS-PMI-1\" remoteTypeCode=\"mw-trans-global-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-2\" remoteTypeCode=\"mw-trans-local-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-3\" remoteTypeCode=\"mw-trans-global-resp-time\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-4\" remoteTypeCode=\"mw-trans-local-resp-time\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-5\" remoteTypeCode=\"mw-trans-global-to-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-6\" remoteTypeCode=\"mw-trans-local-to-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-7\" remoteTypeCode=\"mw-trans-global-conc-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-8\" remoteTypeCode=\"mw-trans-local-conc-num\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-9\" remoteTypeCode=\"mw-trans-global-to-util\"/>\n				<indictor localTypeCode=\"WAS-TRANS-PMI-10\" remoteTypeCode=\"mw-trans-local-to-util\"/>\n			</task>			\n\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WASJVM\" remoteGroupCode=\"was-jvm\">\n				<indictor localTypeCode=\"WASJVM-1\" remoteTypeCode=\"jvm-stack-size\"/>\n				<indictor localTypeCode=\"WASJVM-2\" remoteTypeCode=\"jvm-stack-use-util\"/>\n			</task>\n			<!--\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WASJDBC\" remoteGroupCode=\"was-connpool\">\n				<indictor localTypeCode=\"WASJDBC-1\" remoteTypeCode=\"connpool-create-num\"/>\n				<indictor localTypeCode=\"WASJDBC-2\" remoteTypeCode=\"connpool-close-num\"/>\n				<indictor localTypeCode=\"WASJDBC-3\" remoteTypeCode=\"connpool-alloc-num\"/>\n				<indictor localTypeCode=\"WASJDBC-4\" remoteTypeCode=\"connpool-ret-num\"/>\n				<indictor localTypeCode=\"WASJDBC-5\" remoteTypeCode=\"connpool-len\"/>\n				<indictor localTypeCode=\"WASJDBC-6\" remoteTypeCode=\"connpool-idle-len\"/>\n				<indictor localTypeCode=\"WASJDBC-7\" remoteTypeCode=\"connpool-conc-wait-num\"/>\n				<indictor localTypeCode=\"WASJDBC-8\" remoteTypeCode=\"connpool-err-num\"/>\n				<indictor localTypeCode=\"WASJDBC-9\" remoteTypeCode=\"connpool-use-util\"/>\n				<indictor localTypeCode=\"WASJDBC-10\" remoteTypeCode=\"connpool-use-time-avg\"/>\n				<indictor localTypeCode=\"WASJDBC-11\" remoteTypeCode=\"connpool-wait-time-avg\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WASSERVLET\" remoteGroupCode=\"was-servlet\">\n				<indictor localTypeCode=\"WASSERVLET-1\" remoteTypeCode=\"j2e-servlet-create-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-2\" remoteTypeCode=\"j2e-servlet-inv-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-3\" remoteTypeCode=\"j2e-servlet-to-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-4\" remoteTypeCode=\"j2e-servlet-new-num\"/>\n				<indictor localTypeCode=\"WASSERVLET-5\" remoteTypeCode=\"j2e-servlet-active-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WASTHREADPOOL\" remoteGroupCode=\"was-threadpool\">\n				<indictor localTypeCode=\"WASTHREADPOOL-1\" remoteTypeCode=\"threadpool-create-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-2\" remoteTypeCode=\"threadpool-destroy-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-3\" remoteTypeCode=\"threadpool-active-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-4\" remoteTypeCode=\"threadpool-len\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-5\" remoteTypeCode=\"threadpool-unfree-num\"/>\n				<indictor localTypeCode=\"WASTHREADPOOL-6\" remoteTypeCode=\"threadpool-use-util-max\"/>\n			</task>			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"WASWEBAPP\" remoteGroupCode=\"was-app\">\n				<indictor localTypeCode=\"WASWEBAPP-1\" remoteTypeCode=\"webapp-servlet-load-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-2\" remoteTypeCode=\"webapp-servlet-reload-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-3\" remoteTypeCode=\"webapp-servlet-req-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-4\" remoteTypeCode=\"webapp-req-conc-num\"/>\n				<indictor localTypeCode=\"WASWEBAPP-5\" remoteTypeCode=\"webapp-req-complet-time\"/>\n				<indictor localTypeCode=\"WASWEBAPP-6\" remoteTypeCode=\"webapp-jsp-err-num\"/>\n			</task>\n			-->\n			<!-- bcc不支持指标\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"\" remoteGroupCode=\"was-channel\">\n				<indictor localTypeCode=\"\" remoteTypeCode=\"was-channel-rece-speed\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"was-channel-send-speed\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"was-channel-send-int-time\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"was-channel-tran-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"\" remoteGroupCode=\"was-queue\">\n				<indictor localTypeCode=\"\" remoteTypeCode=\"j2e-servlet-create-num\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"j2e-servlet-inv-num\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"j2e-servlet-to-num\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"j2e-servlet-new-num\"/>\n				<indictor localTypeCode=\"\" remoteTypeCode=\"j2e-servlet-active-num\"/>\n			</task>\n			-->\n			<!--domino:4组--> \n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DOMINO_BASIC,DOMINO_PERF\" remoteGroupCode=\"domino\">\n				<indictor localTypeCode=\"DOMINO_BASIC-1\" remoteTypeCode=\"process-ram-use-size\"/>\n				<indictor localTypeCode=\"DOMINO_BASIC-2\" remoteTypeCode=\"db-use-util\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-13\" remoteTypeCode=\"user-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-14\" remoteTypeCode=\"user-num-max\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-15\" remoteTypeCode=\"task-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-20\" remoteTypeCode=\"doc-copy-succ-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-21\" remoteTypeCode=\"doc-copy-fail-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-22\" remoteTypeCode=\"doc-del-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-23\" remoteTypeCode=\"doc-add-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-24\" remoteTypeCode=\"doc-mod-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-54\" remoteTypeCode=\"disk-free-size\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-55\" remoteTypeCode=\"disk-free-util\"/>\n			</task>\n			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DOMINO_PERF\" remoteGroupCode=\"domino-trade\">\n				<indictor localTypeCode=\"DOMINO_PERF-10\" remoteTypeCode=\"trade-speed\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-11\" remoteTypeCode=\"trade-speed-max\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-12\" remoteTypeCode=\"trade-num\"/>\n			</task>\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DOMINO_BASIC,DOMINO_PERF\" remoteGroupCode=\"domino-mail\">\n				<indictor localTypeCode=\"DOMINO_BASIC-3\" remoteTypeCode=\"mail-send-proxy-num\"/>\n				<indictor localTypeCode=\"DOMINO_BASIC-4\" remoteTypeCode=\"mail-dead-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-52\" remoteTypeCode=\"mail-dead-util\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-31\" remoteTypeCode=\"mail-route-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-32\" remoteTypeCode=\"mail-route-wait-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-33\" remoteTypeCode=\"mail-send-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-34\" remoteTypeCode=\"mail-send-wait-num\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-50\" remoteTypeCode=\"mail-send-speed\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-51\" remoteTypeCode=\"mail-route-speed\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-35\" remoteTypeCode=\"mail-size-avg\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-36\" remoteTypeCode=\"mail-size-max\"/>\n			</task>			\n			\n			<task interval=\"1800\" impl=\"com.broada.sync.BccPerfSync\" arg=\"DOMINO_PERF\" remoteGroupCode=\"domino-buff\">\n				<indictor localTypeCode=\"DOMINO_PERF-40\" remoteTypeCode=\"buff-size\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-41\" remoteTypeCode=\"buff-use-size\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-42\" remoteTypeCode=\"buff-use-size-max\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-43\" remoteTypeCode=\"domino-buff-ext-use-size\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-44\" remoteTypeCode=\"domino-buff-ext-use-size-max\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-45\" remoteTypeCode=\"domino-nsf-use-size\"/>\n				<indictor localTypeCode=\"DOMINO_PERF-46\" remoteTypeCode=\"domino-nsf-use-size-max\"/>\n			</task>\n		</perf>\n		\n		\n		<state>\n			<!-- 这里也可以对于特定资源的状态同步进行单独配置 ，如：\n				<task interval=\"600\" remoteTypeCode=\"available\"\n					impl=\"com.broada.sync.BccResourceStatusSync\" arg=\"dbOracle@available\" srcSys=\"numen\" />\n			-->	\n			<task interval=\"600\" remoteTypeCode=\"available\"\n				impl=\"com.broada.sync.BccResourceStatusSync\" arg=\"all@available\" srcSys=\"numen\" />\n			<task interval=\"600\" remoteTypeCode=\"alert\"\n				impl=\"com.broada.sync.BccResourceStatusSync\" arg=\"all@alert\" srcSys=\"numen\" />\n		</state>\n	</sync>\n</rdbbridge>\n",
+			"file": "/D/tags/b_bcc_v3.6.0.p.120820/module/rdbbridge/conf/rdbbridge-sync-numen.xml",
+			"file_size": 47928,
+			"file_write_time": 129917416234518322,
+			"settings":
+			{
+				"buffer_size": 46613,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/备份/category-init.sql",
+			"settings":
+			{
+				"buffer_size": 2332,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?xml version=\"1.0\" encoding=\"GBK\"?>\n<Version>\n  <pkgVersion>Broadview_COSS_V6.0.R1.5.20121203.P</pkgVersion>\n  <!-- 依赖的升级包  -->\n  <depdVersion>Broadview_COSS_V6.0.R1.4.20121020.P</depdVersion>\n  <pkgDesc>\n  	<desc1><![CDATA[增加机房集成]]></desc1>\n	<desc1><![CDATA[集成机房告警]]></desc1>\n  </pkgDesc>\n  <productVersion>Broadview_COSS_V6.0.R1</productVersion>\n  <releaseDate>2012-12-02</releaseDate>\n  <uninstallable>false</uninstallable>\n  <pkgRemark></pkgRemark>\n</Version>",
+			"file": "/D/run/Broadview/Broadview_COSS_V6.0.R1.5.20121203.C/upgrade/update/Broadview_COSS_V6.0.R1.5.20121203.C/version.xml",
+			"file_size": 495,
+			"file_write_time": 129989728698282966,
+			"settings":
+			{
+				"buffer_size": 464,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 35.0,
+		"selected_items":
+		[
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/run/Broadview/COSS/webapps/itsm/monitor/arbiter.jsp",
+		"/D/run/Broadview/COSS/webapps/itsm/monitor/index.jsp",
+		"/D/run/Broadview/COSS/webapps/itsm/monitor/perfMonitor.jsp",
+		"/D/run/Broadview/COSS/webapps/itsm/include/monitorHeader.jsp",
+		"/D/run/Broadview/COSS/webapps/itsm/monitor/er.jsp",
+		"/D/branches/02hy_baiit_a_20101015/CollectionAgent/save-hw-alert-src/src/SendTrap.java",
+		"/D/tags/B_NCC_R_V3.6.0_120520/module/common/syslog/src/com/broada/syslog/snmp/BCTrapV2PDU.java",
+		"/D/tags/B_NCC_R_V3.6.0_110714/module/common/syslog/src/com/broada/syslog/snmp/BCTrapV2PDU.java",
+		"/D/tags/B_NCC_R_V3.6.0_120520/module/common/syslog/src/com/broada/syslog/snmp/BCSnmpPDU.java",
+		"/D/run/Broadview/COSS/sql-to-trap/conf/ebean.properties",
+		"/D/tags/b_bcc_v3.6.0.p.120820/module/numen/conf/ServerParserTrapConf.xml",
+		"/D/branches/03hy_3.5.0_20091118/coss3/commons/usermanager/webapp/WEB-INF/conf/jdbc.properties",
+		"/D/branches/jrhy_wssh_a_20120409/bcc/module/monitor/src/ebean.properties",
+		"/D/branches/02hy_sh02_b_20091112/AlarmAgent/bin/conf/agent/jdbc.properties",
+		"/D/work/git/cp/conf/application.conf",
+		"/D/work/git/cp/app/views/table.html",
+		"/D/work/git/cp/public/javascripts/cp.js",
+		"/D/branches/zfhy_sdhsj_a_20121128/env-sync/src/ebean.properties",
+		"/D/branches/jrhy_wssh_a_20120409/bcc/module/monitor/src/com/broada/numen/resource/dao/ibatis/maps/oracle/process_top10.xml",
+		"/D/branches/jrhy_wssh_a_20120409/bcc/module/numen/webapps/numen/srvmonitor/resource/detail/WINDOWS.jsp",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/D/branches/jrhy_wssh_a_20120409/bcc/module/numen/webapps/numen/srvmonitor/resource/detail/AIX.jsp",
+		"/D/tags/b_bcc_v3.6.0.p.120820/module/numen/src/main/struts-resource.xml",
+		"/D/tags/B_BCC_R_V3.6.0_110815/module/monitor-impl/src/com/broada/numen/resource/web/WindowsDetailAction.java",
+		"/D/branches/jrhy_wssh_a_20120409/bcc/module/numen/src/main/struts-Context.xml",
+		"/D/tags/b_bcc_v3.6.0.p.120820/module/numen/webapps/numen/srvmonitor/resource/detail/common-hostcpumem.jsp",
+		"/D/work/git/cp/public/stylesheets/style.css",
+		"/D/work/git/cp/conf/ebean.properties",
+		"/D/work/git/cp/app/views/tags/q.tag",
+		"/D/work/git/cp/app/views/tags/favoritetags.tag",
+		"/D/work/git/cp/app/views/tags/searchbox.tag",
+		"/D/work/git/cp/app/views/CLink/submit.html",
+		"/D/work/git/cp/app/views/CloudPaster/ask.html",
+		"/D/work/git/cp/app/views/CloudPaster/questions.html",
+		"/D/work/git/cp/app/views/CloudPaster/tags.html",
+		"/D/work/git/cp/app/views/CloudPaster/unanswered.html",
+		"/D/work/git/cp/app/views/CLink/index.html",
+		"/D/work/git/cp/conf/dependencies.yml",
+		"/D/work/git/cp/app/views/CloudPaster/index.html",
+		"/D/work/git/cp/app/views/CloudPaster/view.html",
+		"/D/dev/SublimeText2.0.1/Data/Packages/User/Preferences.sublime-settings",
+		"/D/work/git/cp/public/javascripts/jquery.pnotify.js",
+		"/D/work/git/cp/app/views/tags/jiathis.tag"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			".1.3.6.1.4.1.22014.1.3.3.1.1.9.1",
+			"机房",
+			"add",
+			"charsetName",
+			"parseUrl",
+			"processCPUTop10s24H",
+			"windowsDetailAction",
+			"ResDetailAction",
+			"CPU使用情况",
+			"最近1小时CPU使用情况",
+			"processCPUTop10s24H",
+			"CPU",
+			"perf_top10_custom",
+			"select t.srv_id,t.inst_key, max(t.maxvalue)",
+			"db",
+			"summary='Tag",
+			"summary='User",
+			"summary='Tag",
+			"Tag",
+			"User",
+			"size",
+			"package",
+			"db",
+			"itsm",
+			"top",
+			"btn",
+			"large",
+			"container",
+			"visibility",
+			"tag"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"ora"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/run/Broadview/COSS/sql-to-trap/conf/trapdef.yaml",
+					"settings":
+					{
+						"buffer_size": 1071,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								350,
+								350
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/YAML/YAML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/run/Broadview/Broadview_COSS_V6.0.R1.5.20121203.C/版本说明.txt",
+					"settings":
+					{
+						"buffer_size": 422,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								417,
+								417
+							],
+							[
+								418,
+								420
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "GBK",
+							"revert_to_scratch": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/tags/b_bcc_v3.6.0.p.120820/module/rdbbridge/conf/rdbbridge-sync-numen.xml",
+					"settings":
+					{
+						"buffer_size": 46613,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								470,
+								470
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/备份/category-init.sql",
+					"settings":
+					{
+						"buffer_size": 2332,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/SQL/SQL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/run/Broadview/Broadview_COSS_V6.0.R1.5.20121203.C/upgrade/update/Broadview_COSS_V6.0.R1.5.20121203.C/version.xml",
+					"settings":
+					{
+						"buffer_size": 464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								93,
+								93
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "GBK",
+							"revert_to_scratch": true,
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"tab",
+				"app/views/table.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 255.0,
+	"status_bar_visible": true
+}

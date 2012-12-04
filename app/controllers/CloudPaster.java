@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import controllers.vm.Result;
-import models.*;
-import models.Event;
 import models.Action;
+import models.Event;
+import models.FavoriteTag;
+import models.Paster;
 import models.Paster.QueryResult;
 import models.Paster.Type;
 import models.Subscribe;
@@ -18,12 +18,19 @@ import notifiers.Notifier;
 
 import org.apache.commons.lang.StringUtils;
 
+import play.modules.ebean.EbeanSupport;
+import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
+
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+import com.avaje.ebean.SqlRow;
+
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
-import play.mvc.Before;
+import controllers.vm.Result;
 
 @With({Deadbolt.class,GlobalUser.class})
 public class CloudPaster extends Controller {
@@ -31,7 +38,8 @@ public class CloudPaster extends Controller {
         @Before
         static public void prepare(){
             if(Auth.getLoginUser()!=null){
-                List<FavoriteTag> favoriteTags = FavoriteTag.find("select ft.tag from FavoriteTag ft where ft.user = ?", Auth.getLoginUser()).fetch();
+                Query<Tag> q = Tag.find("exists (select * from favorite_tag where user_id = ? and tag_id = id)", Auth.getLoginUser().id);
+				List<Tag> favoriteTags = q.findList();
                 renderArgs.put("favoriteTags", favoriteTags);
             }
         }
@@ -39,7 +47,8 @@ public class CloudPaster extends Controller {
      * 最近活跃
      */
     static public void activity() {
-        List<Paster> pasters = Paster.find("type=? order by created desc,updated desc ", Type.Q).fetch(PAGE_SIZE);
+        Query<Paster> query = Paster.find("type=? order by created desc,updated desc ", Type.Q);
+		List<Paster> pasters = query.setMaxRows(PAGE_SIZE).findList();
         render(pasters);
     }
 
@@ -48,11 +57,13 @@ public class CloudPaster extends Controller {
      */
     static public void questions(int from) {
         long count = Paster.count("type=?", Type.Q);
-        List<Paster> pasters = Paster.find("type = ? order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
+        Query<Paster> query = Paster.find("type = ? order by created desc", Type.Q);
+		List<Paster> pasters = query.setFirstRow(from).setMaxRows(from+PAGE_SIZE).findList();
 	long pagesize = PAGE_SIZE;
-	List<Map> clouds = Tag.find(
+	Query<Tag> q = Tag.find(
 				    "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
-				    ).fetch();
+				    );
+	List<Tag> clouds = null;// q.findList();
 	render(pasters, from, count, pagesize, clouds);
     }
 
@@ -61,7 +72,8 @@ public class CloudPaster extends Controller {
      */
     static public void unanswered(int from) {
         long count = Paster.count("type=? and answerCount = 0", Type.Q);
-        List<Paster> pasters = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q).from(from).fetch(PAGE_SIZE);
+        Query<Paster> query = Paster.find("type=? and answerCount = 0 order by created desc", Type.Q);
+		List<Paster> pasters = query.setFirstRow(from).setMaxRows(PAGE_SIZE).findList();
 		long pagesize = PAGE_SIZE;
         render(pasters, from, count, pagesize);
     }
@@ -70,15 +82,19 @@ public class CloudPaster extends Controller {
      * 标签和分类
      */
     static public void tags() {
-        List<Map> clouds = Tag.find(
+        /*List<Map> clouds = null ;*//*Tag.find(
             "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
-        ).fetch();
+        ).findList();*/
+        List<SqlRow> clouds = Ebean.createSqlQuery("SELECT t.NAME AS NAME, COUNT(p.paster_id) AS COUNT FROM tag t JOIN paster_tag p ON p.tags_id = t.id GROUP BY t.NAME ORDER BY COUNT DESC").findList();
         render(clouds);
     }
 
     static public void tag(String name, int from) {
-        long count = Paster.count("select distinct count( p) from Paster p join p.tags as t where t.name = ?", name);
-        List<Paster> pasters = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name).from(from).fetch(PAGE_SIZE);
+        long count = 30;//Paster.count(" paster_tag pt t where t.name = ?", name);
+        Query<Paster> query = Paster.find("select distinct p from Paster p join p.tags as t where t.name = ?", name);
+        Query<Paster> q = Ebean.find(Paster.class).where("exists(select * from paster_tag join tag t on tags_id = t.id where paster_id = id and t.name like ? ) ").setParameter(1, name);
+        count = q.getTotalHits();
+		List<Paster> pasters = q.setFirstRow(from).setMaxRows(PAGE_SIZE).findList();
 		long pagesize = PAGE_SIZE;
         render(pasters, from, count, pagesize, name);
     }
@@ -176,7 +192,7 @@ public class CloudPaster extends Controller {
         if (StringUtils.isNotEmpty(params.get("doaddask"))) {
             params.flash();
             Paster paster = Paster.create(title, content, Auth.getLoginUser(), tagstext);
-            List<Map> subscribeUsers = User.find("select distinct new map(u.name as name,u.email as email) from User as u , Subscribe s where s.user = u").fetch();
+            List<Map> subscribeUsers =null; // User.find("select distinct new map(u.name as name,u.email as email) from User as u , Subscribe s where s.user = u").fetch();
             Notifier.newquestion(subscribeUsers, paster);
             view(paster.id);
         }
@@ -203,7 +219,7 @@ public class CloudPaster extends Controller {
         Paster paster = Paster.findById(id);
         paster.viewCount ++;
         paster.save();
-	Set<Tag> tags = paster.tags;
+        Set<Tag> tags = paster.tags;
         render(paster,tags);
     }
 
@@ -230,7 +246,8 @@ public class CloudPaster extends Controller {
 	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
-        Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
+        Query<Event> q = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster);
+		Event event = q.findUnique();
         if (event != null) {
 	    event.delete();
 	    if(event.action == Action.Votedown){
@@ -255,7 +272,8 @@ public class CloudPaster extends Controller {
 	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
-        Event event = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster).first();
+        Query<Event> q = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster);
+		Event event = q.findUnique();
         if (event != null) {
 	    event.delete();
 	    if(event.action == Action.Voteup){
@@ -285,8 +303,8 @@ public class CloudPaster extends Controller {
             return;
         }
         FavoriteTag ft = new FavoriteTag();
-        if(FavoriteTag.count("user = ? and tag = ?",Auth.getLoginUser(),tag)>0){
-            FavoriteTag.delete("user=? and tag = ?", Auth.getLoginUser(), tag);
+        if(FavoriteTag.count("user_id = ? and tag_id = ?",user.id,tag.id)>0){
+            FavoriteTag.delete("user_id=? and tag_id = ?", user.id, tag.id);
             jsonresult("ok","tag-unfocused","已经取消关注",tag);
             return;
         }
@@ -304,7 +322,7 @@ public class CloudPaster extends Controller {
 	    return;
 	}
 	FavoriteTag ft = new FavoriteTag();
-	if(FavoriteTag.count("user = ? and tag = ?",Auth.getLoginUser(),tag)>0){
+	if(FavoriteTag.count("user_id = ? and tag_id = ?",Auth.getLoginUser().id,tag.id)>0){
 	    jsonresult("failed","tag-had-focused","已经关注了",0);
 	    return;
 	}

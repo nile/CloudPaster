@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import play.db.jpa.Model;
+import play.modules.ebean.Model;
+
 
 /**
  *
@@ -23,20 +24,20 @@ public class Subscribe extends Model{
     public User user;
     public String topic;
     public static Subscribe unsubscribe(User user,String topic){
-        Subscribe subscribe = Subscribe.find("user = ? and topic = ?", user,topic).first();
+        Subscribe subscribe = null;/* Subscribe.find("user = ? and topic = ?", user,topic).first();
         if(subscribe !=null){
             subscribe.delete();            
-        }
+        }*/
         return subscribe;
     }
     public static Subscribe subscribe(User user,String topic){
-        Subscribe subscribe = Subscribe.find("user = ? and topic = ?", user,topic).first();
+        Subscribe subscribe = null;/* Subscribe.find("user = ? and topic = ?", user,topic).first();
         if(subscribe == null){
             subscribe = new Subscribe();
             subscribe.user = user;
             subscribe.topic = topic;
             subscribe.save();
-        }
+        }*/
         return subscribe;
     }
 }

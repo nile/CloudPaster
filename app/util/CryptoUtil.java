@@ -15,6 +15,7 @@ public class CryptoUtil {
 		String randomString = new BigInteger(size, xRandom).toString(32);
 		return randomString;
 	}
+	
 	public static String longToString(long i) {
 		String str = new BigInteger(Long.toString(i), 10).toString(32);
 		return str;

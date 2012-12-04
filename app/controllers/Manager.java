@@ -7,12 +7,15 @@ package controllers;
 
 import java.util.List;
 
+import com.avaje.ebean.Query;
+
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
 import models.ConfigItem;
 import play.Play;
 import play.libs.Mail;
+import play.modules.ebean.EbeanSupport;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -25,7 +28,8 @@ public class Manager extends Controller{
 	@Restrictions(@Restrict("admin"))
     public static void sysinfo(){
         final Runtime runtime = Runtime.getRuntime();  
-        final List<ConfigItem> configs = ConfigItem.all().fetch();
+        Query<ConfigItem> query = ConfigItem.all();
+		final List<ConfigItem> configs = query.findList();
         render(runtime,configs);
     }
         @Restrictions(@Restrict("admin"))
@@ -41,7 +45,8 @@ public class Manager extends Controller{
     }
         @Restrictions(@Restrict("admin"))
     public static void apply() {
-    	final List<ConfigItem> configs = ConfigItem.all().fetch();
+    	Query<ConfigItem> query = ConfigItem.all();
+		final List<ConfigItem> configs = query.findList();
     	for (ConfigItem item : configs) {
     		Play.configuration.put(item.name, item.val);
 		}

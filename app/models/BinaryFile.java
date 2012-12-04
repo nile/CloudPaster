@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 
 import org.apache.commons.io.FileUtils;
 
+import com.avaje.ebean.Query;
+
 import play.Logger;
 import play.Play;
-import play.db.jpa.Model;
+import play.modules.ebean.EbeanSupport;
+import play.modules.ebean.Model;
 import util.CryptoUtil;
 
 public class BinaryFile extends Model {
@@ -84,7 +87,8 @@ public class BinaryFile extends Model {
 	}
 
 	public static BinaryFile getByKey(String key) {
-		return BinaryFile.find("byKey", key).first();
+		Query<BinaryFile> query = BinaryFile.find("byKey", key);
+		return query.findUnique();
 	}
 	public void store(){
 		this.save();

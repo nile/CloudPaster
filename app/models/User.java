@@ -3,13 +3,18 @@ package models;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import play.db.jpa.Model;
+import com.avaje.ebean.Query;
+
+import play.modules.ebean.EbeanSupport;
+import play.modules.ebean.Model;
+
 import util.CryptoUtil;
 @Entity
 @Table(name="user")
@@ -21,12 +26,14 @@ public class User extends Model{
 	public Date birthday;
 	public String about;
 	public String email;
+	@Column(name="createDate")
 	public Date	createDate;
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="user_cprole")
 	public Set<CPRole> roles = new java.util.HashSet<CPRole>();
 	public static User createOrGet(String email) {
-		User user = User.find("byEmail",email).first();
+		Query<User> find = User.find("email = ?",email);
+		User user = find.findUnique();
 		if(user!=null)
 			return user;
 		user = new User();

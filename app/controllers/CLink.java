@@ -9,6 +9,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
@@ -17,6 +20,7 @@ import models.Link;
 import play.Logger;
 import play.data.validation.Required;
 import play.data.validation.Validation;
+import play.modules.ebean.EbeanSupport;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CryptoUtil;
@@ -51,7 +55,8 @@ public class CLink extends Controller{
 	}
 	public static void index(int from) {
 		long count = Link.count();
-		List<Link> links = Link.find("order by dateSubmitted desc").from(from).fetch(PAGE_SIZE);
+		Query<Link> q = Ebean.find(Link.class).order("dateSubmitted desc");
+		List<Link> links = q.setFirstRow(from).setMaxRows(from+PAGE_SIZE).findList();
 		long pagesize = PAGE_SIZE;
 		render(links, count, from, pagesize);
 	}

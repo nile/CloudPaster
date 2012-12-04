@@ -10,7 +10,7 @@ $(document).ready(function() {
             insert_brs:false,
             sticker:false,
             closer:false,
-            delay: 100000,
+            delay: 1000,
             history: false,
             stack: false,
             before_open: function(pnotify) {

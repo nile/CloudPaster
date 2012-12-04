@@ -28,7 +28,7 @@
 	    </div>
       </td></tr></table>
   </td></tr>
-  #{if paster.comments.size>0}
+  #{if paster.comments.size()>0}
   <tr><td>
       <table>
         #{list items:paster.comments,as:'comment'}
@@ -100,7 +100,7 @@
 		  </div>
             </td></tr></table>
         </td></tr>
-        #{if answer.comments.size>0}
+        #{if answer.comments.size()>0}
         <tr><td>
             <table>
               #{list items:answer.comments,as:'comment'}

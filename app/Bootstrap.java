@@ -1,5 +1,7 @@
 import java.util.List;
 
+import com.avaje.ebean.Query;
+
 import models.CPRole;
 import models.ConfigItem;
 import play.Play;
@@ -19,7 +21,7 @@ public class Bootstrap extends Job {
         	 RobotMessager.login();
          }
          //应用系统配置
-        final List<ConfigItem> configs = ConfigItem.all().fetch();
+		final List<ConfigItem> configs = ConfigItem.listAll();
      	for (ConfigItem item : configs) {
      		Play.configuration.put(item.name, item.val);
  		}

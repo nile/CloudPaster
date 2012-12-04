@@ -5,8 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -16,9 +18,11 @@ import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import play.db.jpa.Model;
-import play.db.jpa.NoTransaction;
+import com.avaje.ebean.Ebean;
+
 import play.modules.search.Field;
+import play.modules.ebean.EbeanSupport;
+import play.modules.ebean.Model;
 import play.modules.search.Indexed;
 import play.modules.search.Query;
 import play.modules.search.Search;
@@ -48,21 +52,31 @@ public class Paster extends Model {
 	public Type type = Type.Q;
 	public String tagstext;
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name="paster_tag")
-	public Set<Tag> tags = new HashSet<Tag>();
+	@JoinTable(name="paster_tag",
+	 	joinColumns= { @JoinColumn(name="paster_id", referencedColumnName="id")},
+		inverseJoinColumns = {@JoinColumn(name="tags_id",referencedColumnName="id",table="tag")}
+		)
+	public Set<Tag> tags;
 	@OneToOne
+	@JoinColumn(name="lastUser_id")
 	public User lastUser;
 	public Date updated;
 	public State state = State.NORMAL;
 	public int voteup;
 	public int votedown;
+	@Column(name="viewCount")
 	public int viewCount;
+	@Column(name="answerCount")
 	public int answerCount;
+	@Column(name="commentCount")
 	public int commentCount;
 	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="lastAnswerUser_id")
 	public User lastAnswerUser;
 	@OneToOne
+	@JoinColumn(name="lastAnswer_id")
 	public Paster lastAnswer;
+	@Column(name="lastAnswered")
 	public Date lastAnswered;
 	
 	public static enum Type{
@@ -130,47 +144,45 @@ public class Paster extends Model {
             paster.parent.save();
 		return paster;
 	}
-	@NoTransaction
 	public Paster tagWith(String tag) {
 		this.tags.add(Tag.findOrCreateByName(tag));
 		return this;
 	}
-	@NoTransaction
 	public static long countByCreator(String email){
 		return Paster.count("byCreator", email);
 	}
-	@NoTransaction
 	public static List<Paster> findByCreator(String email,int from,int pagesize){
-		JPAQuery find = Paster.find("creator=? order by createDate desc",email);
+		com.avaje.ebean.Query<Paster> find = Paster.find("creator=? order by createDate desc",email);
 		if(from>0)
-			find.from(from);
-		return find.fetch(pagesize);
+			find.setFirstRow(from);
+		find.setMaxRows(from+pagesize);
+		return find.findList();
 	}
-	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize){
 		return findAll(from, pagesize,"order by createDate desc");
 	}
-	@NoTransaction
 	public static List<Paster> findMostUseful(int from ,int pagesize){
 		return findAll(from, pagesize,"order by useful desc");
 	}
-	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize,String order){
-		return Paster.find(order).from(from).fetch(pagesize);
+		com.avaje.ebean.Query<Paster> query = Paster.find(order);
+		return query.setFirstRow(from).setMaxRows(pagesize+from).findList();
 	}
-	@NoTransaction
 	public static List<Paster> findAll(int from ,int pagesize,String query,String order){
-		return Paster.find(query +" " + order).from(from).fetch(pagesize);
+		com.avaje.ebean.Query<Paster> equery = Paster.find(query +" " + order);
+		return equery.setFirstRow(from).setMaxRows(from+ pagesize).findList();
 	}
 	
 	public void remove() {
 		delete();
 	}
         public boolean hadVoteup(User user){
-	    return Event.count("action=? and user=? and target=?", Action.Voteup, user, this)>0;
+        	if(user == null) return false;
+	    return Event.count("action=? and user_id=? and target_id=?", Action.Voteup.ordinal(), user.id, this.id)>0;
 	}
     public boolean hadVotedown(User user){
-        return Event.count("action=? and user=? and target=?", Action.Votedown, user, this)>0;
+    	if(user == null) return false;
+        return Event.count("action=? and user_id=? and target_id=?", Action.Votedown.ordinal(), user.id, this.id)>0;
     }
 	public void voteup(boolean up) {
 	    voteup+=(up?1:-1);		
@@ -194,14 +206,16 @@ public class Paster extends Model {
 		query += " OR title:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
 		Query q = Search.search(query, Paster.class);
 		q.orderBy("title").page(from, pagesize).reverse();
-		List<Paster> fetch = q.fetch();
+		List<Paster> fetch = null;//q.fetch();
 		return new QueryResult(fetch, q.count());
 	}
 	public List<Paster> getAnswers() {
-		return Paster.find("state = ? and parent.id = ? and type=?", State.NORMAL,this.id,Type.A).fetch();
+		com.avaje.ebean.Query<Paster> query = Paster.find("state = ? and parent.id = ? and type=?", State.NORMAL,this.id,Type.A);
+		return query.findList();
 	}
 	public List<Paster> getComments() {
-		return Paster.find("state = ? and parent.id= ? and type=?", State.NORMAL, this.id,Type.C).fetch();
+		com.avaje.ebean.Query<Paster> query = Paster.find("state = ? and parent.id= ? and type=?", State.NORMAL, this.id,Type.C);
+		return query.findList();
 	}
 	public void hide() {
 		this.state = State.HIDDEN;
