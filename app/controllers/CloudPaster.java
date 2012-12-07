@@ -24,6 +24,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.SqlRow;
 
@@ -58,12 +59,19 @@ public class CloudPaster extends Controller {
     static public void questions(int from) {
         long count = Paster.count("type=?", Type.Q);
         Query<Paster> query = Paster.find("type = ? order by created desc", Type.Q);
-		List<Paster> pasters = query.setFirstRow(from).setMaxRows(from+PAGE_SIZE).findList();
+        query
+        .select("id, title, created ,type, updated, state, voteup, votedown, viewCount, answerCount, commentCount, lastAnswered ")
+        .fetch("tags",new FetchConfig().query())
+        .fetch("lastUser",new FetchConfig().query())
+        .fetch("lastAnswerUser",new FetchConfig().query())
+        .fetch("creator",new FetchConfig().query())
+        ;
+		List<Paster> pasters = query.setFirstRow(from).setMaxRows(PAGE_SIZE).findList();
 	long pagesize = PAGE_SIZE;
 	Query<Tag> q = Tag.find(
 				    "select new map(t.name as name, count(p.id) as count) from Paster p join p.tags as t group by t.name order by count(p.id) desc"
 				    );
-	List<Tag> clouds = null;// q.findList();
+	List<Tag> clouds = null;//q.findList();
 	render(pasters, from, count, pagesize, clouds);
     }
 
@@ -138,7 +146,7 @@ public class CloudPaster extends Controller {
     static public void answer(long id, long aid, String content) {
         if (StringUtils.isNotEmpty(params.get("doansweradd"))) {
             Paster answer = Paster.answer(id, content, Auth.getLoginUser());
-            if(Subscribe.count("user = ? and topic = ?", Auth.getLoginUser(),Subscribe.TOPIC_ANSWER_FOR_ME)>0)
+            if(Subscribe.count("user_id = ? and topic = ?", Auth.getLoginUser().id,Subscribe.TOPIC_ANSWER_FOR_ME)>0)
             	Notifier.anwser(answer.parent, answer);
             view(id);
         }
@@ -192,7 +200,8 @@ public class CloudPaster extends Controller {
         if (StringUtils.isNotEmpty(params.get("doaddask"))) {
             params.flash();
             Paster paster = Paster.create(title, content, Auth.getLoginUser(), tagstext);
-            List<Map> subscribeUsers =null; // User.find("select distinct new map(u.name as name,u.email as email) from User as u , Subscribe s where s.user = u").fetch();
+            Query<User> q = User.find("exists (select * from subscribe s where s.user_id = id ) ");
+			List<User> subscribeUsers = q.select("email,name").findList();
             Notifier.newquestion(subscribeUsers, paster);
             view(paster.id);
         }
@@ -246,7 +255,7 @@ public class CloudPaster extends Controller {
 	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
-        Query<Event> q = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster);
+        Query<Event> q = Event.find("action in(?,?) and user_id =? and target_id=?", Action.Votedown,Action.Voteup, user.id, paster.id);
 		Event event = q.findUnique();
         if (event != null) {
 	    event.delete();
@@ -272,7 +281,7 @@ public class CloudPaster extends Controller {
 	    jsonresult("failed","need-login","请登录",0);
 	}
         Paster paster = Paster.findById(id);
-        Query<Event> q = Event.find("action in(?,?) and user=? and target=?", Action.Votedown,Action.Voteup, user, paster);
+        Query<Event> q = Event.find("action in(?,?) and user_id=? and target_id=?", Action.Votedown,Action.Voteup, user.id, paster.id);
 		Event event = q.findUnique();
         if (event != null) {
 	    event.delete();

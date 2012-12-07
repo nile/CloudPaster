@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.mail.EmailAttachment;
 
 import models.Paster;
+import models.User;
 import play.Logger;
 import play.Play;
 import play.mvc.Mailer;
@@ -20,17 +21,17 @@ public class Notifier extends Mailer {
 	addAttachment(emailAttachment);
       send(email);
    }
-   public static void newquestion(List<Map> subscribeUsers,Paster paster){
+   public static void newquestion(List<User> subscribeUsers,Paster paster){
         setSubject("CP更新通知："+paster.title);        
 	setContentType("text/html");
 	setCharset("UTF-8");
-        for(Map u : subscribeUsers){
-            Logger.info("send email to %s", u.get("email"));
+        for(User u : subscribeUsers){
+            Logger.info("send email to %s", u.email);
             HashMap<String, Object> map = infos.get();
             map.remove("attachments");            
             map.remove("recipients");            
-            addRecipient(u.get("email"));            
-            String name = (String) u.get("name");
+            addRecipient(u.email);            
+            String name = (String) u.name;
             send("Notifier/newquestion",name,paster);
         }
    }

@@ -178,7 +178,7 @@
             #{/else}
         %{
                 }
-                if( e < pagecount ) out << "<li><span>...</span></li>.";
+                if( e < pagecount ) out << "<li><span>...</span></li>";
         }%
         #{if islast }
         <li class="disabled"><span>最后一页<span></li>

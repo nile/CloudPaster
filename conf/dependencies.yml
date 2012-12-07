@@ -2,5 +2,3 @@
 
 require:
     - play
-    - play -> deadbolt 1.3.1
-    - play -> ebean 1.0.6

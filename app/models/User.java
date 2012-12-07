@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -29,7 +30,9 @@ public class User extends Model{
 	@Column(name="createDate")
 	public Date	createDate;
 	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="user_cprole")
+	@JoinTable(name="user_cprole"
+	,inverseJoinColumns = @JoinColumn(name="roles_id",referencedColumnName="id",table="cprole")
+	)
 	public Set<CPRole> roles = new java.util.HashSet<CPRole>();
 	public static User createOrGet(String email) {
 		Query<User> find = User.find("email = ?",email);

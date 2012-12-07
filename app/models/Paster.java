@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,13 +34,10 @@ import ys.wikiparser.WikiParser;
 @Table(name="paster")
 @Indexed(converters = {PasterConverter.class})
 public class Paster extends Model {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4480896812936822950L;
 	@Field
 	public String content;
 	public String wiki;
+
 	@Field(tokenize=true)
 	public String title;
 	@OneToOne
@@ -51,7 +49,7 @@ public class Paster extends Model {
 	public Date created;
 	public Type type = Type.Q;
 	public String tagstext;
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="paster_tag",
 	 	joinColumns= { @JoinColumn(name="paster_id", referencedColumnName="id")},
 		inverseJoinColumns = {@JoinColumn(name="tags_id",referencedColumnName="id",table="tag")}
@@ -70,7 +68,7 @@ public class Paster extends Model {
 	public int answerCount;
 	@Column(name="commentCount")
 	public int commentCount;
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name="lastAnswerUser_id")
 	public User lastAnswerUser;
 	@OneToOne
@@ -118,7 +116,7 @@ public class Paster extends Model {
 		//paster.content = content;
 		paster.title = title;
 		paster.tagstext = tagstext;
-        paster.tags.clear();
+        paster.tags  = new HashSet<Tag>();
 		if(paster.tagstext!=null) {
 			String[] tagNames = tagstext.trim().split("[ ,;]");
 			for (String tag : tagNames) {

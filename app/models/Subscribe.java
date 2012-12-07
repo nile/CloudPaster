@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.avaje.ebean.Query;
+
+import play.modules.ebean.EbeanSupport;
 import play.modules.ebean.Model;
 
 
@@ -24,20 +27,22 @@ public class Subscribe extends Model{
     public User user;
     public String topic;
     public static Subscribe unsubscribe(User user,String topic){
-        Subscribe subscribe = null;/* Subscribe.find("user = ? and topic = ?", user,topic).first();
+        Query<Subscribe> q = Subscribe.find("user_id = ? and topic = ?", user.id,topic);
+		Subscribe subscribe = q.findUnique();
         if(subscribe !=null){
             subscribe.delete();            
-        }*/
+        }
         return subscribe;
     }
     public static Subscribe subscribe(User user,String topic){
-        Subscribe subscribe = null;/* Subscribe.find("user = ? and topic = ?", user,topic).first();
+        Query<Subscribe> q = Subscribe.find("user_id = ? and topic = ?", user.id,topic);
+		Subscribe subscribe =  q.findUnique();
         if(subscribe == null){
             subscribe = new Subscribe();
             subscribe.user = user;
             subscribe.topic = topic;
             subscribe.save();
-        }*/
+        }
         return subscribe;
     }
 }

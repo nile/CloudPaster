@@ -19,7 +19,7 @@
             ${paster.creator.name} ${paster.created.freindly()} 提问
             #{if paster.updated} &nbsp; ${paster.lastUser.name} ${paster.updated.freindly()} 修改#{/if}
 	    </span>
-          </td><td class="right">
+          </td><td class="pull-right">
 	    #{voteactions user:user,paster:paster/}
 	    <div class="post-actions">
             #{a @CloudPaster.edit(paster.id)}编辑#{/a}
@@ -44,12 +44,16 @@
       #{form @CloudPaster.ask()}
       <input type="hidden" name="id" value="${paster.id}"/>
       <table class="bg1">
-        <tr><td><h2>编辑问题</h2></td></tr>
-        <tr><td><input id="paster-title" type="text" name="title" value="${paster.title}" style="width:300px;"/></td></tr>
-        <tr><td>#{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}</td></tr>
-        <tr><td><input id="paster-tags" name="tagstext" value="${paster.tagstext}" style="width:200px;"/></td></tr>
-        <tr><td><input type="submit" name="doupdatequestion" value="保存"/>
-            <input type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/></td></tr>
+        <tr><td colspan="2"><h3>编辑问题</h3></td></tr>
+        <tr><td colspan="2"><input id="paster-title" type="text" name="title" value="${paster.title}" style="width:300px;"/></td></tr>
+        <tr><td colspan="2">#{editor id:"paster-content",name:"content",value:paster.wiki,type:'wiki'/}</td></tr>
+        <tr><td>
+	    分类:<input id="paster-tags" name="tagstext" value="${paster.tagstext}" style="width:200px;"/>
+	  </td>
+	  <td class="pull-right">
+            <input class="btn btn-success" type="submit" name="doupdatequestion" value="保存"/>
+            <input class="btn" type="submit" name="docancel" value="取消" onclick="javascript:location.href='@{CloudPaster.view(paster.id)}';return false;"/>
+	</td></tr>
       </table>
       #{/form}
   </td></tr>
@@ -59,10 +63,11 @@
   <tr><td>
       #{form @CloudPaster.answer(paster.id)}
       <table class="bg1">
-        <tr><td><h2>你的回复</h2></td></tr>
+        <tr><td><h3>你的回复</h3></td></tr>
         <tr><td>#{editor id:'answer-editor',name:'content',type:'wiki'/}</td></tr>
-        <tr><td><input type="submit" name="doansweradd" value="新回复"></input>	
-            <input type="submit" name="docancel" value="取消"></input></td></tr>
+        <tr><td class="pull-right">
+	    <input class="btn btn-success" type="submit" name="doansweradd" value="新回复"></input>	
+            <input class="btn" type="submit" name="docancel" value="取消"></input></td></tr>
       </table>
       #{/form}
   </td></tr>
@@ -71,10 +76,11 @@
   #{if state=='comment'}
   <tr><td>
       #{form @CloudPaster.comment(paster.id)}
-      <table class="center bg1"><tr><td><h2>你对该问题的评论:</h2></td></tr>
+      <table class="center bg1"><tr><td><h4>你对该问题的评论:</h4></td></tr>
         <tr><td>#{editor id:'answer-editor',name:'content',mode:'simple'/}</td></tr>
-        <tr><td><input type="submit" name="docommentadd" value="新评论"></input>
-            <input type="submit" name="docancel" value="取消"></input></td></tr>
+        <tr><td>
+	    <input class="btn btn-success" type="submit" name="docommentadd" value="新评论"></input>
+            <input class="btn" type="submit" name="docancel" value="取消"></input></td></tr>
       </table>
       #{/form}
   </td></tr>
@@ -92,7 +98,7 @@
             <table ><tr><td style="width:70%;color:#828282;font-size:75%;padding-left:20px;">
                   ${answer.creator.name} ${answer.created.freindly()} 回答
 		  #{if answer.updated} &nbsp; ${answer.lastUser.name} ${answer.updated.freindly()}修改#{/if} 
-                </td><td class="right">
+                </td><td class="pull-right">
 		  #{voteactions user:user,paster:answer/}
 		  <div class="post-actions">
                     #{a @CloudPaster.edit(answer.id)}编辑#{/a}

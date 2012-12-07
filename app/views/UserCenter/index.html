@@ -90,7 +90,7 @@
             所有新问题
         </td>
         <td>
-            #{if !subscribes.contains('all_question')}<a href="javascript:void(0)" onclick="subscribe('all_question')" >订阅</a>#{/if}
+            #{if !subscribesMap.containsKey('all_question')}<a href="javascript:void(0)" onclick="subscribe('all_question')" >订阅</a>#{/if}
             #{else}<a href="javascript:void(0)" onclick="unsubscribe('all_question')" >取消</a>#{/else}
         </td>
     </tr>   
@@ -99,7 +99,7 @@
             所有我的问题的回答
         </td>
         <td>
-            #{if !subscribes.contains('answer_for_me')}<a href="javascript:void(0)" onclick="subscribe('answer_for_me')" >订阅</a>#{/if}
+            #{if !subscribesMap.containsKey('answer_for_me')}<a href="javascript:void(0)" onclick="subscribe('answer_for_me')" >订阅</a>#{/if}
             #{else}<a href="javascript:void(0)" onclick="unsubscribe('answer_for_me')" >取消</a>#{/else}
         </td>
     </tr>   
