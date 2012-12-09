@@ -79,3 +79,6 @@ div.vote-actions, div.post-actions{
 .answer p{
     margin-bottom: 4px;
 }
+a:hover{
+    text-decoration: none;
+}

@@ -6,6 +6,7 @@
 </div>
 #{/if}
 
+
 <h3>${paster.title}</h3>
 <div>
   ${paster.content.raw()}
@@ -34,7 +35,7 @@
   </div>
   #{/list}
   #{/if}
-</div>
+
 
 
 #{if state=="question-edit"}
@@ -62,13 +63,16 @@
 #{/if}
 
 #{if state=='comment'}
-  <h4>你对该问题的评论:</h4>
-  #{form @CloudPaster.comment(paster.id)}
-    #{editor id:'answer-editor',name:'content',mode:'simple'/}
-    <input class="btn btn-success" type="submit" name="docommentadd" value="新评论"></input>
-    <input class="btn" type="submit" name="docancel" value="取消"></input>
+  <div class="row">
+  #{form @CloudPaster.comment(paster.id), class:'offset1'}
+    <input type="text" name="content"></input>
+    <input class="btn btn-success btn-small" type="submit" name="docommentadd" value="新评论"></input>
+    <input class="btn btn-small" type="submit" name="docancel" value="取消"></input>
   #{/form}
+  </div>
 #{/if}
+
+</div>
 
 <h3>${paster.answerCount}个回答</h3>
 
@@ -90,11 +94,12 @@
         #{list items:answer.comments,as:'comment'}
           <div class="row">
             <div class="span11 offset1">${comment.content.raw()}  
-            <span class="info"> ${comment?.creator?.name} ${comment.created.freindly()} 评论。</div>
+              <span class="info"> ${comment?.creator?.name} ${comment.created.freindly()} 评论。</span>
+            </div>
           </div>
         #{/list}
       #{/if}
-  </div>
+  
   #{if state=='answer-edit' && answer.id == id}
     <h3>编辑回答</h3>
     #{form @CloudPaster.answer(paster.id,answer.id)}
@@ -104,13 +109,15 @@
     #{/form}
   #{/if}
   #{if state=='answer-comment' && aid==answer.id}
-    <h3>你对该回答的评论:</h3>
-    #{form @CloudPaster.comment()}
-      #{hidden name:'id',value:paster.id/}
-      #{hidden name:'aid',value:answer.id/}
-      #{editor id:'answer-editor',name:'content',mode:'simple'/}
-      <input class="btn btn-success" type="submit" name="docommentadd" value="新评论"></input>
-      <input class="btn" type="submit" name="docancel" value="取消"></input>
-    #{/form}
+    <div class="row">
+      #{form @CloudPaster.comment(),class:'offset1'}
+        #{hidden name:'id',value:paster.id/}
+        #{hidden name:'aid',value:answer.id/}
+        <input type="text" name="content" class="span8"/>
+        <input class="btn btn-success btn-small" type="submit" name="docommentadd" value="新评论"></input>
+        <input class="btn btn-small" type="submit" name="docancel" value="取消"></input>
+      #{/form}
+    </div>
   #{/if}
+  </div>
 #{/list}
