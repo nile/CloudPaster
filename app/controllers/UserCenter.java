@@ -10,17 +10,21 @@ import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 @With({Deadbolt.class,GlobalUser.class})
 public class UserCenter extends Controller{
     @Restrictions(@Restrict("user"))
 	static public void save(User user) {
-		user.save();
+    	user.save();
 		index(Auth.getLoginUser().id);
 	}
     @Restrictions(@Restrict("user"))

@@ -12,7 +12,7 @@ public class CPRoleHolder implements RoleHolder {
 	public List<? extends Role> getRoles() {
 		User loginUser = Auth.getLoginUser();
 		if(loginUser!=null) {
-			return Arrays.asList(loginUser.roles.toArray(new CPRole[0]));
+			return Arrays.asList(loginUser.getRoles().toArray(new CPRole[0]));
 		}
 		return Arrays.asList(CPRole.createOrGet("guest"));
 	}

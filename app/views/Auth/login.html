@@ -1,32 +1,22 @@
 #{extends 'table.html'/}
 #{set title:"用户登陆"/}
 
-<div style="margin-bottom:320px;">
+<div style="margin:100px 0 100px 0;">
     #{if flash.error}
     <p>${flash.error}</p>
     #{/if}
-    <p>		
-    <div style="text-align:center;width:220px;display:inline;float:left;">
-        <pre>                              
-                    |         
-,---.,---.,---.,---.|    ,---.
-|   ||   ||   ||   ||    |---'
-`---|`---'`---'`---|`---'`---'
-`---'          `---'          
-        </pre>
-        <a href="@{Auth.googlelogin()}">用Gmail帐号登录</a>
+    <div class="row-fluid">
+    <div class="span3">
+    <a href="@{Auth.googlelogin()}"><img src="@{'/public/images/openid-logos/google.gif'}">
+        <br/>用Gmail帐号登录</a>
     </div>
-    <div style="text-align:center;width:220px;display:inline;float:left;">		
-        <pre>                         
-          |              
-,   .,---.|---.,---.,---.
-|   |,---||   ||   ||   |
-`---|`---^`   '`---'`---'
-`---'                    
-        </pre>
-        <a href="@{Auth.yahoologin()}">用Yahoo帐号登录</a>
-    </p>
+    <div  class="span3">
+        <a href="@{Auth.yahoologin()}"><img src="@{'/public/images/openid-logos/yahoo.gif'}">
+        <br/>用Yahoo帐号登录</a>
+    </div>
+    <div  class="span3">
+    <a href="@{Auth.qq()}"><img src="@{'/public/images/openid-logos/qq.gif'}">
+        <br/>用腾讯微博帐号登录</a>
+    </div>
+    </div>
 </div>
-
-
-    </div>

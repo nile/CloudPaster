@@ -18,7 +18,7 @@ public class GlobalUser extends Controller {
     @Before
     static void startTimer() {
         User user = Auth.getLoginUser();
-        renderArgs.put("user", user);
+    	renderArgs.put("user", user);
     }
 
     @After

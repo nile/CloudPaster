@@ -26,21 +26,21 @@ public class Notifier extends Mailer {
 	setContentType("text/html");
 	setCharset("UTF-8");
         for(User u : subscribeUsers){
-            Logger.info("send email to %s", u.email);
+            Logger.info("send email to %s", u.getEmail());
             HashMap<String, Object> map = infos.get();
             map.remove("attachments");            
             map.remove("recipients");            
-            addRecipient(u.email);            
-            String name = (String) u.name;
+            addRecipient(u.getEmail());            
+            String name = (String) u.getName();
             send("Notifier/newquestion",name,paster);
         }
    }
    public static void anwser(Paster paster,Paster answer) {
 	   setSubject("CP更新通知："+paster.title);
-	   addRecipient(paster.creator.email);
+	   addRecipient(paster.creator.getEmail());
 	   setContentType("text/html");
 	   setCharset("UTF-8");
-           Logger.info("send email to %s", paster.creator.email);
+           Logger.info("send email to %s", paster.creator.getEmail());
 	   send("Notifier/answer",paster,answer);
    }
    public static void paste(String email,Paster paster) {
