@@ -1,22 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${title} - 开发者问答服务</title>
+        <title>${title} - 开发者问答</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
-
-        <script src="/public/javascripts/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/jquery.hoverIntent.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/jquery.pnotify.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/public/javascripts/cp.js" type="text/javascript" charset="utf-8"></script>
 
         <link rel="stylesheet" type="text/css" href="/public/bootstrap/css/bootstrap.css" media="screen, projection" />
         <link rel="stylesheet" type="text/css" href="/public/metro-bootstrap/css/metro-bootstrap.css" media="screen, projection" />
         <link rel="stylesheet" type="text/css" href="/public/stylesheets/style.css" media="screen, projection" />
 
-        #{get "moreScripts"/}
         <style>
         .container{
             width: 960px;
@@ -87,21 +79,27 @@
             <div class="row-fluid footer">
                 <div class="span8">
 
-                    &#169;2010-2011 感谢无私的奉献者
+                    &#169;2010-2012 感谢无私的奉献者
                     <a href="http://nginx.org/">nginx</a>
                     <a href="http://www.playframework.org">playframework</a>
                     <a href="http://lucene.apache.org">apache lucene</a>
                     <a href="http://www.eclipse.org/">eclipse</a>
                 </div>
                 <div class="span4">
-                    数据库查询次数
+                    分析：<script type="text/javascript" src="http://tajs.qq.com/stats?sId=19853141" charset="UTF-8"></script>
                 </div>
             </div>
-
         </div>
     </div>
-    #{ga/}
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=19853141" charset="UTF-8"></script>
+
+
+<script src="/public/javascripts/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/jquery.hoverIntent.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/jquery.pnotify.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/cp.js" type="text/javascript" charset="utf-8"></script>
+#{get "moreScripts"/}
 
 
 </body>
