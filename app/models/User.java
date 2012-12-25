@@ -32,13 +32,16 @@ public class User extends Model{
 	private String email;
 	
 	@Column(name="createDate")
-	private Date	createDate;
+	private Date createDate;
 	@ManyToMany
 		@JoinTable(name="user_cprole"
 		,inverseJoinColumns = @JoinColumn(name="roles_id",referencedColumnName="id",table="cprole")
 	)
 	private Set<CPRole> roles;
 	
+	public User(){
+		roles = new HashSet<CPRole>();
+	}
 	
 	public static User createOrGet(String email) {
 		Query<User> find = User.find("email = ?",email);
@@ -53,6 +56,7 @@ public class User extends Model{
 		user.createDate = new Date();
 		user.email = email;
 		user.save();
+		Ebean.saveManyToManyAssociations(user, "roles");
 		user.name = "用户"+CryptoUtil.longToString(user.id);
 		user.save();
 		return user;
@@ -62,7 +66,6 @@ public class User extends Model{
 		OpenIdInfo findByOpenid = q.findUnique();
 		if(findByOpenid==null && StringUtils.isNotEmpty(openid)) {
 			User user = new User();
-			user.roles = new HashSet<CPRole>();
 			user.roles.add(CPRole.createOrGet("user"));
 			user.createDate = new Date();
 			user.save();
