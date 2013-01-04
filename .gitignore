@@ -15,4 +15,8 @@ precompliled/
 precompiled/
 modules/jpastats-0.9/
 
-modules/jpastats-0.9
+modules/jpastats-0.9CloudPaster.iml
+CloudPaster.iml
+proj.sublime-workspace
+.classpath
+.project

@@ -82,3 +82,22 @@ div.vote-actions, div.post-actions{
 a:hover{
     text-decoration: none;
 }
+
+.share-buttons a{
+    border: none;
+    padding: 2px 2px 2px 22px;
+    background-repeat: no-repeat;
+}
+.share-buttons .renren{
+    padding-left: 32px;
+    background-image: url('../images/sns/renren.png');
+}
+.share-buttons .weibo{
+    background-image: url('../images/sns/weibo.png');
+}
+.share-buttons .qqwb{
+    background-image: url('../images/sns/qqwb.png');
+}
+.share-buttons .twitter{
+    background-image: url('../images/sns/twitter_bird.png');
+}

@@ -91,4 +91,33 @@ $(document).ready(function() {
             }
         });
     });
+    $('.share-buttons').delegate('a', 'click', function(a){
+	a.preventDefault();
+	var that = $(a.currentTarget);
+	if(that.hasClass('weibo')){
+	    share_weibo(that);
+	}else if(that.hasClass('qqwb')){
+	    share_qqwb(that);
+	}else if(that.hasClass('renren')){
+	    share_renren(that);
+	}else if(that.hasClass('twitter')){
+	    share_twitter(that);
+	}
+    });
 });
+
+function share_weibo(t) {
+    window.open("http://service.weibo.com/share/share.php?url=" + t.attr('href') + "&title=" + $(document).attr('title'), "_blank", "width=615,height=505");
+}
+function share_qqwb(t) {
+    window.open("http://share.v.t.qq.com/index.php?c=share&a=index&appkey=801290473&url=" + t.attr('href') + "&title=" + $(document).attr('title') , "_blank", "width=615,height=505");
+}
+function share_renren(t) {
+    window.open("http://widget.renren.com/dialog/share?resourceUrl=" + t.attr('href') + "&srcUrl=" + t.attr('href') + "&title=" + $(document).attr('title') + "&pic=&description="+jQuery('meta[name=description]').attr("content"), "_blank", "width=615,height=705");
+}
+function share_qzone(t) {
+    window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?showcount=1&otype=share&url=" + jQuery("#"+id).data('url') + "&title=" + $(document).attr('title'), "_blank", "width=615,height=505");
+}
+function share_twitter(id) {
+    window.open("http://twitter.com/intent/tweet?original_referer=&source=" + t.attr('href') + "tweetbutton&text=" + $(document).attr('title') + "&url=" + t.attr('href') + "&via=aqee_net", "_blank", "width=615,height=505");
+}

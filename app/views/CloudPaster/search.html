@@ -3,7 +3,7 @@
 	<p class="large">${flash.error}</p>
 #{/if}
 #{ifnot flash.error}
-<h1>搜索<span class="added large">${keywords}</span>，共找到 ${count}个问题：</h1>
+<h3>搜索<span class="added large">${keywords}</span>，共找到 ${count}个问题：</h3>
 #{list items:pasters,as:'paster'}
 #{q paster/}
 #{/list}

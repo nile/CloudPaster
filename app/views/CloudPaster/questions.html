@@ -1,5 +1,6 @@
 #{extends 'table.html'/}
-#{set title:"问题列表"/}
+#{set title:"问题"/}
+#{set description:"专注于开发者问答"/}
 <h2>问题</h2>
 #{list items:pasters,as:'paster'}	
 #{cache 'paster-'+paster.id, for:'10s'}
