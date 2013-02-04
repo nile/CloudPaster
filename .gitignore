@@ -20,3 +20,5 @@ CloudPaster.iml
 proj.sublime-workspace
 .classpath
 .project
+README.textile~
+*.pyc
