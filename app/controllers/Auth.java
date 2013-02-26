@@ -19,6 +19,7 @@ import play.libs.WS.WSRequest;
 import play.mvc.Controller;
 import play.mvc.Router;
 import play.mvc.With;
+import util.BaiduOpenId;
 import util.QQOpenId;
 import util.StringUtil;
 @With({GlobalUser.class})
@@ -56,6 +57,10 @@ public class Auth extends Controller{
 	public static void qq() {
 		redirect(QQOpenId.loginUrl());
 	}
+
+    public static void baidu(){
+        redirect(BaiduOpenId.loginUrl());
+    }
 	public static void clickpass() throws UnsupportedEncodingException {
 		String returnto = Play.configuration.getProperty("auth.returnto", Router.getFullUrl("Auth.login"));
 		if(flash.contains("return.to"))
@@ -82,7 +87,19 @@ public class Auth extends Controller{
 			session.put(KEY_USER, user.id);
             session.put(KEY_TIMESTAMP, System.currentTimeMillis());  
             CloudPaster.questions(0);
-		}else if(OpenID.isAuthenticationResponse()) {
+		} else if(BaiduOpenId.isAuthenticationResponse()){
+            Map<String, String> userinfoMap = BaiduOpenId.userInfo();
+            if(userinfoMap == null) {
+                flash.error("不妙，登陆错误。");
+                login();
+            }
+            User user = User.createOrGetByOpenid(userinfoMap.get("userid"), "Baidu");
+            user.setName(userinfoMap.get("username"));
+            user.save();
+            session.put(KEY_USER, user.id);
+            session.put(KEY_TIMESTAMP, System.currentTimeMillis());
+            CloudPaster.questions(0);
+        } else if(OpenID.isAuthenticationResponse()) {
 	        // Retrieve the verified id
 	        UserInfo userinfo = OpenID.getVerifiedID();
 	        if(userinfo == null) {
