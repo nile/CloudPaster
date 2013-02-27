@@ -2,6 +2,8 @@ package notifiers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailAttachment;
 
 import models.Paster;
@@ -26,11 +28,14 @@ public class Notifier extends Mailer {
 	setContentType("text/html");
 	setCharset("UTF-8");
         for(User u : subscribeUsers){
-            Logger.info("send email to %s", u.getEmail());
+            String email = u.getEmail();
+            if(StringUtils.isEmpty(email))
+                continue;
+            Logger.info("send email to %s", email);
             HashMap<String, Object> map = infos.get();
             map.remove("attachments");            
             map.remove("recipients");            
-            addRecipient(u.getEmail());            
+            addRecipient(email);
             String name = (String) u.getName();
             send("Notifier/newquestion",name,paster);
         }
