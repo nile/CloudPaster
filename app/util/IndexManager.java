@@ -95,7 +95,7 @@ public class IndexManager {
     static FSDirectory fsDirectory;
     static IndexWriter indexWriter;
 
-    private static boolean checkInit() {
+    private synchronized static boolean checkInit() {
         File index_dir = new File(indexDir);
         if (!index_dir.exists()) {
             index_dir.mkdirs();
