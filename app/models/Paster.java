@@ -1,44 +1,24 @@
 package models;
 
+import jobs.IndexPasterJob;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import play.modules.ebean.Model;
+import util.IndexManager;
+import ys.wikiparser.WikiParser;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
-import com.avaje.ebean.Ebean;
-
-import play.modules.search.Field;
-import play.modules.ebean.EbeanSupport;
-import play.modules.ebean.Model;
-import play.modules.search.Indexed;
-import play.modules.search.Query;
-import play.modules.search.Search;
-import util.PasterConverter;
-import util.TokenUtil;
-import ys.wikiparser.WikiParser;
 @Entity
 @Table(name="paster")
-@Indexed(converters = {PasterConverter.class})
 public class Paster extends Model {
-	@Field
 	public String content;
 	public String wiki;
 
-	@Field(tokenize=true)
 	public String title;
 	@OneToOne
 	public Paster parent ;
@@ -140,6 +120,11 @@ public class Paster extends Model {
 		paster.save();
         if(parentId >0)
             paster.parent.save();
+        Paster temp = paster;
+        while(temp.type != Type.Q){
+            temp = paster.parent;
+        }
+        new IndexPasterJob(temp).in(1);
 		return paster;
 	}
 	public Paster tagWith(String tag) {
@@ -200,12 +185,8 @@ public class Paster extends Model {
 	}
 
 	public static QueryResult search(String keywords, int from, int pagesize) {
-		String query = "content:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
-		query += " OR title:(" + StringUtils.join(TokenUtil.token(keywords), " AND ")+")";
-		Query q = Search.search(query, Paster.class);
-		q.orderBy("title").page(from, pagesize).reverse();
-		List<Paster> fetch = null;//q.fetch();
-		return new QueryResult(fetch, q.count());
+		List<Paster> fetch = IndexManager.search(keywords,from);
+		return new QueryResult(fetch, 0);
 	}
 	public List<Paster> getAnswers() {
 		com.avaje.ebean.Query<Paster> query = Paster.find("state = ? and parent.id = ? and type=?", State.NORMAL,this.id,Type.A);

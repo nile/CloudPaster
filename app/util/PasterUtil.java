@@ -7,6 +7,7 @@ import java.util.Iterator;
 import models.BinaryFile;
 import models.ModelConstants;
 
+import models.Paster;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
