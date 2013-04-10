@@ -42,10 +42,14 @@ public class Notifier extends Mailer {
    }
    public static void anwser(Paster paster,Paster answer) {
 	   setSubject("CP更新通知："+paster.title);
-	   addRecipient(paster.creator.getEmail());
+       String email = paster.creator.getEmail();
+       if(StringUtils.isEmpty(email)){
+           return;
+       }
+       addRecipient(email);
 	   setContentType("text/html");
 	   setCharset("UTF-8");
-           Logger.info("send email to %s", paster.creator.getEmail());
+           Logger.info("send email to %s", email);
 	   send("Notifier/answer",paster,answer);
    }
    public static void paste(String email,Paster paster) {
