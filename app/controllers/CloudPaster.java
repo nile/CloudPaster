@@ -8,7 +8,7 @@ import models.Action;
 import models.Event;
 import models.FavoriteTag;
 import models.Paster;
-import models.Paster.QueryResult;
+import util.IndexManager.QueryResult;
 import models.Paster.Type;
 import models.Subscribe;
 import models.Tag;

@@ -34,7 +34,8 @@ import java.util.List;
 public class IndexManager {
     private final static String indexDir = "_index";
 
-    public static List<Paster> search(String key, int from) {
+
+    public static QueryResult search(String key, int from,int pagesize) {
         IndexSearcher srch = null;
         try {
             checkInit();
@@ -56,8 +57,8 @@ public class IndexManager {
             FieldQuery fieldQuery = highlighter.getFieldQuery(booleanQuery);
             TopDocs hits = srch.search(booleanQuery, 1000);
             List<Paster> files = new LinkedList<Paster>();
-
-            for (int i = from; i < Math.min(from + 10, hits.totalHits); i++) {
+            int count = hits.totalHits;
+            for (int i = from; i < Math.min(from + 10, count); i++) {
                 ScoreDoc scoreDoc = hits.scoreDocs[i];
                 Document doc = srch.doc(scoreDoc.doc);
                 Paster jf = null;// new Paster();
@@ -68,7 +69,7 @@ public class IndexManager {
                 jf = Paster.findById(Long.parseLong(doc.get("obj_id").substring("paster_".length())));
                 files.add(jf);
             }
-            return files;
+            return new QueryResult(files,count);
         } catch (Exception e) {
             Logger.info(e, e.getLocalizedMessage());
         } finally {
@@ -78,7 +79,7 @@ public class IndexManager {
                 Logger.info(e, e.getLocalizedMessage());
             }
         }
-        return Collections.emptyList();
+        return new QueryResult(Collections.EMPTY_LIST,0);
     }
 
     private static int docCount() throws IOException {
@@ -168,7 +169,7 @@ public class IndexManager {
         List<Paster> answers = paster.getAnswers();
         for (Paster answer : answers) {
             content += answer.content;
-            List<Paster> answerComments = paster.getComments();
+            List<Paster> answerComments = answer.getComments();
             for (Paster answerComment : answerComments) {
                 content += answerComment.content;
             }
@@ -191,6 +192,17 @@ public class IndexManager {
             fsDirectory.close();
         } catch (IOException e) {
             Logger.error(e,e.getMessage());
+        }
+    }
+
+    public static class QueryResult {
+
+        public long count;
+        public List<Paster> results;
+
+        public QueryResult(List<Paster> list, long count) {
+            this.results = list;
+            this.count = count;
         }
     }
 }
